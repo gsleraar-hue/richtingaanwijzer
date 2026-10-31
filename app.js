@@ -771,6 +771,13 @@
     if (site) r += ` · <a href="${esc(site)}" target="_blank" rel="noopener">open dagen ↗</a>`;
     return `<li>${r}</li>`;
   }
+  // Ov-route naar de open dag (vanaf je woonplaats als die bekend is)
+  function routeLink(r) {
+    const doel = `${r.inst}${r.plaats ? ", " + r.plaats : instPlek[r.inst] ? ", " + instPlek[r.inst].pl : ""}`;
+    const p = new URLSearchParams({ api: "1", destination: doel, travelmode: "transit" });
+    if (thuis) p.set("origin", thuis.naam);
+    return "https://www.google.com/maps/dir/?" + p.toString();
+  }
   function renderOpenDagen() {
     const q = $("#odZoek").value.trim().toLowerCase();
     const rows = [];
@@ -791,7 +798,10 @@
       const link = veiligeUrl(r.aanmelden) || veiligeUrl(r.site);
       h += `<div class="od-rij"><div class="od-datum"><b>${fmt(r.datum, { day: "numeric" })}</b><span>${fmt(r.datum, { weekday: "short" })}</span></div>` +
         `<div class="od-info"><strong>${esc(r.inst)}</strong><span>${esc(r.soort || "open dag")}${r.plaats ? " · " + esc(r.plaats) : ""}${r.km !== null ? " · " + afstandTekst(r.km) : ""}${r.tijd ? " · " + esc(r.tijd) : ""}${r.eind && r.eind !== r.datum ? " · t/m " + fmt(r.eind, { day: "numeric", month: "short" }) : ""}</span></div>` +
-        (link ? `<a class="btn ghost od-link" href="${esc(link)}" target="_blank" rel="noopener">${veiligeUrl(r.aanmelden) ? "Aanmelden" : "Info"} ↗</a>` : "") + `</div>`;
+        `<div class="od-knoppen">` +
+        (link ? `<a class="btn ghost od-link" href="${esc(link)}" target="_blank" rel="noopener">${veiligeUrl(r.aanmelden) ? "Aanmelden" : "Info"} ↗</a>` : "") +
+        (!/online/i.test(r.soort || "") ? `<a class="od-route" href="${esc(routeLink(r))}" target="_blank" rel="noopener">Route ↗</a>` : "") +
+        `</div></div>`;
     });
     if (maand) h += "</div>";
     $("#odLijst").innerHTML = h || '<p class="empty">Geen open dagen gevonden. Probeer een andere school of stad.</p>';
@@ -825,6 +835,8 @@
   $("#gesprekLijst").innerHTML = GESPREK.map((g) => `<div class="gk"><h4>${esc(g[0])}</h4><p>${vt(g[1])}</p><strong>Vraag bijvoorbeeld</strong><ul>${g[2].map((v) => `<li>${esc(v)}</li>`).join("")}</ul><strong>Liever niet</strong><ul class="niet">${g[3].map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div>`).join("");
   $("#gesprekLastig").innerHTML = GESPREK_LASTIG.map((g) => `<div class="gk"><h4>${esc(g[0])}</h4><p>${vt(g[1])}</p></div>`).join("");
   $("#printGesprek").addEventListener("click", () => { document.body.classList.add("print-gesprek"); window.print(); setTimeout(() => document.body.classList.remove("print-gesprek"), 500); });
+
+  $("#odTips").innerHTML = OPENDAG_TIPS.map((t) => `<div class="odtip"><h4>${esc(t[0])}</h4><ul>${t[1].map((p) => `<li>${vt(p)}</li>`).join("")}</ul></div>`).join("");
 
   /* ---------- Licht / donker ---------- */
   $("#thema").addEventListener("click", () => {

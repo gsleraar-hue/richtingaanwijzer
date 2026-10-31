@@ -271,3 +271,12 @@ const GESPREK_LASTIG = [
   ["Als jullie het oneens zijn", "Vraag eerst waaróm je kind iets wil, en zoek het daarna samen uit: bekijk de opleiding, ga naar een open dag, zoek iemand die het werk doet. Jouw zorg mag je noemen, maar het blijft de keuze van je kind."],
   ["Als het over geld gaat", "Studeren kost geld: collegegeld, boeken en misschien een kamer. Via DUO, de dienst die studiefinanciering regelt, krijgt je kind een basisbeurs en/of kan het lenen. Kijk samen op duo.nl wat dat voor jullie betekent."]
 ];
+
+// Open dag voorbereiden: [titel, punten]
+const OPENDAG_TIPS = [
+  ["Vooraf", ["Meld je aan als dat moet; vaak krijg je dan een programma en een plattegrond.", "Kies twee of drie voorlichtingen of proefcolleges die je echt wilt zien.", "Schrijf je vragen op: over het programma, stages, toetsen en werk na de studie.", "Doe de Padvinder en lees de uitleg van de opleiding hier, dan weet je waar je op moet letten."]],
+  ["Wie gaat er mee?", ["Een ouder of verzorger: twee paar oren horen meer, en jullie kunnen er na afloop samen over praten.", "Een vriend of vriendin die hetzelfde overweegt.", "Of alleen: dan praat je vaak makkelijker met studenten.", "Spreek af dat jij de vragen stelt; je ouder mag aanvullen."]],
+  ["Hoe kom je daar?", ["Plan je reis vooraf met de routeknop bij de open dag; op open dagen is het druk in trein en bus.", "Kom ongeveer een half uur voor het begin, zodat je rustig de weg vindt.", "Het adres en welk gebouw je moet hebben, staan op de aanmeldpagina of in je bevestigingsmail. Grote scholen hebben vaak meerdere gebouwen of locaties.", "Reis je straks elke dag? Doe de reis dan op een gewone schooldag, zo weet je hoe lang het echt duurt."]],
+  ["Vragen om te stellen", ["Hoe ziet een gewone week eruit: hoeveel uur les en hoeveel zelfstudie?", "Hoe is het eerste jaar opgebouwd, en wat is het bindend studieadvies?", "Wanneer en waar loop je stage?", "Wat doen oud-studenten nu voor werk?", "Vraag studenten: wat had je willen weten voordat je begon?"]],
+  ["Daarna", ["Schrijf meteen op wat je goed en minder goed vond.", "Vergelijk minstens twee opleidingen of scholen.", "Twijfel je nog? Plan een meeloopdag: dan loop je een echte lesdag mee."]]
+];

@@ -503,3 +503,13 @@ h4 small,h3 small{font-weight:500;text-transform:none;letter-spacing:0;color:var
 }
 .brand .vraag{color:var(--accent)}
 @media (max-width:520px){.brand span{font-size:.92rem}}
+
+/* Open dag voorbereiden */
+.odtips{margin:0 0 18px}
+.odtips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;padding:0 18px 18px}
+.odtip{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.odtip h4{margin:0 0 6px;color:var(--accent)}
+.odtip ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.94rem}
+.od-knoppen{display:flex;align-items:center;gap:12px}
+.od-route{font-weight:700;font-size:.88rem;white-space:nowrap}
+@media (max-width:560px){.od-knoppen{grid-column:1/-1}}
