@@ -435,8 +435,9 @@
   VAKKEN.forEach((v) => {
     const d = el("details", { class: "fam" });
     d.innerHTML =
-      `<summary><span class="fname">${esc(v[0])}</span></summary>` +
+      `<summary><span class="fname">${esc(v[0])}</span><span class="fgebied">${v[5].length} beroepen</span></summary>` +
       `<div class="vakbody"><h4>Wat je er waarschijnlijk écht leuk aan vindt</h4><p>${vt(v[1])}</p>` +
+      `<h4>Wat kun je ermee?</h4><ul class="vakwerk">${v[5].map((t) => `<li>${vt(t)}</li>`).join("")}</ul>` +
       `<h4>Waar dat terugkomt</h4><p>${vt(v[2])}</p>` +
       `<h4>Let op</h4><p>${vt(v[3])}</p>` +
       `<p><button type="button" class="chip" data-fams="${esc(v[4])}">Bekijk die opleidingen</button></p></div>`;
