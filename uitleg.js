@@ -74,18 +74,18 @@ const WOORDEN = [
   ["💸", "Studiefinanciering en collegegeld", "Je betaalt collegegeld, en kunt een beurs en lening krijgen via DUO. De regels veranderen, dus check de actuele bedragen op duo.nl."]
 ];
 
-// Fancy naam -> wat is het echt
+// Engelse naam -> letterlijke vertaling -> wat het echt is
 const VERTAAL = [
-  ["Creative Technology", "Slimme dingen bedenken en bouwen", "Je bouwt interactieve producten, zoals een game, een slimme lamp of een app. Een mix van techniek en design."],
-  ["Business Administration", "Bedrijfskunde", "Hoe een bedrijf werkt: geld, mensen, markt en strategie."],
-  ["Communication & Multimedia Design", "Websites en apps ontwerpen", "Je bedenkt en maakt websites, apps en visuele boodschappen waar mensen iets mee doen."],
-  ["Liberal Arts & Sciences", "Zelf je vakken samenstellen", "Een brede universitaire opleiding waarin je zelf kiest wat je leert, van natuur tot maatschappij."],
-  ["Facility Management", "Gebouwen en diensten beheren", "Je regelt dat een gebouw of locatie goed werkt: schoonmaak, catering, veiligheid en ruimte."],
-  ["Human Resource Management", "Personeelszaken", "Je zorgt dat een organisatie de juiste mensen heeft en dat zij gezond en gemotiveerd werken."],
-  ["Mechatronics", "Robots en slimme machines", "Mechanica, elektronica en software tegelijk. Denk aan robots, drones en slimme productiemachines."],
-  ["Cyber Security", "Digitaal beveiligen", "Je beschermt systemen en gegevens tegen hackers en bedenkt hoe aanvallen werken."],
-  ["Applied Data Science & AI", "Data en slimme computers", "Je haalt inzichten uit data en laat computers dingen leren. Veel programmeren en statistiek."],
-  ["Industrial Design Engineering", "Producten ontwerpen", "Je ontwerpt producten die werken én mooi zijn, van koptelefoon tot medisch apparaat."],
-  ["Sports Management", "Sportorganisaties leiden", "Je organiseert sport, evenementen en clubs. Meer bedrijfskunde dan sporten."],
-  ["Logistics Engineering", "Goederenstromen organiseren", "Hoe komt iets van een fabriek naar jouw huis? Dat ontwerp en regel je."]
+  ["Creative Technology", "Creatieve technologie", "Slimme dingen bedenken en bouwen", "Je bouwt interactieve producten, zoals een game, een slimme lamp of een app. Een mix van techniek en ontwerpen."],
+  ["Business Administration", "Bedrijfsbeheer", "Bedrijfskunde", "Hoe een bedrijf werkt: geld, mensen, markt en strategie."],
+  ["Communication & Multimedia Design", "Communicatie- en multimediaontwerp", "Websites en apps ontwerpen", "Je bedenkt en maakt websites, apps en beelden waar mensen iets mee doen."],
+  ["Liberal Arts & Sciences", "Vrije kunsten en wetenschappen", "Zelf je vakken samenstellen", "Een brede universitaire opleiding waarin je zelf kiest wat je leert, van natuur tot maatschappij."],
+  ["Facility Management", "Beheer van voorzieningen", "Gebouwen en diensten regelen", "Je zorgt dat een gebouw goed werkt: schoonmaak, catering, veiligheid en ruimte."],
+  ["Human Resource Management", "Beheer van ‘menselijke middelen’", "Personeelszaken", "Je zorgt dat een organisatie de juiste mensen heeft en dat zij gezond en gemotiveerd werken."],
+  ["Mechatronics", "Mechatronica: mechanica + elektronica", "Robots en slimme machines", "Mechanica, elektronica en software tegelijk. Denk aan robots, drones en slimme productiemachines."],
+  ["Cyber Security", "Digitale beveiliging", "Computers en data beschermen", "Je beschermt systemen en gegevens tegen hackers en snapt hoe aanvallen werken."],
+  ["Applied Data Science & AI", "Toegepaste datawetenschap en kunstmatige intelligentie", "Data en slimme computers", "Je haalt inzichten uit data en laat computers dingen leren. Veel programmeren en statistiek."],
+  ["Industrial Design Engineering", "Industrieel ontwerp en techniek", "Producten ontwerpen", "Je ontwerpt producten die werken én mooi zijn, van koptelefoon tot medisch apparaat."],
+  ["Sports Management", "Sportbeheer", "Sportorganisaties leiden", "Je organiseert sport, evenementen en clubs. Meer bedrijfskunde dan zelf sporten."],
+  ["Logistics Engineering", "Logistieke techniek", "Goederenstromen organiseren", "Hoe komt iets van een fabriek naar jouw huis? Dat ontwerp en regel je."]
 ];

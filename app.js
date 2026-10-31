@@ -119,7 +119,7 @@
         : "") +
       `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
       `<h3>Hoe studeer je?</h3><p>${o.v.map((v) => VORM[v] || v).join(", ") || "onbekend"}</p>` +
-      `<h3>Waar kan het? (${o.i.length} ${o.i.length === 1 ? "school" : "scholen"})</h3><ul>${insts.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` +
+      `<h3>Waar kan het? (${o.i.length} ${o.i.length === 1 ? "school" : "scholen"})</h3><ul>${insts.map(schoolRegel).join("")}</ul>` +
       (o.i.length > insts.length ? `<p style="color:var(--muted)">en ${o.i.length - insts.length} andere</p>` : "") +
       `<p class="praat" style="margin-top:16px">Namen kunnen misleiden. Vergelijk altijd het programma van twee scholen en lees de toelatingseisen op de website van de opleiding zelf.</p>`;
     const d = $("#detail");
@@ -427,9 +427,9 @@
 
   /* ---------- Vertaler en woordenlijst ---------- */
   VERTAAL.forEach((v) => {
-    const b = el("button", { type: "button", class: "flip", "aria-pressed": "false" },
-      `<span class="front"><small>Engelse naam</small><strong>${esc(v[0])}</strong><em>Klik: wat is dit echt?</em></span>` +
-      `<span class="back"><small>Eigenlijk</small><strong>${esc(v[1])}</strong><span>${esc(v[2])}</span></span>`);
+    const b = el("button", { type: "button", class: "flip", "aria-pressed": "false", "aria-label": `${v[0]}: draai om voor de vertaling` },
+      `<span class="flip-in"><span class="front"><small>Engelse naam</small><strong lang="en">${esc(v[0])}</strong><em>Klik om om te draaien ↻</em></span>` +
+      `<span class="back"><small>Letterlijk</small><span class="letterlijk">${esc(v[1])}</span><small>Wat het echt is</small><strong>${esc(v[2])}</strong><span class="uitleg">${esc(v[3])}</span></span></span>`);
     b.addEventListener("click", () => b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")));
     $("#vertaalLijst").appendChild(b);
   });
@@ -524,7 +524,7 @@
   }
 
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
-  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], uitleg: ["niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], uitleg: ["niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -557,6 +557,52 @@
     if (g) { e.preventDefault(); openRegion(g.dataset.gebied); }
   });
 
+  /* ---------- Open dagen ---------- */
+  const OD = typeof OPEN_DAGEN === "object" ? OPEN_DAGEN : {};
+  const vandaag = new Date().toISOString().slice(0, 10);
+  const fmt = (d, opt) => new Date(d + "T12:00:00").toLocaleDateString("nl-NL", opt);
+  const veiligeUrl = (u) => (u && /^https?:\/\//.test(u) ? u : "");
+  let odSoort = "";
+  function komend(inst) {
+    const e = OD[inst];
+    return e && Array.isArray(e.dagen) ? e.dagen.filter((d) => d.datum && (d.eind || d.datum) >= vandaag).sort((a, b) => a.datum.localeCompare(b.datum)) : [];
+  }
+  function schoolRegel(inst) {
+    const k = komend(inst)[0];
+    const site = veiligeUrl(OD[inst] && OD[inst].site);
+    let r = esc(inst);
+    if (k) r += ` <span class="od-next">· ${esc(k.soort || "open dag")} ${fmt(k.datum, { weekday: "short", day: "numeric", month: "long" })}${k.plaats ? ", " + esc(k.plaats) : ""}</span>`;
+    if (site) r += ` <a href="${esc(site)}" target="_blank" rel="noopener">open dagen ↗</a>`;
+    return `<li>${r}</li>`;
+  }
+  function renderOpenDagen() {
+    const q = $("#odZoek").value.trim().toLowerCase();
+    const rows = [];
+    Object.keys(OD).forEach((inst) => komend(inst).forEach((d) => rows.push(Object.assign({ inst, site: OD[inst].site }, d))));
+    rows.sort((a, b) => a.datum.localeCompare(b.datum) || a.inst.localeCompare(b.inst));
+    const f = rows.filter((r) => (!q || (r.inst + " " + (r.plaats || "")).toLowerCase().includes(q)) &&
+      (!odSoort || (odSoort === "online" ? /online/i.test(r.soort || "") : !/online/i.test(r.soort || ""))));
+    let h = "", maand = "";
+    f.forEach((r) => {
+      const m = fmt(r.datum, { month: "long", year: "numeric" });
+      if (m !== maand) { if (maand) h += "</div>"; h += `<h3 class="od-maand">${m}</h3><div class="od-groep">`; maand = m; }
+      const link = veiligeUrl(r.aanmelden) || veiligeUrl(r.site);
+      h += `<div class="od-rij"><div class="od-datum"><b>${fmt(r.datum, { day: "numeric" })}</b><span>${fmt(r.datum, { weekday: "short" })}</span></div>` +
+        `<div class="od-info"><strong>${esc(r.inst)}</strong><span>${esc(r.soort || "open dag")}${r.plaats ? " · " + esc(r.plaats) : ""}${r.tijd ? " · " + esc(r.tijd) : ""}${r.eind && r.eind !== r.datum ? " · t/m " + fmt(r.eind, { day: "numeric", month: "short" }) : ""}</span></div>` +
+        (link ? `<a class="btn ghost od-link" href="${esc(link)}" target="_blank" rel="noopener">${veiligeUrl(r.aanmelden) ? "Aanmelden" : "Info"} ↗</a>` : "") + `</div>`;
+    });
+    if (maand) h += "</div>";
+    $("#odLijst").innerHTML = h || '<p class="empty">Geen open dagen gevonden. Probeer een andere school of stad.</p>';
+    const scholen = new Set(f.map((r) => r.inst)).size;
+    $("#odAantal").textContent = `${f.length} ${f.length === 1 ? "datum" : "data"} bij ${scholen} ${scholen === 1 ? "school" : "scholen"}`;
+  }
+  $("#odZoek").addEventListener("input", renderOpenDagen);
+  document.querySelectorAll("#odChips .chip").forEach((b) => b.addEventListener("click", () => {
+    odSoort = b.dataset.s;
+    document.querySelectorAll("#odChips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    renderOpenDagen();
+  }));
+
   /* ---------- Init ---------- */
   const nc = $("#niveauChips");
   NIVEAUS.forEach((n) => chip(nc, n, "niveau", n));
@@ -570,5 +616,6 @@
   renderChips();
   renderList();
   buildQuiz();
+  renderOpenDagen();
   route();
 })();

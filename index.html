@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>De Richtingaanwijzer</title>
 <meta name="description" content="Wat is die studie nou eigenlijk, en wat kun je ermee? Uitleg in gewone taal, voor leerlingen én ouders.">
-<link rel="stylesheet" href="ontwerp.css">
+<link rel="stylesheet" href="ontwerp.css?v=11">
 </head>
 <body>
 
@@ -16,6 +16,7 @@
       <a href="#/start" data-view="start">Start</a>
       <a href="#/test" data-view="test">Padvinder</a>
       <a href="#/opleidingen" data-view="opleidingen">Opleidingen</a>
+      <a href="#/opendagen" data-view="opendagen">Open dagen</a>
       <a href="#/uitleg" data-view="uitleg">Uitleg</a>
       <a href="#/ouders" data-view="ouders">Voor ouders</a>
     </div>
@@ -122,6 +123,23 @@
     <p class="source">Bron: <a href="https://onderwijsdata.duo.nl/datasets/overzicht-erkenningen-ho" target="_blank" rel="noopener">DUO, Overzicht Erkenningen ho (RIO)</a>, open data, licentie CC BY. Peildatum 31-10-2026. De mbo-opleidingen volgen nog.</p>
   </section>
 
+  <section id="opendagen">
+    <h2>Open dagen: ga gewoon kijken</h2>
+    <p class="sub">Eén dag rondlopen zegt meer dan tien websites. Hier staan de komende open dagen van hogescholen en universiteiten, rechtstreeks van hun eigen websites. Data kunnen veranderen, dus check altijd de site van de school.</p>
+    <div class="od-filters">
+      <label for="odZoek" class="sr">Zoek op school of stad</label>
+      <input id="odZoek" type="search" placeholder="Zoek op school of stad" autocomplete="off">
+      <div class="chips" id="odChips">
+        <button type="button" class="chip" data-s="" aria-pressed="true">Alles</button>
+        <button type="button" class="chip" data-s="locatie" aria-pressed="false">Op locatie</button>
+        <button type="button" class="chip" data-s="online" aria-pressed="false">Online</button>
+      </div>
+    </div>
+    <p id="odAantal" class="count"></p>
+    <div id="odLijst"></div>
+    <p class="source">Opgehaald op 31-10-2026 van de websites van de scholen zelf.</p>
+  </section>
+
   <section id="woorden">
     <h2>Wat betekent dat woord?</h2>
     <p class="sub">Studiekeuze zit vol moeilijke woorden. Hier staat wat ze betekenen, in gewone taal.</p>
@@ -155,9 +173,10 @@
   </div>
 </footer>
 
-<script src="data.js"></script>
-<script src="opleidingen.js"></script>
-<script src="uitleg.js"></script>
-<script src="app.js"></script>
+<script src="data.js?v=11"></script>
+<script src="opleidingen.js?v=11"></script>
+<script src="uitleg.js?v=11"></script>
+<script src="opendagen.js?v=11"></script>
+<script src="app.js?v=11"></script>
 </body>
 </html>

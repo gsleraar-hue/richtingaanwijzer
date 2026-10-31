@@ -372,3 +372,32 @@ main{min-height:70vh}
 .hero .bar{background:#55d3c0}
 .hero .kicker{color:#bff2ea}
 .sbar span{background:linear-gradient(90deg,#3157d5,#0e9aa7)}
+
+/* Open dagen */
+.od-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:6px}
+.od-filters input{flex:0 1 320px;padding:10px 16px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:inherit;font-size:.95rem}
+.od-maand{font-size:1.1rem;margin:26px 0 10px;text-transform:capitalize;color:var(--accent)}
+.od-groep{display:grid;gap:8px}
+.od-rij{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.od-datum{display:flex;flex-direction:column;align-items:center;justify-content:center;width:56px;height:56px;border-radius:12px;background:var(--tint);line-height:1.05}
+.od-datum b{font-size:1.4rem;color:var(--accent)}
+.od-datum span{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.od-info{display:flex;flex-direction:column}
+.od-info span{color:var(--muted);font-size:.92rem}
+.od-link{padding:8px 16px;font-size:.88rem;white-space:nowrap}
+.od-next{color:var(--muted);font-size:.9rem}
+@media (max-width:560px){.od-rij{grid-template-columns:56px 1fr}.od-link{grid-column:1/-1;justify-self:start}}
+
+/* Kaartjes die echt omdraaien */
+.flip{perspective:1100px;background:none;border:0;padding:0;min-height:250px;box-shadow:none;overflow:visible}
+.flip:hover{transform:none;box-shadow:none}
+.flip-in{position:relative;display:block;width:100%;min-height:250px;transition:transform .7s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.flip:hover .flip-in{transform:rotateY(8deg)}
+.flip[aria-pressed="true"] .flip-in{transform:rotateY(180deg)}
+.flip .front,.flip .back,.flip[aria-pressed="true"] .front{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;padding:22px;min-height:0;border-radius:var(--r);border:1px solid var(--line);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip .front{background:var(--tint)}
+.flip .back{background:var(--card);transform:rotateY(180deg);box-shadow:0 12px 28px rgba(49,87,213,.14)}
+.flip .back .letterlijk{font-weight:700;color:var(--accent);margin-bottom:6px}
+.flip .back strong{font:800 1.2rem/1.2 "Segoe UI",system-ui,sans-serif;color:var(--ink)}
+.flip .back .uitleg{color:var(--muted);font-size:.93rem}
+@media (prefers-reduced-motion:reduce){.flip-in{transition:none}}
