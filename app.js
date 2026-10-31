@@ -181,6 +181,7 @@
 
   /* ---------- Test ---------- */
   let who = "leerling";
+  let cur = 0;
   const ANTW = ["Totaal niet", "Een beetje", "Wel", "Heel erg"];
   const form = $("#testForm");
 
@@ -190,6 +191,7 @@
     form.querySelectorAll("input[name=kind]:checked").forEach((i) => (kept["kind" + i.value] = "1"));
     form.innerHTML = "";
     const kf = el("fieldset", { class: "q" });
+    kf.dataset.part = "Even opwarmen";
     kf.innerHTML = `<legend><span class="nr">0.</span>${
       who === "ouder" ? "Waar werd je kind blij van toen het klein was?" : "Waar werd jij als kind blij van?"
     } <small>(kies er zoveel als je wilt)</small></legend>`;
@@ -211,6 +213,7 @@
       items.forEach((txt, i) => {
         nr++;
         const fs = el("fieldset", { class: "q" });
+        fs.dataset.part = titel;
         fs.innerHTML = `<legend><span class="nr">${nr}.</span>${esc(txt)}</legend>`;
         const sc = el("div", { class: "scale" });
         ANTW.forEach((a, n) => {
@@ -234,7 +237,39 @@
       '<button class="btn" type="submit" id="klaar" disabled>Bekijk mijn uitslag</button><span class="progress" id="voortgang" aria-live="polite"></span>';
     form.appendChild(act);
     updateProgress();
+    initStepper();
   }
+
+  /* Eén vraag tegelijk */
+  function initStepper() {
+    form.prepend(el("div", { class: "stepper" }, '<div class="sbar"><span id="sfill"></span></div><div class="smeta"><span id="spart"></span><span id="scount"></span></div>'));
+    form.querySelector(".actions").before(el("div", { class: "snav" }, '<button type="button" class="btn ghost" id="vorige">Vorige</button><button type="button" class="btn" id="volgende">Volgende</button>'));
+    $("#vorige").addEventListener("click", () => toStep(cur - 1));
+    $("#volgende").addEventListener("click", () => toStep(cur + 1));
+    toStep(Math.min(cur, form.querySelectorAll("fieldset.q").length - 1), true);
+  }
+  function toStep(i, noFocus) {
+    const steps = [...form.querySelectorAll("fieldset.q")];
+    if (i < 0 || i >= steps.length) return;
+    cur = i;
+    steps.forEach((s, j) => (s.hidden = j !== i));
+    const last = i === steps.length - 1;
+    const answered = !steps[i].querySelector("input[type=radio]") || steps[i].querySelector("input:checked");
+    $("#sfill").style.width = Math.round((i / (steps.length - 1)) * 100) + "%";
+    $("#spart").textContent = steps[i].dataset.part;
+    $("#scount").textContent = `${i + 1} van ${steps.length}`;
+    $("#vorige").disabled = i === 0;
+    $("#volgende").hidden = last;
+    $("#volgende").disabled = !answered;
+    form.querySelector(".actions").hidden = !last;
+    if (!noFocus) steps[i].querySelector("input")?.focus({ preventScroll: true });
+  }
+  form.addEventListener("change", (e) => {
+    const steps = [...form.querySelectorAll("fieldset.q")];
+    if (e.target.type !== "radio" || steps.indexOf(e.target.closest("fieldset.q")) !== cur) return;
+    if (cur < steps.length - 1) setTimeout(() => toStep(cur + 1), 260);
+    else toStep(cur, true);
+  });
   function updateProgress() {
     const n = form.querySelectorAll("input[type=radio]:checked").length;
     const tot = VRAGEN.length + KWAL.length + DRIJF.length;
@@ -361,6 +396,7 @@
     );
     $("#opnieuw").addEventListener("click", () => {
       form.reset();
+      cur = 0;
       buildQuiz();
       box.hidden = true;
       $("#test").scrollIntoView();
@@ -411,7 +447,7 @@
     bedrijf: [620, 385, 6]
   };
   const START = [470, 556];
-  const COL = { zorg: "#b4443a", weten: "#1f7a64", tech: "#2d5f9a", mens: "#7a4f9a", creatief: "#c9781f", bedrijf: "#17697a" };
+  const COL = { zorg: "#e8467c", weten: "#12a06e", tech: "#2f6fed", mens: "#7c4dff", creatief: "#e0a800", bedrijf: "#0e9aa7" };
   const PATHS = {
     creatief: "M470 538 C380 532 305 490 292 445 S238 408 215 396",
     mens: "M470 538 C535 505 490 452 438 425 S345 345 400 296",
@@ -465,7 +501,7 @@
       `<g fill="none" stroke="#2f5a3a" stroke-opacity=".16" stroke-width="1">${contours}</g>` +
       pond + trees + roads + regs +
       `<g class="hier" transform="translate(${START[0]} ${START[1]})"><rect x="-70" y="-16" width="140" height="32" rx="4" fill="#14213d"/><text y="5" text-anchor="middle" fill="#f4f1ea">HOOFDINGANG</text></g>` +
-      `<g transform="translate(850 52)"><circle r="24" fill="none" stroke="#14213d" stroke-width="1.2"/><path d="M0 -20L5 -4L20 0L5 4L0 20L-5 4L-20 0L-5 -4Z" fill="#14213d"/><path d="M0 -20L5 -4L-5 -4Z" fill="#9a3b2e"/><text y="-31" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#14213d">N</text></g>` +
+      `<g transform="translate(850 52)"><circle r="24" fill="none" stroke="#14213d" stroke-width="1.2"/><path d="M0 -20L5 -4L20 0L5 4L0 20L-5 4L-20 0L-5 -4Z" fill="#14213d"/><path d="M0 -20L5 -4L-5 -4Z" fill="#e8337a"/><text y="-31" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="13" fill="#14213d">N</text></g>` +
       `</svg>` +
       `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" style="--c:${COL[k]}" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${esc(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
   }

@@ -26,6 +26,11 @@
       <input id="zoek" type="search" placeholder="Zoek op studie, beroep of woord, bijv. “business”, “psycholoog”, “data”" autocomplete="off">
     </div>
   </div>
+<div class="hero-art" id="heroArt">
+  <img class="hf-main" src="img/groep-buiten.jpg" alt="Vijf studenten zitten lachend naast elkaar op een bankje buiten" width="1400" height="933">
+  <img class="hf-small" src="img/koffie.jpg" alt="Studenten praten met elkaar aan tafel in een café" loading="lazy">
+  <div class="hf-badge"><strong>547</strong><span>opleidingen in gewone taal</span></div>
+</div>
 </header>
 
 <main class="wrap">
@@ -81,12 +86,15 @@
 
   <section id="test">
     <h2>De kompastest: welke kant op?</h2>
-    <p class="sub">Drie delen: waar word je blij van (interesses), waar ben je goed in (kwaliteiten) en wat voor jou telt in je werk (je waarden). 26 korte stellingen, ongeveer 5 minuten. Geen goede of foute antwoorden en het is geen vonnis. Je krijgt een richting, geen beslissing. Ouders kunnen de test ook zelf invullen, over hun kind.</p>
+    <p class="sub">Drie delen: waar word je blij van (interesses), waar ben je goed in (kwaliteiten) en wat voor jou telt in je werk (je waarden). Eén vraag tegelijk, ongeveer 5 minuten. Geen goede of foute antwoorden en het is geen vonnis. Je krijgt een richting, geen beslissing. Ouders kunnen de test ook zelf invullen, over hun kind.</p>
     <div class="who" role="group" aria-label="Wie doet de test?">
       <button type="button" class="chip" data-who="leerling" aria-pressed="true">Ik ben leerling</button>
       <button type="button" class="chip" data-who="ouder" aria-pressed="false">Ik ben ouder (ik vul in over mijn kind)</button>
     </div>
-    <form id="testForm" class="quiz"></form>
+    <div class="testgrid">
+      <form id="testForm" class="quiz"></form>
+      <figure class="testfoto"><img src="img/tafel-lachen.jpg" alt="Drie studenten lachen samen achter een laptop" loading="lazy"></figure>
+    </div>
     <div id="uitslag" class="result" hidden tabindex="-1"></div>
   </section>
 
@@ -95,6 +103,13 @@
     <p class="sub">Studies hebben tegenwoordig flitsende namen. Klik op een kaartje en je ziet wat er echt achter zit.</p>
     <div id="vertaalLijst" class="flips"></div>
   </section>
+
+  <div class="fotoband" aria-hidden="true">
+    <img src="img/collegezaal.jpg" alt="" loading="lazy">
+    <img src="img/vrienden-1.jpg" alt="" loading="lazy">
+    <img src="img/campus-lopen.jpg" alt="" loading="lazy">
+    <img src="img/laptop.jpg" alt="" loading="lazy">
+  </div>
 
   <section id="gids">
     <h2>Studies in gewone taal</h2>
@@ -126,6 +141,7 @@
   </section>
 
   <section id="ouders" class="parents">
+    <figure class="parents-art" id="oudersArt"><img src="img/samen-lezen.jpg" alt="Twee jongeren kijken samen in een boek" loading="lazy"></figure>
     <h2>Voor ouders: zo help je zonder het zelf te hoeven weten</h2>
     <p class="sub">Je hoeft geen antwoord te hebben. Goede vragen zijn vaak meer waard.</p>
     <ul class="tips">
@@ -147,6 +163,7 @@
 <footer>
   <div class="wrap">
     <p><strong>De Richtingaanwijzer</strong> geeft algemene uitleg en is geen vervanging voor de officiële info van een opleiding. Namen, inhoud en toelatingseisen verschillen per school en veranderen. Check altijd de website van de opleiding zelf.</p>
+    <p class="credits">Foto's via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a> (Unsplash License): Naassom Azevedo, Brooke Cagle, Vitaly Gariev, javier trueba, Mimi Thian, Meredith Spencer en Divaris Shirichena.</p>
   </div>
 </footer>
 
