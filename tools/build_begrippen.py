@@ -1,8 +1,8 @@
 """Maakt voor elk begrip uit WOORDEN (uitleg.js) een vaste, vindbare pagina,
 plus een overzichtspagina, sitemap.xml en robots.txt.
 
-Draai opnieuw na het aanpassen van WOORDEN of als het domein verandert:
-    python tools/build_begrippen.py
+Wordt aangeroepen door build_seo.py; draai dat na het aanpassen van WOORDEN of als het domein verandert:
+    python tools/build_seo.py
 """
 import json, os, re, unicodedata, html, datetime
 
@@ -154,12 +154,10 @@ def main():
     open(os.path.join(SITE, "begrippen", "index.html"), "w", encoding="utf-8").write(
         pagina(f"Begrippen rond studiekeuze uitgelegd | {NAAM}", f"LOB, decaan, BSA, propedeuse, numerus fixus en meer: {len(woorden)} studiekeuzebegrippen in gewone taal uitgelegd, voor leerlingen en ouders.", "begrippen/", inhoud, ld, "../"))
 
-    open(os.path.join(SITE, "sitemap.xml"), "w", encoding="utf-8").write(
-        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        + "".join(f"  <url><loc>{u}</loc><lastmod>{vandaag}</lastmod></url>\n" for u in urls) + "</urlset>\n")
-    open(os.path.join(SITE, "robots.txt"), "w", encoding="utf-8").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
-    print(f"{len(woorden)} begrippen, {len(urls)} url's in de sitemap")
+    print(f"{len(woorden)} begrippen")
+    return urls
 
 
 if __name__ == "__main__":
-    main()
+    import build_seo
+    build_seo.main()

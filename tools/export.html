@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="nl">
+<head><meta charset="utf-8"><title>Export voor build_seo.py</title></head>
+<body>
+<pre id="data"></pre>
+<script src="../data.js"></script>
+<script src="../opleidingen.js"></script>
+<script src="../mbo.js"></script>
+<script src="../uitleg.js"></script>
+<script>
+// Zelfde samenvoeging en vertaling als app.js, zodat de vaste pagina's precies zeggen wat de app zegt
+const bestaand = new Map(OPLEIDINGEN.map((o) => [o.n.toLowerCase(), o]));
+OPLEIDINGEN_MBO.forEach((x) => {
+  const b = bestaand.get(x.n.toLowerCase());
+  if (b) { b.l = [...new Set(b.l.concat("mbo"))]; b.i = [...new Set(b.i.concat(x.i))]; b.mn = x.mn; b.v = [...new Set(b.v.concat(x.v))]; }
+  else OPLEIDINGEN.push(x);
+});
+OPLEIDINGEN.sort((p, q) => p.n.localeCompare(q.n, "nl"));
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const termRe = new RegExp("(?<![\\p{L}\\d'-])(" + TERMEN.map((t) => t[0]).sort((x, y) => y.length - x.length)
+  .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/ /g, "[ -]?")).join("|") + ")(?![\\p{L}\\d-])", "giu");
+const termMap = new Map(TERMEN.map((t) => [t[0].toLowerCase().replace(/[ -]/g, ""), t[1]]));
+const vt = (s) => {
+  const seen = new Set();
+  return esc(s).replace(termRe, (m) => {
+    const key = m.toLowerCase().replace(/[ -]/g, "");
+    const nl = termMap.get(key);
+    if (!nl || seen.has(key)) return m;
+    seen.add(key);
+    return `${m} <span class="nlv">(${nl})</span>`;
+  });
+};
+const termNl = (s) => termMap.get(String(s).toLowerCase().replace(/[ -]/g, "")) || null;
+const out = {
+  gebieden: Object.fromEntries(Object.entries(GEBIEDEN).map(([k, g]) => [k, { naam: g.naam, uitleg: vt(g.uitleg) }])),
+  families: FAMILIES.map((f) => {
+    const X = FAM_EXTRA[f.id];
+    return { id: f.id, naam: f.naam, gebied: f.gebied, uitleg: vt(f.uitleg), uitlegKaal: f.uitleg,
+      kunJe: X ? X.kunJe.map(vt) : [], profiel: X ? vt(X.profiel) : "", eigen: X ? X.eigen.map(vt) : [], selectie: SELECTIE[f.id] || "" };
+  }),
+  vooropleiding: VOOROPLEIDING,
+  opleidingen: OPLEIDINGEN.map((o) => ({ n: o.n, e: o.e || "", nl: termNl(o.n), f: o.f, l: o.l, i: o.i, p: o.p || [], v: o.v || [], mn: o.mn || [] })),
+};
+document.getElementById("data").textContent = "@@BEGIN@@" + JSON.stringify(out) + "@@EIND@@";
+</script>
+</body>
+</html>

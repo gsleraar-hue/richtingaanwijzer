@@ -9,6 +9,10 @@
     });
     OPLEIDINGEN.sort((p, q) => p.n.localeCompare(q.n, "nl"));
   }
+  // Vaste pagina per opleiding: zelfde adressen als tools/build_seo.py (ook bij dubbele namen)
+  const maakSlug = (t) => t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/&/g, " en ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "opleiding";
+  const oplSlug = new Map();
+  (() => { const teller = {}; OPLEIDINGEN.forEach((o) => { const s = maakSlug(o.n); teller[s] = (teller[s] || 0) + 1; oplSlug.set(o.n, teller[s] > 1 ? `${s}-${teller[s]}` : s); }); })();
   const $ = (s, r = document) => r.querySelector(s);
   const el = (tag, attrs = {}, html = "") => {
     const n = document.createElement(tag);
@@ -224,7 +228,7 @@
     $("#detailInhoud").innerHTML =
       `<div class="badges">${o.l.map((n) => `<span class="badge ${n}">${NIV_LABEL[n]}</span>`).join("")}<span class="badge gebied">${esc(f.naam)}</span></div>` +
       `<h2 id="dTitel">${esc(o.n)}</h2>${naamRegels(o.n, o.e, "Internationale naam")}` +
-      `<p><button type="button" class="btn ${isFav(o.n) ? "" : "ghost"} favknop" data-fav="${esc(o.n)}">${isFav(o.n) ? "✓ Op mijn lijst" : "+ Zet op mijn lijst"}</button></p>` +
+      `<p><button type="button" class="btn ${isFav(o.n) ? "" : "ghost"} favknop" data-fav="${esc(o.n)}">${isFav(o.n) ? "✓ Op mijn lijst" : "+ Zet op mijn lijst"}</button> <a class="deel-link" href="opleidingen/${oplSlug.get(o.n)}/" target="_blank" rel="noopener">Vaste pagina om te delen ↗</a></p>` +
       
       `<h3>Wat betekent dit?</h3><p>${vt(f.uitleg)} Soortgelijke opleidingen vind je in dezelfde groep.</p>` +
       (X ? `<h3>Wat kun je ermee?</h3><ul>${X.kunJe.map((k) => `<li>${vt(k)}</li>`).join("")}</ul>` : "") +
@@ -871,6 +875,12 @@
   function route() {
     if ($("#detail").open) $("#detail").close();
     let h = location.hash.replace(/^#\/?/, "");
+    if (h.startsWith("opl?")) {
+      const naam = new URLSearchParams(h.slice(4)).get("n");
+      history.replaceState(null, "", "#/opleidingen");
+      h = "opleidingen";
+      setTimeout(() => { const o = OPLEIDINGEN.find((x) => x.n === naam); if (o) openOpleiding(o, FAMILIES.find((f) => f.id === o.f)); });
+    }
     if (h.startsWith("samen?")) {
       const q = new URLSearchParams(h.slice(6));
       [["l", "leerling"], ["o", "ouder"]].forEach(([p, rol]) => { const u = q.get(p) && vanCode(q.get(p)); if (u) bewaar("uitslag_" + rol, u); });
@@ -1552,7 +1562,7 @@
     havo: ["Havo", 70, 250, "havo", "Vijf jaar. Een voorbereiding op het hbo."],
     havo4: ["Havo 4", 170, 250, "havo", "Hier stap je in als je met een vmbo-diploma doorstroomt."],
     havod: ["Havodiploma", 290, 250, "havo", "Daarmee kun je naar het hbo, naar mbo 4 of naar vwo 5."],
-    hbop: ["Hbo, 1e jaar", 540, 250, "havo", "Het eerste jaar heet de propedeuse. Haal je die, dan kun je ook overstappen naar de universiteit.", "hbo"],
+    hbop: ["Hbo, 1e jaar", 540, 250, "havo", "Het eerste jaar heet de propedeuse. Haal je die, dan kun je ook doorstromen naar de universiteit.", "hbo"],
     hbob: ["Hbo-bachelor", 700, 250, "havo", "Meestal 4 jaar. Praktijkgericht, met stages.", "hbo"],
     vwo: ["Vwo", 70, 90, "vwo", "Zes jaar, atheneum of gymnasium. Een voorbereiding op de universiteit."],
     vwo5: ["Vwo 5", 290, 90, "vwo", "Hier stap je in als je met een havodiploma doorstroomt."],
@@ -1581,7 +1591,7 @@
     havo: [
       ["Hbo en dan werken", ["havo", "havod", "hbop", "hbob", "werk"], "De meest gekozen route: 4 jaar hbo, praktijkgericht en met stages."],
       ["Hbo en daarna een wo-master", ["havo", "havod", "hbop", "hbob", "wom", "werk"], "Na je hbo-bachelor kun je via een schakeljaar een master aan de universiteit doen."],
-      ["Met je propedeuse naar de universiteit", ["havo", "havod", "hbop", "wob", "wom", "werk"], "Haal je het eerste hbo-jaar, dan kun je vaak overstappen naar een universiteit."],
+      ["Met je propedeuse naar de universiteit", ["havo", "havod", "hbop", "wob", "wom", "werk"], "Haal je het eerste hbo-jaar, dan kun je vaak doorstromen naar een universiteit."],
       ["Eerst nog vwo", ["havo", "havod", "vwo5", "vwod", "wob", "wom", "werk"], "Met je havodiploma kun je naar vwo 5. Daarna kun je direct naar de universiteit."],
     ],
     vwo: [
@@ -1630,7 +1640,7 @@
       const eind = ["vmbo", "havo", "vwo"].includes(id);
       if (eind) { h += `<g class="m-st m-eind l-${lijn}" data-metro="${id}" tabindex="0" role="button"><rect x="${x - 50}" y="${y - 20}" width="100" height="40" rx="20"/><text x="${x}" y="${y + 7}" text-anchor="middle">${naam}</text></g>`; return; }
       const r = id === "werk" ? 17 : overstapIds.has(id) ? 10 : 8;
-      const tx = id === "werk" ? x - 20 : x + 13, ty = id === "werk" ? y - 30 : y - 16;
+      const tx = id === "werk" ? x + 26 : x + 13, ty = id === "werk" ? y + 7 : y - 16;
       h += `<g class="m-st l-${lijn}${overstapIds.has(id) ? " m-ov" : ""}${id === "werk" ? " m-werk" : ""}${route && route[1].includes(id) ? " op-route" : ""}" data-metro="${id}" tabindex="0" role="button"><circle cx="${x}" cy="${y}" r="${r}"/><text x="${tx}" y="${ty}">${naam}</text></g>`;
     });
     const svg = $("#metroSvg");
@@ -1643,7 +1653,7 @@
     let html;
     if (code.startsWith("ov")) {
       const [a, b, t] = OVERSTAP[Number(code.slice(2))];
-      html = `<p class="st-soort">Overstap</p><h3>${t}</h3><p>Van <strong>${STATIONS[a][0]}</strong> naar <strong>${STATIONS[b][0]}</strong>. Vaak gelden er extra eisen, zoals een bepaald vak of een gemiddeld cijfer. Check het bij de school of opleiding.</p>`;
+      html = `<p class="st-soort">Doorstromen</p><h3>${t}</h3><p>Van <strong>${STATIONS[a][0]}</strong> naar <strong>${STATIONS[b][0]}</strong>. Vaak gelden er extra eisen, zoals een bepaald vak of een gemiddeld cijfer. Check het bij de school of opleiding.</p>`;
     } else {
       const [naam, , , , tekst, niv] = STATIONS[code];
       html = `<p class="st-soort">Station</p><h3>${naam}</h3><p>${vt(tekst)}</p>` + (niv ? `<p><button type="button" class="btn" data-metroniv="${niv}">Bekijk ${niv}-opleidingen</button></p>` : "");

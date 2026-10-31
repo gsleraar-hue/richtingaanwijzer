@@ -1,0 +1,181 @@
+"""Maakt alle vaste, vindbare pagina's: begrippen, opleidingen en groepen,
+plus sitemap.xml en robots.txt.
+
+Draai opnieuw na het aanpassen van de data of als het domein verandert
+(pas dan BASE aan in build_begrippen.py):
+    python tools/build_seo.py
+
+De data komt uit de .js-bestanden van de site. Die laten we door Chrome uitvoeren
+(tools/export.html), zodat de pagina's precies hetzelfde zeggen als de app.
+"""
+import datetime, html, json, os, re, shutil, subprocess, sys
+from urllib.parse import quote
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import build_begrippen as bb
+
+SITE, BASE, NAAM = bb.SITE, bb.BASE, bb.NAAM
+CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+NIV = {"mbo": "mbo", "hbo": "hbo", "wo": "wo (universiteit)", "ad": "associate degree"}
+DUUR = {"mbo": "1 tot 4 jaar, afhankelijk van het niveau", "hbo": "4 jaar", "wo": "3 jaar voor de bachelor, daarna vaak nog een master", "ad": "2 jaar"}
+
+CSS_EXTRA = """
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.badge{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.niv{border-color:var(--accent);color:var(--accent)}
+.eng{color:var(--muted);margin:-6px 0 14px}
+.nlv{color:var(--muted)}
+.scholen{columns:2;column-gap:28px;padding-left:18px}
+.scholen li{break-inside:avoid}
+@media (max-width:640px){.scholen{columns:1}}
+"""
+
+
+def exporteer():
+    if not os.path.exists(CHROME):
+        raise SystemExit("Chrome niet gevonden: " + CHROME)
+    url = "file:///" + os.path.join(SITE, "tools", "export.html").replace("\\", "/")
+    uit = subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--virtual-time-budget=5000", "--dump-dom", url],
+                         capture_output=True, text=True, encoding="utf-8").stdout
+    m = re.search("@@BEGIN@@(.*?)@@EIND@@", uit, re.S)
+    if not m:
+        raise SystemExit("Export mislukt: geen data uit tools/export.html")
+    return json.loads(html.unescape(m.group(1)))
+
+
+def lijst(xs):
+    xs = list(xs)
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " en " + xs[-1]
+
+
+def zin_niveaus(o):
+    return lijst(NIV[n] for n in o["l"])
+
+
+def main():
+    urls = bb.main()
+    d = exporteer()
+    fam = {f["id"]: f for f in d["families"]}
+    geb = d["gebieden"]
+    opls = d["opleidingen"]
+    css = bb.CSS + CSS_EXTRA
+    pagina = lambda *a: bb.pagina(*a).replace(f"<style>{bb.CSS}</style>", f"<style>{css}</style>")
+
+    # unieke adressen per opleiding
+    gezien, slugs = {}, {}
+    for o in opls:
+        s = bb.slug(o["n"]) or "opleiding"
+        if s in gezien:
+            gezien[s] += 1
+            s = f"{s}-{gezien[s]}"
+        else:
+            gezien[s] = 1
+        slugs[o["n"]] = s
+
+    if os.path.isdir(os.path.join(SITE, "opleidingen")):
+        shutil.rmtree(os.path.join(SITE, "opleidingen"))
+    per_fam = {}
+    for o in opls:
+        per_fam.setdefault(o["f"], []).append(o)
+
+    for o in opls:
+        f = fam.get(o["f"])
+        if not f:
+            continue
+        s = slugs[o["n"]]
+        pad = f"opleidingen/{s}/"
+        n = html.escape(o["n"])
+        verwant = sorted([x for x in per_fam[o["f"]] if x["n"] != o["n"]],
+                         key=lambda x: (not set(x["l"]) & set(o["l"]), -len(x["i"])))[:10]
+        scholen = sorted(set(o["i"]))
+        plaatsen = sorted(set(p.title() if p.isupper() or p.startswith("'S") else p for p in o["p"]))
+        vormen = [v for v in o["v"] if v]
+        mbo_niv = f" (niveau {lijst(str(x) for x in o['mn'])})" if o["mn"] else ""
+        nl_regel = f'<p class="eng">In het Nederlands: <strong>{html.escape(o["nl"])}</strong></p>' if o["nl"] else ""
+        if o["e"] and o["e"].lower().replace(" ", "") != o["n"].lower().replace(" ", ""):
+            nl_regel += f'<p class="eng">Internationale naam: {html.escape(o["e"])}</p>'
+        inleiding = (f"{n}{' (' + html.escape(o['nl']) + ')' if o['nl'] else ''} is een opleiding op {zin_niveaus(o)}{mbo_niv} "
+                     f"in de groep {html.escape(f['naam'])}. {f['uitleg']}")
+        inhoud = (
+            f'<p class="kruim"><a href="../../">Home</a> › <a href="../">Opleidingen</a> › <a href="../groep/{f["id"]}/">{html.escape(f["naam"])}</a> › {n}</p>'
+            f'<div class="badges">{"".join(f"<span class='badge niv'>{NIV[x]}</span>" for x in o["l"])}<span class="badge">{html.escape(f["naam"])}</span></div>'
+            f"<h1>Wat is {n}?</h1>{nl_regel}"
+            f'<p class="lead">{inleiding}</p>'
+            + (f"<h2>Wat kun je ermee?</h2><ul>{''.join(f'<li>{k}</li>' for k in f['kunJe'])}</ul>" if f["kunJe"] else "")
+            + "<h2>Wat heb je ervoor nodig?</h2><ul>"
+            + "".join(f"<li><strong>Voor {NIV[x]}:</strong> {html.escape(d['vooropleiding'].get(x, ''))}</li>" for x in o["l"] if d["vooropleiding"].get(x))
+            + (f"<li>{f['profiel']}</li>" if f["profiel"] else "")
+            + (f"<li><strong>Het helpt als je:</strong> {', '.join(f['eigen'])}</li>" if f["eigen"] else "")
+            + "</ul>"
+            + f"<h2>Selectie of toelatingsexamen?</h2><p>{html.escape(f['selectie']) + ' Kijk bij de opleiding zelf wat er precies gevraagd wordt.' if f['selectie'] else 'Meestal niet. Heb je de juiste vooropleiding en meld je je op tijd aan, dan mag je in principe beginnen.'}</p>"
+            + f"<h2>Hoe lang duurt het?</h2><p>{' · '.join(f'{NIV[x]}: {DUUR[x]}' for x in o['l'])}"
+            + (f". Je kunt het volgen als {lijst(vormen)}." if vormen else ".") + "</p>"
+            + (f"<h2>Waar kun je {n} studeren?</h2><p>Bij {len(scholen)} {'school' if len(scholen) == 1 else 'scholen'}"
+               + (f", onder andere in {html.escape(lijst(plaatsen[:12]))}" if plaatsen else "") + ":</p>"
+               f"<ul class=\"scholen\">{''.join(f'<li>{html.escape(x)}</li>' for x in scholen[:40])}</ul>" if scholen else "")
+            + (f'<h2>Verwante opleidingen</h2><ul class="rel">{"".join(f"<li><a href='../{slugs[x["n"]]}/'>{html.escape(x["n"])}</a></li>" for x in verwant)}</ul>' if verwant else "")
+            + f'<div class="cta"><p><strong>Past {n} bij jou?</strong> In de app zie je hoe ver elke school van je huis is, wanneer de open dagen zijn en wat je Plan B is. Je kunt hem ook op je lijst zetten.</p>'
+            f'<a class="knop" href="../../#/opl?n={quote(o["n"])}">Bekijk in de app</a><a class="knop licht" href="../../#/test">Doe de Padvinder</a></div>'
+        )
+        kale_uitleg = f["uitlegKaal"]
+        beschrijving = bb.kort(f"{o['n']}{' (' + o['nl'] + ')' if o['nl'] else ''} op {zin_niveaus(o)}, uitgelegd in gewone taal: {kale_uitleg} Bij {len(scholen)} {'school' if len(scholen) == 1 else 'scholen'}.")
+        ld = {"@context": "https://schema.org", "@graph": [
+            {"@type": "Course", "name": o["n"], "description": kale_uitleg, "url": BASE + pad, "inLanguage": "nl",
+             "educationalLevel": zin_niveaus(o),
+             "provider": [{"@type": "EducationalOrganization", "name": x} for x in scholen[:20]]},
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE},
+                {"@type": "ListItem", "position": 2, "name": "Opleidingen", "item": BASE + "opleidingen/"},
+                {"@type": "ListItem", "position": 3, "name": f["naam"], "item": BASE + f"opleidingen/groep/{f['id']}/"},
+                {"@type": "ListItem", "position": 4, "name": o["n"], "item": BASE + pad}]},
+            {"@type": "FAQPage", "mainEntity": [
+                {"@type": "Question", "name": f"Wat is {o['n']}?", "acceptedAnswer": {"@type": "Answer", "text": f"{o['n']} is een opleiding op {zin_niveaus(o)} in de groep {f['naam']}. {kale_uitleg}"}},
+                {"@type": "Question", "name": f"Waar kun je {o['n']} studeren?", "acceptedAnswer": {"@type": "Answer", "text": f"Bij {len(scholen)} scholen, waaronder {lijst(scholen[:5])}."}}]},
+        ]}
+        titel = f"{o['n']}: wat is het en wat kun je ermee? | {NAAM}"
+        os.makedirs(os.path.join(SITE, pad), exist_ok=True)
+        open(os.path.join(SITE, pad, "index.html"), "w", encoding="utf-8").write(pagina(titel, beschrijving, pad, inhoud, ld, "../../"))
+        urls.append(BASE + pad)
+
+    # groepspagina's
+    for f in d["families"]:
+        items = sorted(per_fam.get(f["id"], []), key=lambda x: x["n"].lower())
+        pad = f"opleidingen/groep/{f['id']}/"
+        perniv = {nv: [x for x in items if nv in x["l"]] for nv in ["mbo", "hbo", "wo"]}
+        inhoud = (f'<p class="kruim"><a href="../../../">Home</a> › <a href="../../">Opleidingen</a> › {html.escape(f["naam"])}</p>'
+                  f'<span class="thema">{geb[f["gebied"]]["naam"]}</span><h1>Opleidingen in {html.escape(f["naam"])}</h1>'
+                  f'<p class="lead">{f["uitleg"]} Hier staan alle {len(items)} opleidingen in deze groep, op mbo, hbo en universiteit.</p>'
+                  + (f"<h2>Wat kun je ermee?</h2><ul>{''.join(f'<li>{k}</li>' for k in f['kunJe'])}</ul>" if f["kunJe"] else "")
+                  + "".join(f'<h2>Op {NIV[nv]} ({len(xs)})</h2><ul class="rel">' + "".join(f'<li><a href="../../{slugs[x["n"]]}/">{html.escape(x["n"])}</a></li>' for x in xs) + "</ul>" for nv, xs in perniv.items() if xs)
+                  + '<div class="cta"><p><strong>Weet je nog niet welke kant je op wilt?</strong> De Padvinder laat in 5 minuten zien welke richtingen bij je passen.</p><a class="knop" href="../../../#/test">Start de Padvinder</a></div>')
+        ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": f"Opleidingen in {f['naam']}", "url": BASE + pad, "inLanguage": "nl",
+              "hasPart": [{"@type": "Course", "name": x["n"], "url": BASE + f"opleidingen/{slugs[x['n']]}/"} for x in items]}
+        os.makedirs(os.path.join(SITE, pad), exist_ok=True)
+        open(os.path.join(SITE, pad, "index.html"), "w", encoding="utf-8").write(
+            pagina(f"Opleidingen {f['naam']}: mbo, hbo en wo uitgelegd | {NAAM}", bb.kort(f"Alle {len(items)} opleidingen in {f['naam']} op mbo, hbo en universiteit, in gewone taal uitgelegd. {f['uitlegKaal']}"), pad, inhoud, ld, "../../../"))
+        urls.append(BASE + pad)
+
+    # overzicht
+    blok = ""
+    for k, g in geb.items():
+        fs = [f for f in d["families"] if f["gebied"] == k]
+        blok += f"<h2>{html.escape(g['naam'])}</h2><ul class=\"lijst\">" + "".join(
+            f'<li><a href="groep/{f["id"]}/">{html.escape(f["naam"])}</a> <span class="nlv">({len(per_fam.get(f["id"], []))})</span><p>{f["uitleg"]}</p></li>' for f in fs) + "</ul>"
+    inhoud = ('<p class="kruim"><a href="../">Home</a> › Opleidingen</p>'
+              f"<h1>Alle opleidingen in gewone taal</h1><p class=\"lead\">{len(opls)} mbo-, hbo- en wo-opleidingen in Nederland, in {len(d['families'])} groepen. Per opleiding lees je wat je er doet, wat je ermee kunt en wat je ervoor nodig hebt. Engelse namen vertalen we.</p>"
+              + blok)
+    ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Alle opleidingen in gewone taal", "url": BASE + "opleidingen/", "inLanguage": "nl"}
+    open(os.path.join(SITE, "opleidingen", "index.html"), "w", encoding="utf-8").write(
+        pagina(f"Alle mbo-, hbo- en wo-opleidingen in gewone taal | {NAAM}", f"{len(opls)} opleidingen in Nederland uitgelegd in gewone taal: wat je er doet, wat je ermee kunt en wat je nodig hebt. Engelse studienamen vertaald.", "opleidingen/", inhoud, ld, "../"))
+    urls.insert(2, BASE + "opleidingen/")
+
+    vandaag = datetime.date.today().isoformat()
+    open(os.path.join(SITE, "sitemap.xml"), "w", encoding="utf-8").write(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "".join(f"  <url><loc>{u}</loc><lastmod>{vandaag}</lastmod></url>\n" for u in urls) + "</urlset>\n")
+    open(os.path.join(SITE, "robots.txt"), "w", encoding="utf-8").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
+    print(f"{len(opls)} opleidingen, {len(d['families'])} groepen, {len(urls)} url's in de sitemap")
+
+
+if __name__ == "__main__":
+    main()
