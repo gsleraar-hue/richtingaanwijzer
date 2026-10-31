@@ -318,7 +318,7 @@
 
     top.forEach((k) => {
       const g = GEBIEDEN[k];
-      h += `<h3 style="margin-top:26px;font-size:1.2rem">${esc(g.naam)}</h3><p>${esc(g.uitleg)}</p>`;
+      h += `<h3 style="margin-top:30px;font-size:1.5rem;display:flex;align-items:center;gap:14px"><span class="res-ic">${icon(k, 44)}</span>${esc(g.naam)}</h3><p>${esc(g.uitleg)}</p>`;
       h += `<h4>Dit hebben deze opleidingen gemeen</h4><ul>${g.gemeen.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
       h += `<h4>Wat kun je ermee?</h4><ul>${g.kunJe.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
       h += `<p style="margin-top:8px"><strong>Studies om te bekijken:</strong></p><div class="mini">` +
@@ -403,94 +403,75 @@
 
   /* ---------- Landkaart ---------- */
   const REG = {
-    zorg: [130, 135, "#e7b9ad", "#c99688", "gable"],
-    weten: [450, 135, "#b9d3b0", "#94b58a", "dome"],
-    tech: [770, 135, "#a9c2d6", "#86a3bc", "flat"],
-    mens: [130, 365, "#cdbbe0", "#aa97c2", "clock"],
-    creatief: [450, 365, "#f0cf8e", "#d3ad66", "wave"],
-    bedrijf: [770, 365, "#a8d4c4", "#86b5a3", "tower"]
+    weten: [170, 112, 1],
+    tech: [700, 100, 2],
+    zorg: [790, 290, 3],
+    mens: [410, 235, 4],
+    creatief: [185, 345, 5],
+    bedrijf: [620, 385, 6]
   };
-  const START = [450, 548];
-  const ROOF = "#46564f";
+  const START = [470, 556];
   const PATHS = {
-    mens: "M450 530 C330 530 160 525 130 485",
-    creatief: "M450 530 C450 515 450 500 450 485",
-    bedrijf: "M450 530 C570 530 740 525 770 485",
-    weten: "M450 530 C340 515 292 400 294 280 C296 256 390 256 450 253",
-    zorg: "M450 530 C340 515 292 400 294 280 C296 252 190 256 130 253",
-    tech: "M450 530 C560 515 608 400 606 280 C604 252 710 256 770 253"
+    creatief: "M470 538 C380 532 305 490 292 445 S238 408 215 396",
+    mens: "M470 538 C535 505 490 452 438 425 S345 345 400 296",
+    bedrijf: "M470 538 C545 546 612 522 616 470 S618 450 620 445",
+    zorg: "M470 538 C620 566 765 505 796 425 S770 372 792 350",
+    tech: "M470 538 C525 480 515 425 535 365 S610 260 665 205 S697 180 698 160",
+    weten: "M470 538 C425 485 520 425 468 362 S335 338 304 300 S252 242 218 205 S190 190 176 172"
   };
-  function roofSVG(type, x, y, w, cx, fill) {
-    switch (type) {
-      case "gable":
-        return `<path d="M${x - 10} ${y + 3} Q${x + 22} ${y - 5} ${cx} ${y - 40} Q${x + w - 22} ${y - 5} ${x + w + 10} ${y + 3}Z" fill="${ROOF}"/>`;
-      case "dome":
-        return `<rect x="${x - 8}" y="${y - 6}" width="${w + 16}" height="14" rx="7" fill="#3a4842"/><path d="M${cx - 52} ${y - 4} A52 52 0 0 1 ${cx + 52} ${y - 4}Z" fill="${ROOF}"/><circle cx="${cx}" cy="${y - 58}" r="5" fill="#d6a243"/>`;
-      case "flat":
-        return `<rect x="${x - 8}" y="${y - 8}" width="${w + 16}" height="16" rx="8" fill="${ROOF}"/><path d="M${cx + 44} ${y - 8}V${y - 36}" stroke="${ROOF}" stroke-width="3" stroke-linecap="round"/><circle cx="${cx + 44}" cy="${y - 38}" r="5" fill="#d6a243"/>`;
-      case "clock":
-        return `<path d="M${x - 10} ${y + 3} Q${x + 22} ${y - 5} ${cx} ${y - 36} Q${x + w - 22} ${y - 5} ${x + w + 10} ${y + 3}Z" fill="${ROOF}"/><circle cx="${cx}" cy="${y - 8}" r="13" fill="#fffdf8" stroke="#3a4842" stroke-width="3"/><path d="M${cx} ${y - 8}V${y - 16}M${cx} ${y - 8}L${cx + 6} ${y - 5}" stroke="#3a4842" stroke-width="2" stroke-linecap="round" fill="none"/>`;
-      case "wave":
-        return `<path d="M${x - 10} ${y + 6} C${x + 30} ${y - 36} ${cx - 25} ${y + 20} ${cx} ${y - 12} S${x + w - 30} ${y - 36} ${x + w + 10} ${y + 6}Z" fill="${ROOF}"/>`;
-      default:
-        return `<rect x="${cx - 34}" y="${y - 48}" width="68" height="50" rx="16" fill="${fill}"/><circle cx="${cx}" cy="${y - 28}" r="9" fill="rgba(255,255,255,.8)"/><rect x="${x - 8}" y="${y - 8}" width="${w + 16}" height="16" rx="8" fill="${ROOF}"/><path d="M${cx - 40} ${y - 46} Q${cx} ${y - 78} ${cx + 40} ${y - 46}Z" fill="${ROOF}"/>`;
-    }
+  const DECOR = ["M40 500C100 460 170 505 235 470S330 430 372 458", "M880 400C830 440 860 500 810 540", "M560 150C600 120 640 150 660 118"];
+  // Pictogrammen (64x64, lijnen), één kleur
+  const ICONS = {
+    zorg: `<path d="M32 54C10 38 6 22 17 15c7-4 13 0 15 5 2-5 8-9 15-5 11 7 7 23-15 39Z"/><path d="M12 33h12l5-9 6 17 5-8h12"/>`,
+    weten: `<path d="M12 9h16M14 9v34a6 6 0 0 0 12 0V9M14 28h12"/><path d="M36 9h16M38 9v34a6 6 0 0 0 12 0V9M38 22h12"/><circle cx="20" cy="36" r="1.8"/><circle cx="44" cy="33" r="1.8"/><circle cx="43" cy="39" r="1.2"/><path d="M6 56h52"/>`,
+    tech: `<path d="M21 19 8 32l13 13M43 19l13 13-13 13M37 14 27 50"/>`,
+    mens: `<circle cx="23" cy="21" r="8"/><path d="M8 54c0-14 30-14 30 0"/><circle cx="44" cy="25" r="6.5"/><path d="M36 54c1-9 22-11 24 0"/>`,
+    creatief: `<path d="m10 54 4-14L42 12l10 10-28 28Z"/><path d="m36 18 10 10M14 40l10 10"/><path d="M8 58h26"/>`,
+    bedrijf: `<path d="M14 52V40M26 52V32M38 52V24M50 52V14"/><path d="M8 58h50"/><path d="m10 30 14-8 10 6 18-20M44 8h8v8"/>`
+  };
+  function icon(k, s) {
+    return `<svg class="ik" viewBox="0 0 64 64" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
   }
   function building(k) {
-    const [cx, cy, fill, side, type] = REG[k];
-    const w = 170, h = 96, x = cx - w / 2, y = cy - 38;
-    const win = [0, 1, 2, 3].map((i) => {
-      const x0 = x + 18 + i * 38;
-      return `<path d="M${x0} ${y + 60}V${y + 38}a11 11 0 0 1 22 0V${y + 60}Z" fill="rgba(255,253,248,.8)" stroke="rgba(29,43,40,.25)"/>`;
-    }).join("");
+    const [cx, cy, n] = REG[k];
     return `<g class="reg" data-gebied="${k}" tabindex="0" role="button" aria-label="Faculteit ${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
-      `<g class="shape"><ellipse cx="${cx + 12}" cy="${y + h + 4}" rx="${w * 0.62}" ry="9" fill="rgba(20,40,30,.18)"/>` +
-      `<path d="M${x + w} ${y + 10}Q${x + w + 14} ${y + 4} ${x + w + 26} ${y + 8}V${y + h - 8}Q${x + w + 14} ${y + h - 2} ${x + w} ${y + h}Z" fill="${side}"/>` +
-      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${fill}"/>${win}` +
-      `<path d="M${cx - 13} ${y + h}V${y + h - 26}a13 13 0 0 1 26 0V${y + h}Z" fill="#35504a"/>` +
-      roofSVG(type, x, y, w, cx, fill) + `</g>` +
-      `<rect class="pill" x="${cx - 92}" y="${y + h + 12}" width="184" height="44" rx="22"/>` +
-      `<text class="pl" x="${cx}" y="${y + h + 29}" text-anchor="middle">FACULTEIT</text>` +
-      `<text class="pn" x="${cx}" y="${y + h + 47}" text-anchor="middle">${esc(GEBIEDEN[k].naam)}</text>` +
-      `<g class="flag" transform="translate(${x + w + 6} ${y - 30})"><path d="M0 46V0" stroke="#46564f" stroke-width="3" stroke-linecap="round"/><path d="M0 2C14 -4 24 8 40 2V24C24 30 14 18 0 24Z" fill="#c4573f"/><text class="n1" x="18" y="19">1</text><text class="n2" x="18" y="19">2</text></g></g>`;
+      `<circle class="disc" cx="${cx}" cy="${cy}" r="58"/><circle class="ring" cx="${cx}" cy="${cy}" r="52"/>` +
+      `<g class="ico" transform="translate(${cx - 36} ${cy - 36}) scale(1.125)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</g>` +
+      `<g class="bnr"><circle cx="${cx - 46}" cy="${cy - 46}" r="13"/><text x="${cx - 46}" y="${cy - 41}">${n}</text></g>` +
+      `<text class="nm" x="${cx}" y="${cy - 74}">${esc(GEBIEDEN[k].naam)}</text></g>`;
   }
   function tree(x, y, i) {
-    const r = i % 3 ? 17 : 22;
-    return `<g transform="translate(${x} ${y})"><ellipse cx="6" cy="${r + 2}" rx="${r}" ry="6" fill="rgba(20,40,30,.14)"/><rect x="-3" y="2" width="6" height="${r}" fill="#8a6a3d"/>` +
-      `<circle cx="-6" cy="-2" r="${r - 4}" fill="#5f9f63"/><circle cx="8" cy="-4" r="${r - 5}" fill="#6db371"/><circle cy="-10" r="${r - 4}" fill="${i % 2 ? "#5aa05e" : "#76bb78"}"/></g>`;
+    const r = 11 + (i % 3) * 3;
+    return `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#14213d" stroke-opacity=".35" stroke-width="1.2"/><circle cx="${x}" cy="${y}" r="${r * 0.35}" fill="none" stroke="#14213d" stroke-opacity=".35" stroke-width="1"/>`;
   }
   function buildMap() {
-    const TREES = [[28, 40], [300, 36], [600, 36], [872, 40], [34, 255], [866, 255], [24, 470], [878, 470], [240, 360], [662, 360], [358, 112], [542, 112], [820, 575], [590, 570], [330, 585]];
+    const TREES = [[30, 40], [64, 66], [330, 60], [360, 36], [540, 70], [570, 44], [870, 50], [846, 78], [34, 215], [66, 238], [880, 200], [868, 470], [840, 500], [880, 540], [60, 420], [100, 450], [330, 560], [364, 584], [560, 590], [250, 580], [420, 120], [900, 330]];
     const trees = TREES.map(([x, y], i) => tree(x, y, i)).join("");
-    let roads = "", regs = "";
-    Object.keys(REG).forEach((k) => {
-      roads += `<path class="roadedge" d="${PATHS[k]}"/>`;
+    let contours = "";
+    [[200, 70, 30], [200, 70, 60], [200, 70, 95], [720, 560, 50], [720, 560, 95], [720, 560, 140], [880, 300, 40], [880, 300, 80]].forEach(([cx, cy, r]) => {
+      contours += `<ellipse cx="${cx}" cy="${cy}" rx="${r * 1.6}" ry="${r}"/>`;
     });
+    let roads = DECOR.map((d) => `<path d="${d}" fill="none" stroke="#14213d" stroke-opacity=".28" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8"/>`).join(""), regs = "";
+    Object.keys(REG).forEach((k) => { roads += `<path class="roadedge" d="${PATHS[k]}"/>`; });
     Object.keys(REG).forEach((k) => {
-      roads += `<path class="road" data-g="${k}" d="${PATHS[k]}"/><path class="roadmid" data-g="${k}" d="${PATHS[k]}"/>`;
+      roads += `<path class="road" data-g="${k}" d="${PATHS[k]}"/>`;
       regs += building(k);
     });
-    return `<svg viewBox="0 0 900 616" role="group" aria-label="Campuskaart met zes faculteiten">` +
-      `<defs><linearGradient id="gras" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d6e7c3"/><stop offset="1" stop-color="#bfd9a4"/></linearGradient>` +
-      `<linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a7d2ea"/><stop offset="1" stop-color="#6fa9cc"/></linearGradient></defs>` +
-      `<rect width="900" height="616" fill="url(#gras)"/>` +
-      `<g fill="#b7d29b" opacity=".7"><ellipse cx="300" cy="60" rx="160" ry="34"/><ellipse cx="700" cy="270" rx="150" ry="30"/><ellipse cx="170" cy="260" rx="120" ry="26"/><ellipse cx="560" cy="590" rx="140" ry="22"/></g>` +
-      `<ellipse cx="108" cy="578" rx="66" ry="20" fill="url(#water)" stroke="#5f93b5" stroke-width="2"/><ellipse cx="94" cy="573" rx="24" ry="5" fill="#fff" opacity=".4"/>` +
-      trees + roads + regs +
-      `<ellipse cx="450" cy="545" rx="86" ry="21" fill="#f1e6c6" stroke="#cdbd91" stroke-width="3"/>` +
-      `<g class="hier" transform="translate(${START[0]} ${START[1]})"><circle class="pulse" r="22" fill="#c4573f"/>` +
-      `<rect x="-66" y="-18" width="14" height="38" rx="6" fill="#8a6a3d"/><circle cx="-59" cy="-22" r="7" fill="#d6a243"/><rect x="52" y="-18" width="14" height="38" rx="6" fill="#8a6a3d"/><circle cx="59" cy="-22" r="7" fill="#d6a243"/>` +
-      `<circle r="10" fill="#c4573f" stroke="#fffdf8" stroke-width="3"/>` +
-      `<rect x="-64" y="28" width="128" height="28" rx="14" fill="#1f423a"/><text y="47" text-anchor="middle" fill="#fff">JIJ BENT HIER</text></g>` +
-      `<g transform="translate(850 52)"><circle r="27" fill="rgba(255,253,248,.7)" stroke="#1d2b28" stroke-width="1.5"/><path d="M0 -22L6 -4L22 0L6 4L0 22L-6 4L-22 0L-6 -4Z" fill="#1d2b28"/><path d="M0 -22L6 -4L-6 -4Z" fill="#c4573f"/><text y="-33" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="13" fill="#1d2b28">N</text></g>` +
+    const pond = `<path d="M40 586C30 566 70 556 112 562S176 580 150 598S52 606 40 586Z" fill="none" stroke="#14213d" stroke-opacity=".45" stroke-width="1.3"/><path d="M62 580H128M72 588H118" stroke="#14213d" stroke-opacity=".35" stroke-width=".9"/>`;
+    return `<svg viewBox="0 0 900 616" role="group" aria-label="Plattegrond van de campus met zes faculteiten">` +
+      `<rect width="900" height="616" fill="#efebe0"/>` +
+      `<g fill="none" stroke="#14213d" stroke-opacity=".09" stroke-width="1">${contours}</g>` +
+      pond + trees + roads + regs +
+      `<g class="hier" transform="translate(${START[0]} ${START[1]})"><rect x="-70" y="-16" width="140" height="32" rx="4" fill="#14213d"/><text y="5" text-anchor="middle" fill="#f4f1ea">HOOFDINGANG</text></g>` +
+      `<g transform="translate(850 52)"><circle r="24" fill="none" stroke="#14213d" stroke-width="1.2"/><path d="M0 -20L5 -4L20 0L5 4L0 20L-5 4L-20 0L-5 -4Z" fill="#14213d"/><path d="M0 -20L5 -4L-5 -4Z" fill="#9a3b2e"/><text y="-31" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#14213d">N</text></g>` +
       `</svg>` +
-      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" data-gebied="${k}"><small>Faculteit</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${esc(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
+      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${esc(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
   }
   function highlightMap(root, top) {
-    root.querySelectorAll(".reg").forEach((g) => g.classList.remove("top1", "top2"));
+    root.querySelectorAll("[data-gebied]").forEach((g) => g.classList.remove("top1", "top2"));
     root.querySelectorAll(".road,.roadmid").forEach((p) => p.classList.remove("hot", "hotmid"));
     top.forEach((k, i) => {
-      root.querySelector(`.reg[data-gebied="${k}"]`)?.classList.add("top" + (i + 1));
+      root.querySelectorAll(`[data-gebied="${k}"]`).forEach((g) => g.classList.add("top" + (i + 1)));
       root.querySelectorAll(`.road[data-g="${k}"]`).forEach((p) => p.classList.add("hot"));
       root.querySelectorAll(`.roadmid[data-g="${k}"]`).forEach((p) => p.classList.add("hotmid"));
     });
