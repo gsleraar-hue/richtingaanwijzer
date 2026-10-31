@@ -874,3 +874,13 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 @keyframes rpKies{from{fill:var(--card);stroke:var(--muted)}to{fill:var(--accent);stroke:var(--accent)}}
 @media (max-width:640px){.pad-terug{grid-template-columns:1fr}.levendpad.replay{max-width:260px;margin:0 auto}}
 @media (prefers-reduced-motion:reduce){.rp-pad{animation:none;stroke-dashoffset:0}.replay .lp-knoop.gekozen circle{animation:none}}
+
+/* Meeloopdag */
+.meeloop{margin:18px 0 22px;padding:22px 24px;border-radius:14px;border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--card)}
+.meeloop-kop{max-width:760px}
+.meeloop-kop h3{margin:0 0 6px;font-size:1.5rem}
+.meeloop-kop p{margin:0 0 14px}
+.meeloop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;margin-top:18px}
+.meeloop-grid h4{margin:0 0 6px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.meeloop-grid ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.95rem}
+@media (max-width:760px){.meeloop-grid{grid-template-columns:1fr}}

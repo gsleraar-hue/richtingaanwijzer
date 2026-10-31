@@ -792,7 +792,7 @@
     droom: ["#/droom", "Later word ik de nieuwe…", "Van droombaan naar echte banen"],
     te: ["#/te", "Mensen vinden mij te…", "Je minpunt is ergens een kracht"],
     opleidingen: ["#/opleidingen", "Alle opleidingen", "Mbo, hbo en wo in gewone taal"],
-    opendagen: ["#/opendagen", "Open dagen", "Bij jou in de buurt"],
+    opendagen: ["#/opendagen", "Open dagen", "En een dag meelopen"],
     plan: ["#/plan", "Mijn stappenplan", "Van nu tot je eerste studiedag"],
     ouders: ["#/ouders", "Voor ouders", "Zo voer je het gesprek"],
     route: ["#route", "Hoe kom je daar?", "Aanmelden, toelating, inschrijven"],
@@ -882,7 +882,7 @@
     const zoek = direct || "https://duckduckgo.com/?q=" + encodeURIComponent(opleiding ? `${opleiding} ${domein ? "site:" + domein : inst}` : inst);
     let r = `<strong>${esc(inst)}</strong>`;
     if (afst) r += ` <span class="afst">${afst.adres ? esc(afst.adres) + ", " : ""}${esc(afst.pl)} · ${afstandTekst(afst.d)}</span>`;
-    if (opleiding) r += ` <a href="${esc(zoek)}" target="_blank" rel="noopener">opleiding bekijken ↗</a>`;
+    if (opleiding) r += ` <a href="${esc(zoek)}" target="_blank" rel="noopener">opleiding bekijken ↗</a> · <a href="${esc("https://duckduckgo.com/?q=" + encodeURIComponent(`meeloopdag ${opleiding} ${domein ? "site:" + domein : inst}`))}" target="_blank" rel="noopener">meeloopdag zoeken ↗</a>`;
     if (k) r += `<br><span class="od-next">Eerstvolgende ${esc(k.soort || "open dag")}: ${fmt(k.datum, { weekday: "short", day: "numeric", month: "long" })}${k.plaats ? ", " + esc(k.plaats) : ""}</span>`;
     if (site) r += ` · <a href="${esc(site)}" target="_blank" rel="noopener">open dagen ↗</a>`;
     return `<li>${r}</li>`;
@@ -915,7 +915,7 @@
     });
     const f = rows.filter((r) => (!q || (r.inst + " " + (r.plaats || "")).toLowerCase().includes(q)) &&
       (!odNiveau || (instNiv[r.inst] && instNiv[r.inst].has(odNiveau))) &&
-      (!odSoort || (odSoort === "online" ? /online/i.test(r.soort || "") : odSoort === "dichtbij" ? r.km !== null && r.km <= 50 : !/online/i.test(r.soort || ""))));
+      (!odSoort || (odSoort === "meeloop" ? /meeloop|proefstud/i.test(r.soort || "") : odSoort === "online" ? /online/i.test(r.soort || "") : odSoort === "dichtbij" ? r.km !== null && r.km <= 50 : !/online/i.test(r.soort || ""))));
     let h = "", maand = "";
     f.forEach((r) => {
       const m = fmt(r.datum, { month: "long", year: "numeric" });
@@ -1014,7 +1014,8 @@
     st.push({ id: "padvinder", wanneer: "Nu", titel: "Ontdek wat bij je past", tekst: padvinder ? `Gedaan: je Padvinder wees op <strong>${esc(GEBIEDEN[padvinder.top[0]].naam)}</strong> en <strong>${esc(GEBIEDEN[padvinder.top[1]].naam)}</strong>.` : `Doe de Padvinder (± 5 minuten). <a href="#/test">Start de Padvinder →</a>`, klaar: !!padvinder });
     st.push({ id: "lijst", wanneer: "Nu", titel: "Zet 2 of 3 opleidingen op je lijst", tekst: fav.length ? `Op je lijst: ${fav.map((o) => `<strong>${esc(o.n)}</strong>`).join(", ")}.` : `Open een opleiding en klik op “+ Zet op mijn lijst”. <a href="#/opleidingen">Naar de opleidingen →</a>`, klaar: fav.length >= 2 });
     st.push({ id: "profiel", wanneer: "Nu", titel: "Check of je de juiste vooropleiding en het juiste profiel hebt", tekst: fams.length ? fams.map((f) => `<strong>${esc((FAMILIES.find((x) => x.id === f) || {}).naam || f)}</strong>: ${vt(FAM_EXTRA[f].profiel)}`).join("<br>") : "Dit vul je aan zodra er opleidingen op je lijst staan. Twijfel je? Vraag het je decaan." });
-    st.push({ id: "opendag", wanneer: "Najaar en voorjaar", titel: "Ga naar open dagen en meeloopdagen", tekst: od.length ? `<ul class="plan-od">${od.slice(0, 8).map((x) => `<li><strong>${fmt(x.dag.datum, { weekday: "short", day: "numeric", month: "long" })}</strong>: ${esc(x.inst)}${x.d ? ` (${esc(x.d.pl)}, ${Math.round(x.d.d)} km)` : ""}, voor ${esc(x.opl)}${x.site ? ` · <a href="${esc(veiligeUrl(x.site))}" target="_blank" rel="noopener">info ↗</a>` : ""}</li>`).join("")}</ul>Bereid je voor met de tips bij <a href="#/opendagen">Open dagen</a>.` : `Zet opleidingen op je lijst en vul je woonplaats in, dan zie je hier de open dagen dichtbij. Of bekijk alle <a href="#/opendagen">open dagen</a>.` });
+    st.push({ id: "opendag", wanneer: "Najaar en voorjaar", titel: "Ga naar open dagen", tekst: od.length ? `<ul class="plan-od">${od.slice(0, 8).map((x) => `<li><strong>${fmt(x.dag.datum, { weekday: "short", day: "numeric", month: "long" })}</strong>: ${esc(x.inst)}${x.d ? ` (${esc(x.d.pl)}, ${Math.round(x.d.d)} km)` : ""}, voor ${esc(x.opl)}${x.site ? ` · <a href="${esc(veiligeUrl(x.site))}" target="_blank" rel="noopener">info ↗</a>` : ""}</li>`).join("")}</ul>Bereid je voor met de tips bij <a href="#/opendagen">Open dagen</a>.` : `Zet opleidingen op je lijst en vul je woonplaats in, dan zie je hier de open dagen dichtbij. Of bekijk alle <a href="#/opendagen">open dagen</a>.` });
+    st.push({ id: "meeloop", wanneer: "Vóór je je aanmeldt", titel: "Loop een dag mee", tekst: "Een open dag laat de mooie kant zien. Op een meeloopdag zit je een dag echt in de lessen en praat je met studenten. Doe het bij je top 2 of 3, liefst samen met iemand, zodat je achteraf kunt napraten. Vraag je mentor om vrij: dat mag bijna altijd." + (fav.length ? `<br>${fav.slice(0, 3).map((o) => `<a href="${esc("https://duckduckgo.com/?q=" + encodeURIComponent("meeloopdag " + o.n))}" target="_blank" rel="noopener">Meeloopdag ${esc(o.n)} ↗</a>`).join(" · ")}` : "") + ` <a href="#/opendagen">Zo regel je het →</a>` });
     if (selectie.length && !mboRoute) st.push({ id: "fixus", wanneer: `Vóór 15 januari ${sj}`, titel: "Aanmelden voor opleidingen met selectie of loting", tekst: selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>: ${esc(SELECTIE[f])}`).join("<br>") + "<br>Check bij de opleiding de precieze datum en wat je moet inleveren.", datum: new Date(sj, 0, 15) });
     st.push({ id: "digid", wanneer: "Ruim op tijd", titel: "Vraag een DigiD aan", tekst: mboRoute ? "Die heb je nodig voor DUO, bijvoorbeeld voor je studentenreisproduct. Aanvragen kost een paar dagen, want je krijgt een brief met een code." : "Die heb je nodig voor Studielink en DUO. Aanvragen kost een paar dagen, want je krijgt een brief met een code." });
     if (mboRoute) st.push({ id: "aanmelden", wanneer: `Vóór 1 april ${sj}`, titel: "Aanmelding: bij de mbo-school", tekst: "Je meldt je aan via de website van de mbo-school zelf. Doe je dat vóór 1 april, dan heb je toelatingsrecht: de school moet je dan toelaten als je aan de vooropleidingseisen voldoet. Je mag je bij meer opleidingen aanmelden.", datum: new Date(sj, 3, 1) });
@@ -1238,6 +1239,12 @@
   }
   $("#planbKnoppen").addEventListener("click", (e) => { const b = e.target.closest("[data-planb]"); if (b) toonPlanB(Number(b.dataset.planb)); });
   toonPlanB(0);
+
+  $("#toonMeeloop").addEventListener("click", () => {
+    const b = $('#odChips [data-s="meeloop"]');
+    if (b.getAttribute("aria-pressed") !== "true") b.click();
+    $("#odAantal").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
   /* ---------- Printen: elk scherm en elke kaart ---------- */
   function printMet(klasse) {
