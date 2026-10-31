@@ -859,3 +859,18 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .quiz .kid:has(input:checked)::before{background-color:var(--accent);border-color:var(--accent);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
 .quiz legend small{display:block;font-size:.85rem;font-weight:500;color:var(--muted);margin-top:6px}
 @media (max-width:560px){.quiz .kids{grid-template-columns:1fr}}
+
+/* Pad: neutraal tijdens de test, terugspelen bij de uitslag */
+.lp-leeg{fill:var(--card);stroke:var(--line);stroke-width:2}
+.pad-terug{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:center;margin:18px 0 22px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.pad-terug h4{margin:0 0 6px}
+.pad-terug p{margin:0 0 12px;color:var(--muted);font-size:.95rem}
+.levendpad.replay{position:static;padding:0;border:0;background:none}
+.rp-pad{stroke-dasharray:1;stroke-dashoffset:1;animation:rpTeken ease-in-out forwards}
+@keyframes rpTeken{to{stroke-dashoffset:0}}
+.rp-kop{fill:var(--accent)}
+.replay .lp-knoop.gekozen circle{animation:rpKies .5s both;animation-delay:inherit}
+.replay .lp-knoop.gekozen{animation:rpKiesTekst .01s both}
+@keyframes rpKies{from{fill:var(--card);stroke:var(--muted)}to{fill:var(--accent);stroke:var(--accent)}}
+@media (max-width:640px){.pad-terug{grid-template-columns:1fr}.levendpad.replay{max-width:260px;margin:0 auto}}
+@media (prefers-reduced-motion:reduce){.rp-pad{animation:none;stroke-dashoffset:0}.replay .lp-knoop.gekozen circle{animation:none}}

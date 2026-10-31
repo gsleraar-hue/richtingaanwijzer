@@ -582,6 +582,7 @@
     let h = `<div class="res-top"><a class="btn" href="#/plan">Maak mijn stappenplan →</a><button type="button" class="btn ghost" id="aanpassen">← Antwoorden aanpassen</button><button type="button" class="btn ghost" id="opnieuw">Opnieuw beginnen</button></div>`;
     h += `<h3>${ouder ? "Dit past bij je kind" : "Dit past bij jou"}</h3>`;
     if (delen.length) h += `<p class="res-jij">${ouder ? "Je kind is" : "Jij bent"} ${delen.join(" en ")}.</p>`;
+    h += `<div class="pad-terug"><figure class="levendpad replay" id="padReplay"></figure><div><h4>Zo liep ${ouder ? "het pad van je kind" : "jouw pad"}</h4><p>Elk antwoord boog het pad een klein stukje. Tijdens de test liet de Padvinder dat bewust niet zien, zodat het je antwoorden niet stuurde.</p><button type="button" class="btn ghost" id="padOpnieuw">Speel opnieuw af</button></div></div>`;
 
     h += `<div class="richtingen">` + top.map((k, i) => {
       const g = GEBIEDEN[k];
@@ -624,6 +625,8 @@
     padvinder = lees("padvinder", null);
     const box = $("#uitslag");
     box.innerHTML = h;
+    speelPadAf();
+    $("#padOpnieuw").addEventListener("click", speelPadAf);
     renderPlan();
     box.hidden = false;
     const uk = $("#uitslagKaart");
@@ -1247,18 +1250,31 @@
   $("#printPagina").addEventListener("click", () => printMet("print-scherm"));
   $("#printDialoog").addEventListener("click", () => printMet("print-dialoog"));
 
-  /* ---------- Levend pad: groeit mee met je antwoorden ---------- */
+  /* ---------- Levend pad ----------
+     Tijdens de test groeit het pad alleen omhoog, zonder richting: zo stuurt het je antwoorden niet.
+     Bij de uitslag wordt het echte pad, met alle bochten, opnieuw getekend. */
   const PAD_ORDE = ["creatief", "mens", "zorg", "bedrijf", "tech", "weten"];
   const PAD_KORT = { creatief: "Creatief", mens: "Mens", zorg: "Zorg", bedrijf: "Bedrijf", tech: "Techniek", weten: "Wetenschap" };
   const padKnoop = (k) => { const i = PAD_ORDE.indexOf(k); return [30 + i * 56, 78 + (i - 2.5) ** 2 * 5]; };
   let padX = [];
   let padLengte = 0;
+  // vloeiende lijn door alle punten (Catmull-Rom als Bézier)
+  function vloeiend(pts) {
+    const f = (v) => v.toFixed(1);
+    let d = `M${f(pts[0][0])} ${f(pts[0][1])}`;
+    for (let i = 1; i < pts.length; i++) {
+      const p0 = pts[i - 2] || pts[i - 1], p1 = pts[i - 1], p2 = pts[i], p3 = pts[i + 1] || p2;
+      d += ` C${f(p1[0] + (p2[0] - p0[0]) / 6)} ${f(p1[1] + (p2[1] - p0[1]) / 6)} ${f(p2[0] - (p3[0] - p1[0]) / 6)} ${f(p2[1] - (p3[1] - p1[1]) / 6)} ${f(p2[0])} ${f(p2[1])}`;
+    }
+    return d;
+  }
   function tekenPad() {
     const box = $("#levendPad");
     if (!box) return;
     if (!box.querySelector("svg")) {
-      box.innerHTML = `<svg viewBox="0 0 340 420" role="img" aria-label="Jouw pad over de campus, groeit mee met je antwoorden">` +
-        `<g id="lpOpties"></g><path id="lpVoet" class="lp-voet" d=""/><path id="lpPad" class="lp-pad" d=""/><g id="lpVork"></g><g id="lpKnopen"></g>` +
+      box.innerHTML = `<svg viewBox="0 0 340 420" role="img" aria-label="Jouw pad groeit met elk antwoord">` +
+        `<g id="lpKnopen">${PAD_ORDE.map((k) => { const [nx, ny] = padKnoop(k); return `<circle class="lp-leeg" cx="${nx}" cy="${ny}" r="5"/>`; }).join("")}</g>` +
+        `<path id="lpVoet" class="lp-voet" d=""/><path id="lpPad" class="lp-pad" d=""/>` +
         `<circle class="lp-start" cx="170" cy="392" r="5"/><text class="lp-jij" x="170" y="414">jij</text>` +
         `<g id="lpKop" class="lp-kop" style="transform:translate(170px,392px)"><circle class="lp-ring" r="7"/><circle r="6"/></g></svg>` +
         `<figcaption id="lpTekst"></figcaption>`;
@@ -1266,7 +1282,8 @@
     const sets = [...form.querySelectorAll("fieldset.q")].filter((f) => f.querySelector("input[type=radio]"));
     const n = sets.filter((f) => f.querySelector("input:checked")).length;
     const tot = Math.max(sets.length, 1);
-    const { score, max, rank } = bereken();
+    // het echte pad bijhouden voor de uitslag
+    const { score, max } = bereken();
     const ratio = (k) => (max[k] ? score[k] / max[k] : 0);
     let sw = 0, sx = 0;
     PAD_ORDE.forEach((k) => { const w = ratio(k) ** 3 + 0.0001; sw += w; sx += w * padKnoop(k)[0]; });
@@ -1275,17 +1292,11 @@
     for (let i = 0; i < n; i++) if (padX[i] == null) padX[i] = 170 + ((doel - 170) * (i + 1)) / n;
     // rustig bijsturen: elk antwoord buigt het pad maar een stukje
     if (n) padX[n - 1] = (padX[n - 2] ?? 170) + (doel - (padX[n - 2] ?? 170)) * 0.5;
-    const pts = [[170, 392], ...padX.map((px, i) => [px, 392 - ((i + 1) / tot) * 262])];
-    // vloeiende lijn door alle punten (Catmull-Rom als Bézier)
-    let d = `M170 392`;
-    for (let i = 1; i < pts.length; i++) {
-      const p0 = pts[i - 2] || pts[i - 1], p1 = pts[i - 1], p2 = pts[i], p3 = pts[i + 1] || p2;
-      const f = (v) => v.toFixed(1);
-      d += ` C${f(p1[0] + (p2[0] - p0[0]) / 6)} ${f(p1[1] + (p2[1] - p0[1]) / 6)} ${f(p2[0] - (p3[0] - p1[0]) / 6)} ${f(p2[1] - (p3[1] - p1[1]) / 6)} ${f(p2[0])} ${f(p2[1])}`;
-    }
+    // zichtbaar is alleen een neutraal kronkelpad omhoog, zonder richting
+    const pts = [[170, 392]];
+    for (let i = 0; i < n; i++) pts.push([170 + 16 * Math.sin((i + 1) * 1.15), 392 - ((i + 1) / tot) * 262]);
+    const d = vloeiend(pts);
     const [kx, ky] = pts[pts.length - 1];
-    const af = n >= tot && n > 0;
-    const top2 = af ? rank.slice(0, 2) : [];
     $("#lpVoet").setAttribute("d", d);
     const pad = $("#lpPad");
     pad.setAttribute("d", d);
@@ -1300,15 +1311,30 @@
       padLengte = L;
     } catch (e) {}
     $("#lpKop").style.transform = `translate(${kx}px,${ky}px)`;
-    // de mogelijkheden waaieren uit vanaf de kop van je pad
-    $("#lpOpties").innerHTML = af ? "" : PAD_ORDE.map((k) => { const [nx, ny] = padKnoop(k); return `<line x1="${kx.toFixed(1)}" y1="${ky.toFixed(1)}" x2="${nx}" y2="${ny}" style="opacity:${(0.12 + ratio(k) * 0.7).toFixed(2)}"/>`; }).join("");
-    $("#lpVork").innerHTML = top2.map((k) => { const [nx, ny] = padKnoop(k); return `<path class="lp-vork" d="M${kx.toFixed(1)} ${ky.toFixed(1)} C${kx.toFixed(1)} ${(ky - 40).toFixed(1)} ${nx} ${ny + 40} ${nx} ${ny}"/>`; }).join("");
-    $("#lpKnopen").innerHTML = PAD_ORDE.map((k, i) => {
-      const [nx, ny] = padKnoop(k);
-      const r = 4 + ratio(k) * 9;
-      return `<g class="lp-knoop${top2.includes(k) ? " gekozen" : ""}"><circle cx="${nx}" cy="${ny}" r="${r.toFixed(1)}"/><text x="${nx}" y="${(ny - r - (i % 2 ? 20 : 7)).toFixed(1)}">${PAD_KORT[k]}</text></g>`;
-    }).join("");
-    $("#lpTekst").textContent = !n ? "Je pad begint hier. Elk antwoord buigt het een kant op." : af ? `Je pad splitst zich: ${GEBIEDEN[top2[0]].naam} en ${GEBIEDEN[top2[1]].naam}.` : "Nog niets ligt vast. Elk antwoord buigt je pad een beetje.";
+    $("#lpTekst").textContent = !n ? "Je pad begint hier. Waar het heen gaat, zie je pas aan het eind." : n >= tot ? "Klaar. Bekijk je uitslag: daar zie je waar je pad heen ging." : "Je pad groeit met elk antwoord. Waar het heen gaat, zie je aan het eind.";
+  }
+  // Bij de uitslag: het echte pad opnieuw tekenen, met bochten en splitsing
+  function speelPadAf() {
+    const box = $("#padReplay");
+    if (!box) return;
+    const { score, max, rank } = bereken();
+    const ratio = (k) => (max[k] ? score[k] / max[k] : 0);
+    const tot = Math.max(padX.length, 1);
+    const pts = [[170, 392], ...padX.map((px, i) => [px, 392 - ((i + 1) / tot) * 262])];
+    const d = vloeiend(pts);
+    const [kx, ky] = pts[pts.length - 1];
+    const top2 = rank.slice(0, 2);
+    const duur = 2.8;
+    box.innerHTML = `<svg viewBox="0 0 340 420" role="img" aria-label="Zo liep jouw pad: van jij naar ${top2.map((k) => esc(GEBIEDEN[k].naam)).join(" en ")}">` +
+      `<path class="lp-voet" d="${d}"/><path class="lp-pad rp-pad" d="${d}" pathLength="1" style="animation-duration:${duur}s"/>` +
+      top2.map((k) => { const [nx, ny] = padKnoop(k); return `<path class="lp-vork" style="animation-delay:${duur}s" d="M${kx.toFixed(1)} ${ky.toFixed(1)} C${kx.toFixed(1)} ${(ky - 40).toFixed(1)} ${nx} ${ny + 40} ${nx} ${ny}"/>`; }).join("") +
+      PAD_ORDE.map((k, i) => {
+        const [nx, ny] = padKnoop(k);
+        const r = 4 + ratio(k) * 9;
+        return `<g class="lp-knoop${top2.includes(k) ? " gekozen" : ""}" style="animation-delay:${top2.includes(k) ? duur + 0.6 : 0}s"><circle cx="${nx}" cy="${ny}" r="${r.toFixed(1)}"/><text x="${nx}" y="${(ny - r - (i % 2 ? 20 : 7)).toFixed(1)}">${PAD_KORT[k]}</text></g>`;
+      }).join("") +
+      `<circle class="lp-start" cx="170" cy="392" r="5"/><text class="lp-jij" x="170" y="414">jij</text>` +
+      `<circle class="rp-kop" r="6"><animateMotion dur="${duur}s" fill="freeze" path="${d}"/></circle></svg>`;
   }
 
   /* ---------- Sterrenkaart: vrij verkennen ---------- */
