@@ -479,29 +479,43 @@
 
   document.querySelectorAll(".who .chip").forEach((b) =>
     b.addEventListener("click", () => {
+      if (who === b.dataset.who) return;
       who = b.dataset.who;
       document.querySelectorAll(".who .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
       cur = 0;
+      form.reset();
+      form.innerHTML = "";
+      padX = [];
+      padLengte = 0;
+      bewaar("antwoorden", null);
       buildQuiz();
       $("#uitslag").hidden = true;
       $(".testgrid").hidden = false;
     })
   );
 
+  function formWaarden() {
+    const vals = {};
+    form.querySelectorAll("input[type=radio]:checked").forEach((x) => (vals[x.name] = x.value));
+    return { vals, kind: [...form.querySelectorAll("input[name=kind]:checked")].map((x) => x.value) };
+  }
   function bereken() {
+    const w = formWaarden();
+    return scoreVan(w.vals, w.kind);
+  }
+  function scoreVan(vals, kind) {
     const score = {};
     const max = {};
+    const num = (n) => (vals[n] != null && vals[n] !== "" ? Number(vals[n]) : 0);
     Object.keys(GEBIEDEN).forEach((k) => ((score[k] = 0), (max[k] = 0)));
     VRAGEN.forEach((v, i) => {
-      const c = form.querySelector(`input[name="q${i}"]:checked`);
-      score[v[0]] += c ? Number(c.value) : 0;
+      score[v[0]] += num(`q${i}`);
       max[v[0]] += 4;
     });
     const profiel = { kwal: [], drijf: [] };
     [["k", KWAL, "kwal"], ["d", DRIJF, "drijf"]].forEach(([p, lijst, sleutel]) => {
       lijst.forEach((v, i) => {
-        const c = form.querySelector(`input[name="${p}${i}"]:checked`);
-        const val = c ? Number(c.value) : 0;
+        const val = num(`${p}${i}`);
         profiel[sleutel].push({ naam: v[0], val });
         for (const g in v[3]) {
           score[g] += val * v[3][g];
@@ -510,16 +524,15 @@
       });
     });
     const picks = {};
-    form.querySelectorAll("input[name=kind]:checked").forEach((i) => {
-      const g = KIND[Number(i.value)][0];
+    kind.forEach((x) => {
+      const g = KIND[Number(x)][0];
       picks[g] = (picks[g] || 0) + 1;
     });
     Object.keys(GEBIEDEN).forEach((k) => {
       score[k] += Math.min(3, (picks[k] || 0) * 1.5);
       max[k] += 3;
     });
-    const pz = form.querySelector('input[name="pz"]:checked');
-    Object.keys(GEBIEDEN).forEach((k) => { max[k] += 3; if (pz && pz.value === k) score[k] += 3; });
+    Object.keys(GEBIEDEN).forEach((k) => { max[k] += 3; if (vals.pz && vals.pz === k) score[k] += 3; });
     const rank = Object.keys(score).sort((a, b) => score[b] - score[a]);
     return { score, max, profiel, rank };
   }
@@ -557,6 +570,7 @@
       const fam = i.name.split("_")[2];
       famScore[fam] = Math.max(famScore[fam] || 0, Number(i.value));
     });
+    bewaar("uitslag_" + who, { ...formWaarden(), datum: new Date().toISOString().slice(0, 10) });
     const t = form.querySelector('input[name="t0"]:checked');
     showResult(r.rank, r.score, r.max, r.profiel, famScore, t ? Number(t.value) : 0);
   });
@@ -582,6 +596,7 @@
     let h = `<div class="res-top"><a class="btn" href="#/plan">Maak mijn stappenplan →</a><button type="button" class="btn ghost" id="aanpassen">← Antwoorden aanpassen</button><button type="button" class="btn ghost" id="opnieuw">Opnieuw beginnen</button></div>`;
     h += `<h3>${ouder ? "Dit past bij je kind" : "Dit past bij jou"}</h3>`;
     if (delen.length) h += `<p class="res-jij">${ouder ? "Je kind is" : "Jij bent"} ${delen.join(" en ")}.</p>`;
+    h += `<div class="samen-uit"><div><p class="st-soort">Samen vergelijken</p><p>${ouder ? "Laat je kind de Padvinder ook doen. Dan zie je in één oogopslag waar jullie hetzelfde zien en waar het verschilt." : "Laat je ouder de Padvinder ook doen, over jou. Dan zie je in één oogopslag waar jullie hetzelfde zien en waar het verschilt."}</p></div><a class="btn ghost" href="#/samen">${lees("uitslag_" + (ouder ? "leerling" : "ouder"), null) ? "Bekijk de vergelijking →" : "Zo werkt het →"}</a></div>`;
     h += `<div class="pad-terug"><figure class="levendpad replay" id="padReplay"></figure><div><h4>Zo liep ${ouder ? "het pad van je kind" : "jouw pad"}</h4><p>Elk antwoord boog het pad een klein stukje. Tijdens de test liet de Padvinder dat bewust niet zien, zodat het je antwoorden niet stuurde.</p><button type="button" class="btn ghost" id="padOpnieuw">Speel opnieuw af</button></div></div>`;
 
     h += `<div class="richtingen">` + top.map((k, i) => {
@@ -694,9 +709,25 @@
     b.addEventListener("click", () => b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")));
     $("#vertaalLijst").appendChild(b);
   });
-  WOORDEN.forEach((w) => {
-    $("#woordenLijst").appendChild(el("div", { class: "woord" }, `<span class="wemoji">${w[0]}</span><div><strong>${esc(w[1])}</strong><p>${vt(w[2])}</p></div>`));
+  // zelfde adressen als tools/build_begrippen.py
+  const woordSlug = (t) => t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/&/g, " en ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const woordFilter = { thema: "", zoek: "" };
+  function renderWoorden() {
+    const z = woordFilter.zoek.trim().toLowerCase();
+    const lijst = WOORDEN.filter((w) => (!woordFilter.thema || w[0] === woordFilter.thema) && (!z || (w[1] + " " + w[2]).toLowerCase().includes(z)))
+      .sort((x, y) => x[1].localeCompare(y[1], "nl"));
+    $("#woordenLijst").innerHTML = lijst.map((w) => `<div class="woord"><strong><a href="begrippen/${woordSlug(w[1])}/">${esc(w[1])}</a></strong><p>${vt(w[2])}</p></div>`).join("");
+    $("#woordGeen").hidden = lijst.length > 0;
+  }
+  $("#woordZoek").addEventListener("input", (e) => { woordFilter.zoek = e.target.value; renderWoorden(); });
+  $("#woordThema").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-thema]");
+    if (!b) return;
+    woordFilter.thema = b.dataset.thema;
+    document.querySelectorAll("#woordThema .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    renderWoorden();
   });
+  renderWoorden();
 
   /* ---------- Landkaart ---------- */
   const REG = {
@@ -787,6 +818,7 @@
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
   const TEGELS = {
     test: ["#/test", "Welke kant op?", "Doe de Padvinder, in 5 minuten"],
+    samen: ["#/samen", "Samen vergelijken", "Jouw Padvinder naast die van je ouder"],
     sterren: ["#/sterren", "Sterrenkaart", "Verken vrij, van wat je leuk vindt tot opleidingen"],
     metro: ["#/metro", "Metrokaart", "Alle routes van school naar werk"],
     droom: ["#/droom", "Later word ik de nieuwe…", "Van droombaan naar echte banen"],
@@ -803,18 +835,18 @@
     niveaus: ["#niveaus", "Mbo, hbo of wo?", "Drie paden, geen doodlopende"],
     vakken: ["#vakken", "Mijn lievelingsvak", "Wat zegt het over jou, wat kun je ermee?"],
     vertaal: ["#vertaal", "Business wát?", "Engelse studienamen vertaald"],
-    woorden: ["#woorden", "Moeilijke woorden", "Van bol tot propedeuse"],
+    woorden: ["#woorden", "Moeilijke woorden", "Van LOB tot propedeuse"],
   };
   const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
   const VERDER = {
-    test: ["sterren", "droom", "te", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
+    test: ["samen", "sterren", "droom", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
     opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["plan", "metro", "ouders", "geld"], plan: ["planb", "metro", "geld", "opendagen"],
-    uitleg: ["metro", "plan", "test", "ouders"], ouders: ["metro", "plan", "test", "geld"],
+    uitleg: ["metro", "plan", "test", "ouders"], ouders: ["samen", "metro", "plan", "test"], samen: ["ouders", "plan", "sterren", "opendagen"],
     sterren: ["test", "droom", "metro", "opleidingen"], metro: ["planb", "plan", "toelating", "sterren"],
   };
   const UITLEG = ["route", "toelating", "planb", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { samen: ["samen"], start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -830,6 +862,7 @@
       $(".hero").hidden = v !== "start";
       document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.view === v ? "page" : "false"));
     }
+    if (v === "samen") renderSamen();
     const adres = los ? "#" + target : "#/" + v;
     if (location.hash !== adres) history.replaceState(null, "", adres);
     const t = target && document.getElementById(v === "uitleg" ? "uitlegmenu" : target);
@@ -837,7 +870,13 @@
   }
   function route() {
     if ($("#detail").open) $("#detail").close();
-    const h = location.hash.replace(/^#\/?/, "");
+    let h = location.hash.replace(/^#\/?/, "");
+    if (h.startsWith("samen?")) {
+      const q = new URLSearchParams(h.slice(6));
+      [["l", "leerling"], ["o", "ouder"]].forEach(([p, rol]) => { const u = q.get(p) && vanCode(q.get(p)); if (u) bewaar("uitslag_" + rol, u); });
+      history.replaceState(null, "", "#/samen");
+      h = "samen";
+    }
     if (VIEWS[h]) return go(h);
     const v = Object.keys(VIEWS).find((k) => VIEWS[k].includes(h));
     go(v || "start", v ? h : null);
@@ -1184,7 +1223,7 @@
   if (TE[lees("te", -1)]) $(`#teChips [data-te="${lees("te", -1)}"]`).click();
 
   /* ---------- Bewaard op dit apparaat ---------- */
-  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "vak", "thema"];
+  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "vak", "uitslag_leerling", "uitslag_ouder", "thema"];
   function renderBewaard() {
     let wp = "";
     try { wp = localStorage.getItem("woonplaats") || ""; } catch (e) {}
@@ -1531,23 +1570,73 @@
     ["hbob", "wom", "Via een schakeljaar naar een wo-master"],
   ];
   const overstapIds = new Set(OVERSTAP.flatMap((o) => [o[0], o[1]]));
+  // Routes per startlijn: [naam, stations, uitleg]
+  const ROUTES = {
+    vmbo: [
+      ["Een vak leren en gaan werken", ["vmbo", "vmbod", "mbo2", "mbo3", "werk"], "Op mbo 2 of 3 leer je in 1 tot 3 jaar een vak, zoals kok, monteur of verzorgende. Daarna ga je aan het werk."],
+      ["Mbo 4 en dan werken", ["vmbo", "vmbod", "mbo4", "werk"], "Mbo 4 is het hoogste mbo-niveau: 3 tot 4 jaar. Je wordt specialist of leidinggevende."],
+      ["Via mbo 4 naar het hbo", ["vmbo", "vmbod", "mbo4", "hbop", "hbob", "werk"], "Met een mbo 4-diploma kun je naar het hbo. Veel hbo-studenten komen van het mbo."],
+      ["Via de havo", ["vmbo", "vmbod", "havo4", "havod", "hbop", "hbob", "werk"], "Met een diploma van de gemengde of theoretische leerweg kun je naar havo 4. Daarna kun je naar het hbo."],
+    ],
+    havo: [
+      ["Hbo en dan werken", ["havo", "havod", "hbop", "hbob", "werk"], "De meest gekozen route: 4 jaar hbo, praktijkgericht en met stages."],
+      ["Hbo en daarna een wo-master", ["havo", "havod", "hbop", "hbob", "wom", "werk"], "Na je hbo-bachelor kun je via een schakeljaar een master aan de universiteit doen."],
+      ["Met je propedeuse naar de universiteit", ["havo", "havod", "hbop", "wob", "wom", "werk"], "Haal je het eerste hbo-jaar, dan kun je vaak overstappen naar een universiteit."],
+      ["Eerst nog vwo", ["havo", "havod", "vwo5", "vwod", "wob", "wom", "werk"], "Met je havodiploma kun je naar vwo 5. Daarna kun je direct naar de universiteit."],
+    ],
+    vwo: [
+      ["Universiteit: bachelor en master", ["vwo", "vwod", "wob", "wom", "werk"], "3 jaar bachelor en 1 tot 2 jaar master. De meeste studenten aan de universiteit doen allebei."],
+      ["Alleen een bachelor, dan werken", ["vwo", "vwod", "wob", "werk"], "Na je bachelor mag je ook gaan werken, en later eventueel nog een master doen."],
+    ],
+  };
+  let metroRoute = null;
+  // pad door de stations van een route, met de bochten naar "werk"
+  function routePad(ids) {
+    const p = [];
+    ids.forEach((id) => {
+      const [, x, y] = STATIONS[id];
+      if (id === "werk" && p.length) {
+        const [, py] = p[p.length - 1];
+        if (py === 410) p.push([770, 410], [880, 300]);
+        if (py === 90) p.push([770, 90], [880, 200]);
+      }
+      p.push([x, y]);
+    });
+    return "M" + p.map(([x, y]) => `${x} ${y}`).join(" L");
+  }
+  function toonRoutes() {
+    const lijst = ROUTES[metroLijn] || [];
+    $("#metroRoutes").innerHTML = lijst.length ? `<span class="m-kies-label">Jouw routes</span>` + lijst.map((r, i) => `<button type="button" class="m-route-knop" data-route="${i}" aria-pressed="${metroRoute === i}"><strong>${r[0]}</strong><span>${r[1].filter((id) => !["vmbo", "havo", "vwo"].includes(id)).map((id) => STATIONS[id][0]).join(" → ")}</span></button>`).join("") : "";
+  }
+  function kiesRoute(i) {
+    metroRoute = i;
+    const r = ROUTES[metroLijn][i];
+    tekenMetro();
+    $("#metroInfo").innerHTML = `<p class="st-soort">Route</p><h3>${r[0]}</h3><p>${vt(r[2])}</p><ol class="m-stappen">${r[1].map((id) => `<li>${STATIONS[id][0]}</li>`).join("")}</ol><p class="count">Klik op een station op de kaart voor meer uitleg.</p>`;
+  }
   let metroLijn = "alle";
   function tekenMetro() {
     let h = `<path class="m-later" d="M880 266 C950 300 950 470 800 470 H470 C435 470 430 445 430 424"/>`;
     OVERSTAP.forEach(([a, b], i) => { const A = STATIONS[a], B = STATIONS[b]; h += `<line class="m-over" data-metro="ov${i}" x1="${A[1]}" y1="${A[2]}" x2="${B[1]}" y2="${B[2]}"/>`; });
     Object.entries(LIJNEN).forEach(([k, [, d]]) => (h += `<path class="m-lijn l-${k}" d="${d}"/>`));
-    if (metroLijn !== "alle" && !matchMedia("(prefers-reduced-motion: reduce)").matches) h += `<circle class="m-trein" r="8"><animateMotion dur="7s" repeatCount="indefinite" path="${LIJNEN[metroLijn][1]}"/></circle>`;
+    const route = metroLijn !== "alle" && metroRoute != null ? ROUTES[metroLijn][metroRoute] : null;
+    if (route) {
+      const d = routePad(route[1]);
+      h += `<path class="m-route" d="${d}"/>`;
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) h += `<circle class="m-trein" r="9"><animateMotion dur="${route[1].length * 1.1}s" repeatCount="indefinite" path="${d}"/></circle>`;
+    }
     Object.entries(STATIONS).forEach(([id, [naam, x, y, lijn]]) => {
       if (id === "later") { h += `<g class="m-st m-tekst" data-metro="${id}" tabindex="0" role="button"><text x="${x}" y="${y - 10}" text-anchor="middle">Later nog leren ↺</text></g>`; return; }
       const eind = ["vmbo", "havo", "vwo"].includes(id);
       if (eind) { h += `<g class="m-st m-eind l-${lijn}" data-metro="${id}" tabindex="0" role="button"><rect x="${x - 50}" y="${y - 20}" width="100" height="40" rx="20"/><text x="${x}" y="${y + 7}" text-anchor="middle">${naam}</text></g>`; return; }
       const r = id === "werk" ? 17 : overstapIds.has(id) ? 10 : 8;
       const tx = id === "werk" ? x - 20 : x + 13, ty = id === "werk" ? y - 30 : y - 16;
-      h += `<g class="m-st l-${lijn}${overstapIds.has(id) ? " m-ov" : ""}${id === "werk" ? " m-werk" : ""}" data-metro="${id}" tabindex="0" role="button"><circle cx="${x}" cy="${y}" r="${r}"/><text x="${tx}" y="${ty}">${naam}</text></g>`;
+      h += `<g class="m-st l-${lijn}${overstapIds.has(id) ? " m-ov" : ""}${id === "werk" ? " m-werk" : ""}${route && route[1].includes(id) ? " op-route" : ""}" data-metro="${id}" tabindex="0" role="button"><circle cx="${x}" cy="${y}" r="${r}"/><text x="${tx}" y="${ty}">${naam}</text></g>`;
     });
     const svg = $("#metroSvg");
     svg.innerHTML = h;
-    svg.setAttribute("class", "metro-svg kies-" + metroLijn);
+    svg.setAttribute("class", "metro-svg kies-" + metroLijn + (route ? " heeft-route" : ""));
+    toonRoutes();
     document.querySelectorAll("#metroLijnen .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lijn === metroLijn)));
   }
   function metroInfo(code) {
@@ -1564,7 +1653,14 @@
   (() => {
     const k = lees("klas", "");
     metroLijn = k.startsWith("vmbo") || k === "mbo4" ? "vmbo" : k.startsWith("havo") ? "havo" : k.startsWith("vwo") ? "vwo" : "alle";
-    $("#metroLijnen").addEventListener("click", (e) => { const b = e.target.closest("[data-lijn]"); if (b) { metroLijn = b.dataset.lijn; tekenMetro(); } });
+    $("#metroLijnen").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-lijn]");
+      if (!b) return;
+      metroLijn = b.dataset.lijn;
+      if (ROUTES[metroLijn]) kiesRoute(0);
+      else { metroRoute = null; tekenMetro(); }
+    });
+    $("#metroRoutes").addEventListener("click", (e) => { const b = e.target.closest("[data-route]"); if (b) kiesRoute(Number(b.dataset.route)); });
     const kies = (e) => { const g = e.target.closest("[data-metro]"); if (g) metroInfo(g.dataset.metro); };
     $("#metroSvg").addEventListener("click", kies);
     $("#metroSvg").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); kies(e); } });
@@ -1582,7 +1678,130 @@
   })();
   tekenSter();
   sterKlik("jij");
-  tekenMetro();
+  if (ROUTES[metroLijn]) kiesRoute(0); else tekenMetro();
+
+  /* ---------- Samen vergelijken: leerling en ouder ---------- */
+  const ROLNAAM = { leerling: "Leerling", ouder: "Ouder" };
+  const ANTW_NAMEN = () => [...VRAGEN.map((_, i) => "q" + i), ...KWAL.map((_, i) => "k" + i), ...DRIJF.map((_, i) => "d" + i)];
+  // Compacte code voor in een deellink: geen namen, alleen antwoordcijfers
+  function naarCode(u) {
+    const gk = Object.keys(GEBIEDEN);
+    const cijfers = ANTW_NAMEN().map((n) => (u.vals[n] != null ? u.vals[n] : "x")).join("");
+    const pz = u.vals.pz == null ? "x" : u.vals.pz === "" ? "n" : String(gk.indexOf(u.vals.pz));
+    const t0 = u.vals.t0 != null ? u.vals.t0 : "x";
+    const kind = (u.kind || []).reduce((m, v) => m + 2 ** Number(v), 0).toString(36);
+    return `1${cijfers}~${pz}${t0}~${kind}`;
+  }
+  function vanCode(c) {
+    const m = /^1([0-4x]+)~([0-9nx])([0-4x])~([0-9a-z]+)$/.exec(c || "");
+    const namen = ANTW_NAMEN();
+    if (!m || m[1].length !== namen.length) return null;
+    const vals = {};
+    namen.forEach((n, i) => { if (m[1][i] !== "x") vals[n] = m[1][i]; });
+    const gk = Object.keys(GEBIEDEN);
+    if (m[2] === "n") vals.pz = ""; else if (m[2] !== "x") vals.pz = gk[Number(m[2])];
+    if (m[3] !== "x") vals.t0 = m[3];
+    const bits = parseInt(m[4], 36) || 0;
+    const kind = KIND.map((_, i) => String(i)).filter((i) => bits & (2 ** Number(i)));
+    return { vals, kind, datum: new Date().toISOString().slice(0, 10), gedeeld: true };
+  }
+  const deelLink = (rol) => { const u = lees("uitslag_" + rol, null); return u ? `${location.origin}${location.pathname}#/samen?${rol === "ouder" ? "o" : "l"}=${naarCode(u)}` : ""; };
+  // Het pad van een uitslag nabootsen, antwoord voor antwoord
+  function padVan(u) {
+    const namen = ["pz", ...ANTW_NAMEN(), "t0"].filter((n) => u.vals[n] != null);
+    const tot = Math.max(namen.length, 1), xs = [], deel = {};
+    namen.forEach((n, i) => {
+      deel[n] = u.vals[n];
+      const { score, max } = scoreVan(deel, u.kind || []);
+      let sw = 0, sx = 0;
+      PAD_ORDE.forEach((k) => { const w = (max[k] ? score[k] / max[k] : 0) ** 3 + 0.0001; sw += w; sx += w * padKnoop(k)[0]; });
+      const doel = 170 + (sx / sw - 170) * Math.min(1, ((i + 1) / tot) * 1.6);
+      const vorig = xs[i - 1] ?? 170;
+      xs.push(vorig + (doel - vorig) * 0.5);
+    });
+    return [[170, 392], ...xs.map((x, i) => [x, 392 - ((i + 1) / tot) * 262])];
+  }
+  function deelKnoppen(rol) {
+    const link = deelLink(rol);
+    if (!link) return "";
+    const ander = rol === "ouder" ? "je kind" : "je ouder";
+    const tekst = `Ik heb de Padvinder gedaan op Wat studeer je eigenlijk? Doe jij hem ook? Dan zien we samen waar we hetzelfde over denken: ${link}`;
+    return `<div class="samen-deel"><button type="button" class="btn" data-kopieer="${esc(link)}">Kopieer de link voor ${ander}</button><a class="btn ghost" href="${esc("https://wa.me/?text=" + encodeURIComponent(tekst))}" target="_blank" rel="noopener">Stuur via WhatsApp ↗</a></div>`;
+  }
+  function renderSamen() {
+    const box = $("#samenInhoud");
+    const L = lees("uitslag_leerling", null), O = lees("uitslag_ouder", null);
+    if (!L || !O) {
+      const heeft = L ? "leerling" : O ? "ouder" : "";
+      const mist = heeft === "leerling" ? "ouder" : "leerling";
+      box.innerHTML = `<div class="samen-stap">` +
+        (heeft
+          ? `<p class="st-soort">Nog één nodig</p><h3>De ${ROLNAAM[heeft].toLowerCase()} is klaar. Nu de ${ROLNAAM[mist].toLowerCase()}.</h3><p>Op dit apparaat: start de Padvinder en kies "${mist === "ouder" ? "Ik ben ouder" : "Ik ben leerling"}". Op een ander apparaat: stuur deze link. Wie hem opent en de Padvinder doet, ziet daarna de vergelijking.</p><p><button type="button" class="btn" data-samenrol="${mist}">Doe de Padvinder als ${ROLNAAM[mist].toLowerCase()}</button></p>${deelKnoppen(heeft)}`
+          : `<p class="st-soort">Zo werkt het</p><h3>Twee keer de Padvinder, één vergelijking</h3><ol class="planb-stappen"><li>De leerling doet de Padvinder als leerling.</li><li>Een ouder doet hem ook, en kiest "Ik ben ouder". Dat kan op hetzelfde apparaat of op een ander, via een link.</li><li>Hier zie je daarna in één oogopslag waar jullie hetzelfde zien, en waar jullie over kunnen praten.</li></ol><p><button type="button" class="btn" data-samenrol="leerling">Begin als leerling</button> <button type="button" class="btn ghost" data-samenrol="ouder">Begin als ouder</button></p>`) +
+        `<p class="count">De antwoorden blijven op dit apparaat of zitten in de link zelf. Ze gaan niet naar een server.</p></div>`;
+      return;
+    }
+    const rL = scoreVan(L.vals, L.kind || []), rO = scoreVan(O.vals, O.kind || []);
+    const pct = (r, k) => Math.round((r.score[k] / r.max[k]) * 100);
+    const tL = rL.rank.slice(0, 2), tO = rO.rank.slice(0, 2);
+    const eens = tL.filter((k) => tO.includes(k));
+    // twee paden in één tekening
+    const pL = padVan(L), pO = padVan(O);
+    const vork = (pts, top, cls) => { const [kx, ky] = pts[pts.length - 1]; return top.map((k) => { const [nx, ny] = padKnoop(k); return `<path class="${cls}" d="M${kx.toFixed(1)} ${ky.toFixed(1)} C${kx.toFixed(1)} ${(ky - 40).toFixed(1)} ${nx} ${ny + 40} ${nx} ${ny}"/>`; }).join(""); };
+    const svg = `<svg viewBox="0 0 340 430" role="img" aria-label="Twee paden: leerling naar ${tL.map((k) => esc(GEBIEDEN[k].naam)).join(" en ")}, ouder naar ${tO.map((k) => esc(GEBIEDEN[k].naam)).join(" en ")}">` +
+      `<path class="sm-pad sm-o" d="${vloeiend(pO)}" pathLength="1"/><path class="sm-pad sm-l" d="${vloeiend(pL)}" pathLength="1"/>` +
+      vork(pO, tO, "sm-vork sm-o") + vork(pL, tL, "sm-vork sm-l") +
+      PAD_ORDE.map((k, i) => { const [nx, ny] = padKnoop(k); const beide = tL.includes(k) && tO.includes(k); return `<g class="lp-knoop${beide ? " gekozen" : tL.includes(k) || tO.includes(k) ? " half" : ""}"><circle cx="${nx}" cy="${ny}" r="${beide ? 11 : 7}"/><text x="${nx}" y="${(ny - (beide ? 11 : 7) - (i % 2 ? 20 : 7)).toFixed(1)}">${PAD_KORT[k]}</text></g>`; }).join("") +
+      `<circle class="lp-start" cx="170" cy="392" r="5"/><text class="lp-jij" x="170" y="414">start</text></svg>` +
+      `<p class="sm-legenda"><span class="sm-l-l"></span>Leerling <span class="sm-l-o"></span>Ouder</p>`;
+    // gespreksstof: waar de antwoorden het verst uit elkaar liggen
+    const tekstVan = (n) => { const lijst = n[0] === "q" ? VRAGEN : n[0] === "k" ? KWAL : DRIJF; return lijst[Number(n.slice(1))][1]; };
+    const verschil = ANTW_NAMEN().filter((n) => L.vals[n] != null && O.vals[n] != null)
+      .map((n) => ({ n, d: Number(L.vals[n]) - Number(O.vals[n]) })).filter((x) => Math.abs(x.d) >= 2)
+      .sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 5);
+    const STARTERS_HOOG = ["Leerling: waar merk je dat aan jezelf? Ouder: heb je dat weleens gezien?", "Wanneer had de leerling dit voor het laatst? Vertel eens.", "Wat zou de ouder moeten zien om dit ook zo in te schatten?"];
+    const STARTERS_LAAG = ["Ouder: waar zie je dat aan? Leerling: herken je dat?", "Wat ziet de ouder dat de leerling zelf (nog) niet ziet?", "Was dat vroeger anders dan nu?"];
+    const stof = verschil.map((x, i) => `<li><p class="sm-vraag">${vt(tekstVan(x.n))}</p><p class="sm-antw"><span class="sm-tag sm-l">Leerling: ${ANTW[Number(L.vals[x.n])]}</span><span class="sm-tag sm-o">Ouder: ${ANTW[Number(O.vals[x.n])]}</span></p><p class="sm-praat">${(x.d > 0 ? STARTERS_HOOG : STARTERS_LAAG)[i % 3]}</p></li>`).join("");
+    const pzL = L.vals.pz, pzO = O.vals.pz;
+    const persoon = (k) => (k && PERSONAS[k] ? esc(PERSONAS[k][0].naam) : "niemand");
+    const kindL = new Set(L.kind || []), kindO = new Set(O.kind || []);
+    const kindVerschil = KIND.map((k, i) => [k[1], kindL.has(String(i)), kindO.has(String(i))]).filter(([, a, b]) => a !== b).slice(0, 4);
+    const bars = Object.keys(GEBIEDEN).sort((a, b) => pct(rL, b) + pct(rO, b) - pct(rL, a) - pct(rO, a)).map((k) =>
+      `<div class="sm-bar"><span class="sm-naam">${esc(GEBIEDEN[k].naam)}</span><span class="sm-sporen"><span class="sm-spoor"><span class="sm-l" style="width:${pct(rL, k)}%"></span></span><span class="sm-spoor"><span class="sm-o" style="width:${pct(rO, k)}%"></span></span></span><span class="sm-pct">${pct(rL, k)}%<br>${pct(rO, k)}%</span></div>`).join("");
+    box.innerHTML =
+      `<div class="samen-boven"><figure class="samen-pad">${svg}</figure><div>` +
+      `<p class="st-soort">In één oogopslag</p><h3>${eens.length === 2 ? "Jullie zien dezelfde twee richtingen" : eens.length ? `Jullie zien allebei ${esc(GEBIEDEN[eens[0]].naam)}` : "Jullie zien andere richtingen"}</h3>` +
+      `<p>${eens.length ? `Allebei: <strong>${eens.map((k) => esc(GEBIEDEN[k].naam)).join("</strong> en <strong>")}</strong>. ` : ""}` +
+      `Leerling: ${tL.map((k) => esc(GEBIEDEN[k].naam)).join(" en ")}. Ouder: ${tO.map((k) => esc(GEBIEDEN[k].naam)).join(" en ")}.` +
+      `${eens.length < 2 ? " Waar het verschilt, valt het meest te bespreken." : ""}</p>` +
+      `<div class="sm-bars">${bars}</div><p class="sm-legenda"><span class="sm-l-l"></span>Leerling <span class="sm-l-o"></span>Ouder</p></div></div>` +
+      `<h3 class="sm-kop">Gespreksstof</h3><p class="count">Er is geen goed of fout. Een verschil betekent alleen: hier valt iets te bespreken.</p>` +
+      (stof ? `<ol class="sm-stof">${stof}</ol>` : `<p>Jullie antwoorden lijken veel op elkaar. Praat dan over de vraag: wat maakt die richting zo passend?</p>`) +
+      `<div class="sm-klein">` +
+      (pzL !== pzO ? `<div><h4>Herkenning</h4><p>De leerling herkende zich in <strong>${persoon(pzL)}</strong>, de ouder zag het kind eerder als <strong>${persoon(pzO)}</strong>. Lees samen beide verhalen: wat klopt er van allebei?</p></div>` : "") +
+      (kindVerschil.length ? `<div><h4>Waar word je blij van?</h4><ul>${kindVerschil.map(([t, a]) => `<li>${esc(t)}: ${a ? "alleen de leerling koos dit" : "alleen de ouder koos dit"}</li>`).join("")}</ul></div>` : "") +
+      `</div>` +
+      `<p class="samen-acties"><a class="btn" href="#/ouders">Tips voor het gesprek →</a> <button type="button" class="btn ghost" id="samenWis">Vergelijking wissen</button></p>`;
+    $("#samenWis").addEventListener("click", () => {
+      if (!confirm("Beide uitslagen voor de vergelijking wissen?")) return;
+      try { localStorage.removeItem("uitslag_leerling"); localStorage.removeItem("uitslag_ouder"); } catch (e) {}
+      renderSamen();
+    });
+  }
+  document.addEventListener("click", (e) => {
+    const k = e.target.closest("[data-kopieer]");
+    if (k) {
+      const oud = k.textContent, klaar = () => { k.textContent = "Gekopieerd ✓"; setTimeout(() => (k.textContent = oud), 2500); };
+      (navigator.clipboard ? navigator.clipboard.writeText(k.dataset.kopieer) : Promise.reject()).then(klaar, () => prompt("Kopieer deze link:", k.dataset.kopieer));
+      return;
+    }
+    const r = e.target.closest("[data-samenrol]");
+    if (r) {
+      location.hash = "#/test";
+      const chip = document.querySelector(`.who .chip[data-who="${r.dataset.samenrol}"]`);
+      if (chip && who !== r.dataset.samenrol) chip.click();
+    }
+  });
 
   /* ---------- Licht / donker ---------- */
   $("#thema").addEventListener("click", () => {
