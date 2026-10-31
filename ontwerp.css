@@ -681,3 +681,22 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
   body.print-dialoog #detail *{color:#000!important}
 }
 .hero .hero-cta .btn.licht:hover{background:#fff;border-color:#fff;color:#b81d2e}
+
+/* Uitleg als tegels, verder-balk, springen in de Padvinder */
+#uitlegmenu.compact h2{font-size:1rem;margin-bottom:0}
+#uitlegmenu.compact .tegels{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:8px}
+#uitlegmenu.compact .tegel{padding:8px 12px}
+#uitlegmenu.compact .tegel span{display:none}
+#uitlegmenu.compact .tegel strong{font-size:.9rem}
+.tegel[aria-current="page"]{border-color:var(--accent);background:var(--tint)}
+.verder{max-width:1180px;margin:0 auto;padding:28px 24px 40px;border-top:1px solid var(--line)}
+.verder h2{font-size:1.1rem;margin:0}
+.verder .tegels{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+@media (max-width:520px){.verder{padding:22px 16px 32px}}
+.sdots{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.sdots button{width:14px;height:14px;padding:0;border-radius:50%;border:1.5px solid var(--line);background:transparent;cursor:pointer}
+.sdots button.klaar{background:var(--accent);border-color:var(--accent);opacity:.55}
+.sdots button.nu{border-color:var(--accent);background:var(--accent);transform:scale(1.25)}
+.sdots button:disabled{cursor:default;opacity:.35}
+.sdots button:not(:disabled):hover{opacity:1;border-color:var(--accent)}
+@media print{.verder,#uitlegmenu{display:none!important}}

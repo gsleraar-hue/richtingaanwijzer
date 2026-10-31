@@ -394,9 +394,10 @@
 
   /* Eén vraag tegelijk */
   function initStepper() {
-    form.prepend(el("div", { class: "stepper" }, '<div class="sbar"><span id="sfill"></span></div><div class="smeta"><span id="spart"></span><span id="scount"></span></div>'));
+    form.prepend(el("div", { class: "stepper" }, '<div class="sbar"><span id="sfill"></span></div><div class="sdots" id="sdots" aria-label="Spring naar een vraag"></div><div class="smeta"><span id="spart"></span><span id="scount"></span></div>'));
     form.querySelector(".actions").before(el("div", { class: "snav" }, '<button type="button" class="btn ghost" id="vorige">Vorige</button><button type="button" class="btn" id="volgende">Volgende</button>'));
     $("#vorige").addEventListener("click", () => toStep(cur - 1));
+    $("#sdots").addEventListener("click", (e) => { const b = e.target.closest("[data-step]"); if (b && !b.disabled) toStep(Number(b.dataset.step)); });
     $("#volgende").addEventListener("click", () => toStep(cur + 1));
     toStep(Math.min(cur, form.querySelectorAll("fieldset.q").length - 1), true);
   }
@@ -410,6 +411,10 @@
     $("#sfill").style.width = Math.round((i / (steps.length - 1)) * 100) + "%";
     $("#spart").textContent = steps[i].dataset.part;
     $("#scount").textContent = `${i + 1} van ${steps.length}`;
+    // Elke beantwoorde vraag is aanklikbaar, plus de eerste open vraag
+    const klaar = steps.map((st) => !st.querySelector("input[type=radio]") || !!st.querySelector("input:checked"));
+    const open = klaar.indexOf(false) < 0 ? steps.length - 1 : klaar.indexOf(false);
+    $("#sdots").innerHTML = steps.map((st, j) => `<button type="button" data-step="${j}" class="${j === i ? "nu" : klaar[j] ? "klaar" : ""}" ${j > open && !klaar[j] ? "disabled" : ""} aria-label="Vraag ${j + 1}${klaar[j] ? ", beantwoord" : ""}"${j === i ? ' aria-current="step"' : ""}></button>`).join("");
     $("#vorige").disabled = i === 0;
     $("#volgende").hidden = last;
     $("#volgende").disabled = !answered;
@@ -732,18 +737,49 @@
   }
 
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
-  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const TEGELS = {
+    test: ["#/test", "Welke kant op?", "Doe de Padvinder, in 5 minuten"],
+    droom: ["#/droom", "Later word ik de nieuwe…", "Van droombaan naar echte banen"],
+    te: ["#/te", "Mensen vinden mij te…", "Je minpunt is ergens een kracht"],
+    opleidingen: ["#/opleidingen", "Alle opleidingen", "Mbo, hbo en wo in gewone taal"],
+    opendagen: ["#/opendagen", "Open dagen", "Bij jou in de buurt"],
+    plan: ["#/plan", "Mijn stappenplan", "Van nu tot je eerste studiedag"],
+    ouders: ["#/ouders", "Voor ouders", "Zo voer je het gesprek"],
+    route: ["#route", "Hoe kom je daar?", "Aanmelden, toelating, inschrijven"],
+    toelating: ["#toelating", "Toelating", "Loting, selectie, portfolio"],
+    geld: ["#geld", "Wie betaalt wat?", "Collegegeld, DUO, een kamer"],
+    opties: ["#opties", "Buitenland of tussenjaar?", "En later nog switchen"],
+    niveaus: ["#niveaus", "Mbo, hbo of wo?", "Drie paden, geen doodlopende"],
+    vakken: ["#vakken", "Mijn lievelingsvak", "Wat zegt het over jou, wat kun je ermee?"],
+    vertaal: ["#vertaal", "Business wát?", "Engelse studienamen vertaald"],
+    woorden: ["#woorden", "Moeilijke woorden", "Van bol tot propedeuse"],
+  };
+  const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
+  const VERDER = {
+    test: ["droom", "te", "opleidingen", "plan"], droom: ["te", "test", "vakken", "opendagen"], te: ["droom", "test", "vakken", "opleidingen"],
+    opleidingen: ["vertaal", "opendagen", "droom", "plan"], opendagen: ["plan", "ouders", "opleidingen", "geld"], plan: ["geld", "opendagen", "toelating", "ouders"],
+    uitleg: ["plan", "test", "opendagen", "ouders"], ouders: ["plan", "test", "geld", "opendagen"],
+  };
+  const UITLEG = ["route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"];
+  $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
+  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
+    // Uitleg: één onderwerp tegelijk, met de onderwerpen als tegels erboven
+    const los = v === "uitleg" && UITLEG.includes(target);
+    document.querySelectorAll("main > section").forEach((s) => (s.hidden = !VIEWS[v].includes(s.id) || (v === "uitleg" && UITLEG.includes(s.id) && s.id !== target)));
+    $("#uitlegmenu").classList.toggle("compact", los);
+    document.querySelectorAll("#uitlegTegels .tegel").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + target ? "page" : "false"));
     if (v !== view) {
       view = v;
-      document.querySelectorAll("main > section").forEach((s) => (s.hidden = !VIEWS[v].includes(s.id)));
+      $("#verder").hidden = !VERDER[v];
+      if (VERDER[v]) $("#verderTegels").innerHTML = VERDER[v].map(tegelHtml).join("");
       $(".hero").hidden = v !== "start";
       document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.view === v ? "page" : "false"));
       if (location.hash !== "#/" + v) history.replaceState(null, "", "#/" + v);
     }
-    const t = target && document.getElementById(target);
+    const t = target && document.getElementById(v === "uitleg" ? "uitlegmenu" : target);
     window.scrollTo({ top: t ? t.getBoundingClientRect().top + window.scrollY - 84 : 0, behavior: "instant" });
   }
   function route() {
