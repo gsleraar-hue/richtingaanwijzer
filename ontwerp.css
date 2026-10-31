@@ -5,11 +5,7 @@
   --mbo:#d6336c; --hbo:#0e8f7e; --wo:#5f3dc4;
   --r:12px;
 }
-@media (prefers-color-scheme: dark){
-  :root{--paper:#0b1226; --ink:#eef2ff; --muted:#a6b3d4; --card:#131c38; --line:rgba(238,242,255,.18);
-    --accent:#8fb0ff; --green:#55d3c0; --tint:#1a2650; --deep:#080e20; --deep-ink:#eef2ff;
-    --mbo:#ff7aa8; --hbo:#55d3c0; --wo:#b9a4ff;}
-}
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.7 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
@@ -237,7 +233,7 @@ footer a{color:#8fb2ff}
 .kaartlijst button:hover small,.kaartlijst button:focus-visible small{color:color-mix(in srgb,var(--c) 62%,#fff)}
 
 /* Mensen en levendigheid */
-@media (prefers-color-scheme: dark){.hero{background:linear-gradient(180deg,#14214a 0%,#0b1226 100%)}}
+
 h1{max-width:560px}
 .hero-art{position:absolute;right:max(16px,calc((100% - 1040px)/2));bottom:-6px;width:min(470px,44vw);z-index:1}
 .hero-art svg,.parents-art svg{display:block;width:100%;height:auto}
@@ -257,7 +253,7 @@ h1{max-width:560px}
 .btn:hover{background:var(--ink);border-color:var(--ink)}
 .btn.ghost{background:transparent;color:var(--accent)}
 .chip[aria-pressed="true"],.scale label:has(input:checked),.kid:has(input:checked){background:var(--accent);border-color:var(--accent);color:#fff}
-@media (prefers-color-scheme: dark){.btn{color:#0b1226}.chip[aria-pressed="true"],.scale label:has(input:checked),.kid:has(input:checked){color:#0b1226}}
+
 
 /* Test: één vraag tegelijk */
 .quiz .part{display:none}
@@ -310,7 +306,7 @@ h1{max-width:560px}
 
 /* Kop zoals School of Rock: fotomozaïek, kleurwaas, schaduwverloop en accentbalk */
 .hero{background:#101a3a;color:#fff;min-height:min(80vh,700px);display:flex;align-items:flex-end;padding:110px 0 64px;border-bottom:0}
-@media (prefers-color-scheme: dark){.hero{background:#101a3a}}
+
 .hero .mosaic{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);grid-auto-flow:dense}
 .hero .mosaic i{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.1)}
 .hero .mosaic i:nth-child(1){grid-column:span 2;grid-row:span 2}
@@ -337,7 +333,7 @@ h1{max-width:560px}
 /* Rust: vaste menubalk en losse schermen */
 [hidden]{display:none!important}
 .topbar{position:sticky;top:0;z-index:50;background:rgba(243,246,251,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-@media (prefers-color-scheme: dark){.topbar{background:rgba(11,18,38,.92)}}
+
 .topbar-in{display:flex;align-items:center;gap:20px;min-height:64px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);text-decoration:none;white-space:nowrap}
 .brand svg{width:24px;height:24px;color:var(--accent)}
@@ -345,7 +341,7 @@ h1{max-width:560px}
 .tabs a{padding:8px 14px;border-radius:99px;text-decoration:none;color:var(--ink);font-weight:600;font-size:.92rem;white-space:nowrap}
 .tabs a:hover{background:var(--tint)}
 .tabs a[aria-current="page"]{background:var(--accent);color:#fff}
-@media (prefers-color-scheme: dark){.tabs a[aria-current="page"]{color:#0b1226}}
+
 .topbar .searchbox input{width:240px;padding:9px 16px;font-size:.92rem;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);box-shadow:none}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
 .btn.licht{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.7);color:#fff}
@@ -408,7 +404,18 @@ main{min-height:70vh}
 @media (max-width:700px){.banner img{height:150px;border-radius:14px}}
 
 /* Geen zichtbare scrollbalk (scrollen blijft gewoon werken) */
-html{scrollbar-width:none;color-scheme:light dark}
+html{scrollbar-width:none;color-scheme:light}
 html::-webkit-scrollbar,body::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}
 .nlv{color:var(--muted);font-weight:500;font-style:normal;font-size:.92em}
 .card h3 .nlv,#detailInhoud h2 .nlv{display:block;font-size:.55em;font-weight:600;margin-top:2px}
+
+/* Altijd licht; geen marineblauw meer */
+.hero{background:#1d3fae}
+.hero .shade{background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0))}
+.parents{background:linear-gradient(120deg,#3157d5 0%,#2a6fd6 50%,#0e9aa7 100%);color:#fff}
+.parents h2,.parents .tips{color:#fff}
+.parents .sub{color:#e3ecff}
+.parents h2::before{background:#fff}
+footer{background:#e8eef9;color:#3a4766;border-top:1px solid var(--line)}
+footer a{color:#3157d5}
+.btn,.chip[aria-pressed="true"],.scale label:has(input:checked),.kid:has(input:checked),.tabs a[aria-current="page"]{color:#fff}
