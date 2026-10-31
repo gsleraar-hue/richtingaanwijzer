@@ -355,3 +355,32 @@ const TE = [
   ["bemoeizuchtig", "betrokken", "Je trekt je het lot van anderen aan. Sociaal werkers, coaches en mensen op personeelszaken doen dat de hele dag.", ["sociaal", "gedrag", "management"]],
   ["serieus", "verantwoordelijk", "Je neemt dingen niet licht op. Daar ben je blij mee in de zorg, de rechtspraak of als je met geld van anderen werkt.", ["zorg", "recht", "economie"]]
 ];
+
+// Plan B: wat als het niet lukt? [situatie, wanneer, [stappen]]
+const PLANB = [
+  ["Uitgeloot of niet geselecteerd", "Bij een hbo- of wo-opleiding met selectie of loting hoor je uiterlijk 15 april of je bent geplaatst.", [
+    "Schrik niet: je bent niet de enige. Bij populaire opleidingen valt een groot deel af.",
+    "Je mag je daarna nog aanmelden voor een andere opleiding, ook na 1 mei. Doe het wel zo snel mogelijk.",
+    "Kijk naar een verwante opleiding zonder selectie. Wil je arts worden? Dan kun je bijvoorbeeld beginnen met biomedische wetenschappen of verpleegkunde.",
+    "Probeer het volgend jaar opnieuw. Hoe vaak dat mag, verschilt per opleiding.",
+    "Gebruik het jaar ertussen: werk of vrijwilligerswerk in het vak helpt vaak bij de volgende selectie."]],
+  ["Portfolio, auditie of toelatingsexamen niet gehaald", "Bij kunst, muziek, dans, sport of een academie met een toelatingsexamen.", [
+    "Vraag om uitleg: wat ontbrak er? Daar leer je het meest van.",
+    "Doe een vooropleiding of oriëntatiejaar. Veel kunstacademies en conservatoria hebben er een.",
+    "Probeer een andere school: elke academie kijkt anders.",
+    "Kies een verwante opleiding op mbo of hbo, bijvoorbeeld mediavormgeving of communicatie, en stroom later door."]],
+  ["De mbo-opleiding zit vol", "Sommige mbo-opleidingen hebben een maximum aantal plaatsen.", [
+    "Meld je je vóór 1 april aan, dan heb je toelatingsrecht. Bij opleidingen met een maximum aantal plaatsen kan het toch vol zijn.",
+    "De school moet je dan helpen zoeken naar een andere plek of opleiding. Vraag daar gewoon om.",
+    "Kijk bij een andere mbo-school in de buurt: daar kan dezelfde opleiding nog plek hebben.",
+    "Of begin op een ander niveau en stroom door: van niveau 3 naar 4 kan vaak."]],
+  ["Het eerste jaar gaat niet goed", "Je zit al op een opleiding, maar het past niet of je haalt je punten niet.", [
+    "Veel hbo- en wo-opleidingen hebben een bindend studieadvies (BSA): haal je te weinig punten, dan moet je stoppen met die opleiding.",
+    "Praat op tijd met je studieloopbaanbegeleider of de studentendecaan. Bij ziekte of problemen thuis kan er rekening mee worden gehouden.",
+    "Switchen is heel normaal. Veel studenten kiezen na het eerste jaar iets anders, en dat is geen verloren tijd.",
+    "Stop je? Meld je dan op tijd af via Studielink en bij DUO. Anders blijf je collegegeld betalen of krijg je geld dat je terug moet geven."]],
+  ["Je weet het nog niet", "Je twijfelt nog te veel om nu al te kiezen.", [
+    "Je hoeft niet meteen te beginnen. Een tussenjaar met werk, vrijwilligerswerk of reizen is prima.",
+    "Twijfel je? Meld je dan toch vast aan. Afmelden kan altijd, te laat aanmelden niet altijd.",
+    "Ga meelopen bij twee of drie opleidingen. Een dag meedoen zegt meer dan tien websites."]]
+];

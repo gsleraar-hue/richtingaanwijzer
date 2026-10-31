@@ -232,6 +232,12 @@
         ? `<h3>Wat heb je ervoor nodig?</h3><ul><li><strong>Vooropleiding:</strong> ${o.l.map((n) => `voor ${NIV_LABEL[n]}: ${VOOROPLEIDING[n] || ""}`).join(". ")}</li><li>${vt(X.profiel)}</li><li><strong>Het helpt als je:</strong> ${X.eigen.map(vt).join(", ")}</li></ul><p class="praat" style="margin-top:8px">Toelatingseisen verschillen per school. Lees ze altijd bij de opleiding zelf.</p>`
         : "") +
       `<h3>Toelatingsexamen, auditie of selectie?</h3><p>${SELECTIE[f.id] ? esc(SELECTIE[f.id]) + " Kijk bij de opleiding zelf wat er precies gevraagd wordt." : "Meestal niet. Heb je de juiste vooropleiding en meld je je op tijd aan, dan mag je in principe beginnen."}</p>` +
+      `<div class="planb-box"><h3>Plan B: wat als je niet wordt aangenomen?</h3><ul>` +
+      `<li>Dezelfde opleiding bij een andere school${o.i.length > 1 ? ` (${o.i.length} scholen bieden hem aan)` : ""}.</li>` +
+      `<li>Een verwante opleiding in de groep ${esc(f.naam)}.</li>` +
+      (o.l.includes("wo") ? "<li>Via het hbo: met je propedeuse kun je vaak alsnog naar de universiteit.</li>" : "") +
+      (o.l.includes("hbo") ? "<li>Via mbo 4: daarna kun je alsnog naar het hbo.</li>" : "") +
+      `<li>Volgend jaar opnieuw proberen.</li></ul><p><a href="#planb">Lees alles over Plan B →</a></p></div>` +
       `<h3>Hoe kom je daar?</h3><ol class="stapjes"><li>Zorg voor de juiste vooropleiding en het juiste profiel.</li><li>Ga naar een open dag of meeloopdag.</li><li>Meld je aan via Studielink: uiterlijk 1 mei${SELECTIE[f.id] ? ", bij selectie of loting vaak al vóór 15 januari" : ""}.</li><li>Doe de studiekeuzecheck.</li><li>Regel je geld bij DUO, en eventueel een kamer.</li></ol><p><a href="#route">Bekijk het hele stappenplan →</a></p>` +
       `<h3>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h3>${personaHtml(f.gebied)}` +
       `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}${n === "mbo" && o.mn && o.mn.length ? " niveau " + o.mn.join(", ") : ""}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
@@ -788,6 +794,7 @@
     ouders: ["#/ouders", "Voor ouders", "Zo voer je het gesprek"],
     route: ["#route", "Hoe kom je daar?", "Aanmelden, toelating, inschrijven"],
     toelating: ["#toelating", "Toelating", "Loting, selectie, portfolio"],
+    planb: ["#planb", "Plan B", "Wat als je niet wordt aangenomen?"],
     geld: ["#geld", "Wie betaalt wat?", "Collegegeld, DUO, een kamer"],
     opties: ["#opties", "Buitenland of tussenjaar?", "En later nog switchen"],
     niveaus: ["#niveaus", "Mbo, hbo of wo?", "Drie paden, geen doodlopende"],
@@ -798,13 +805,13 @@
   const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
   const VERDER = {
     test: ["sterren", "droom", "te", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
-    opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["plan", "metro", "ouders", "geld"], plan: ["metro", "geld", "opendagen", "ouders"],
+    opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["plan", "metro", "ouders", "geld"], plan: ["planb", "metro", "geld", "opendagen"],
     uitleg: ["metro", "plan", "test", "ouders"], ouders: ["metro", "plan", "test", "geld"],
-    sterren: ["test", "droom", "metro", "opleidingen"], metro: ["plan", "toelating", "sterren", "geld"],
+    sterren: ["test", "droom", "metro", "opleidingen"], metro: ["planb", "plan", "toelating", "sterren"],
   };
-  const UITLEG = ["route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"];
+  const UITLEG = ["route", "toelating", "planb", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -1010,6 +1017,7 @@
     if (mboRoute) st.push({ id: "aanmelden", wanneer: `Vóór 1 april ${sj}`, titel: "Aanmelding: bij de mbo-school", tekst: "Je meldt je aan via de website van de mbo-school zelf. Doe je dat vóór 1 april, dan heb je toelatingsrecht: de school moet je dan toelaten als je aan de vooropleidingseisen voldoet. Je mag je bij meer opleidingen aanmelden.", datum: new Date(sj, 3, 1) });
     else st.push({ id: "aanmelden", wanneer: `Vóór 1 mei ${sj}`, titel: "Aanmelding: via Studielink", tekst: "Dan heb je recht op een studiekeuzecheck en word je in principe toegelaten als je aan de eisen voldoet. Je mag je voor meer opleidingen aanmelden.", datum: new Date(sj, 4, 1) });
     if (!mboRoute) st.push({ id: "toelating", wanneer: `Voorjaar ${sj}`, titel: "Toelating: word je toegelaten?", tekst: (selectie.length ? `Voor je lijst geldt: ${selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>: ${esc(SELECTIE[f])}`).join(" ")}<br>` : "Voor de opleidingen op je lijst geldt meestal: juiste vooropleiding en op tijd aangemeld, dan mag je beginnen.<br>") + `Andere vormen: loting, portfolio, auditie, aanvullende eisen. <a href="#toelating">Lees wat die betekenen →</a>` });
+    st.push({ id: "planb", wanneer: mboRoute ? `Vóór 1 april ${sj}` : `Vóór 1 mei ${sj}`, titel: "Zet een Plan B klaar", tekst: (selectie.length && !mboRoute ? `Voor ${selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>`).join(" en ")} is er vaak selectie of loting. Zet ook een opleiding zonder selectie op je lijst en meld je daar ook voor aan.` : "Meld je voor meer dan één opleiding aan, dan heb je altijd iets achter de hand.") + ` <a href="#planb">Wat als je niet wordt aangenomen? →</a>` });
     if (mboRoute) st.push({ id: "check", wanneer: `Voorjaar ${sj}`, titel: "Toelating: het intakegesprek", tekst: "Na je aanmelding nodigt de school je uit voor een intake: een gesprek over wie je bent, wat je wilt en wat je nodig hebt. Soms hoort er een opdracht of test bij. Het is geen examen. Voor sommige opleidingen gelden extra eisen, zoals een sporttest of een medische keuring." });
     else st.push({ id: "check", wanneer: `Mei – juni ${sj}`, titel: "Doe de studiekeuzecheck", tekst: "Een opdracht, vragenlijst of gesprek. Het is een advies, geen examen." });
     if (mboRoute) st.push({ id: "duo", wanneer: `Zomer ${sj}`, titel: "Geld en reizen regelen", tekst: "Ben je jonger dan 18, dan vraag je bij DUO een studentenreisproduct aan voor het ov. Vanaf je 18e kun je studiefinanciering krijgen en betaal je lesgeld (bij bol). Verdienen je ouders weinig? Dan kun je vaak een aanvullende beurs krijgen. <a href='#geld'>Wie betaalt wat? →</a>" });
@@ -1217,6 +1225,16 @@
     try { BEWAAR_SLEUTELS.forEach((k) => localStorage.removeItem(k)); } catch (e) {}
     location.reload();
   });
+
+  /* ---------- Plan B ---------- */
+  $("#planbKnoppen").innerHTML = PLANB.map((p, i) => `<button type="button" class="vakknop" data-planb="${i}" aria-pressed="false">${esc(p[0])}</button>`).join("");
+  function toonPlanB(i) {
+    const p = PLANB[i];
+    document.querySelectorAll("#planbKnoppen .vakknop").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.planb === String(i))));
+    $("#planbPaneel").innerHTML = `<p class="planb-wanneer">${vt(p[1])}</p><ol class="planb-stappen">${p[2].map((t) => `<li>${vt(t)}</li>`).join("")}</ol>`;
+  }
+  $("#planbKnoppen").addEventListener("click", (e) => { const b = e.target.closest("[data-planb]"); if (b) toonPlanB(Number(b.dataset.planb)); });
+  toonPlanB(0);
 
   /* ---------- Printen: elk scherm en elke kaart ---------- */
   function printMet(klasse) {

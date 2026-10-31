@@ -835,3 +835,17 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .m-st.m-werk text{font-size:22px}
 .m-eind text{font-size:19px}
 .m-tekst text{font-size:17px}
+
+/* Plan B */
+.planb-paneel{margin-top:16px;padding:22px 26px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;background:var(--card);max-width:820px}
+.planb-wanneer{margin:0 0 12px;color:var(--muted)}
+.planb-stappen{margin:0;padding-left:22px;display:grid;gap:8px}
+.planb-stappen li::marker{color:var(--accent);font-weight:800}
+.planb-altijd{margin-top:16px;max-width:820px;font-size:.95rem}
+.planb-box{margin:18px 0;padding:14px 18px;border-radius:10px;background:var(--tint);border-left:4px solid var(--accent)}
+.planb-box h3{margin-top:0}
+.planb-box ul{margin:6px 0 8px;padding-left:20px}
+.planb-box p{margin:0}
+.geen-account{margin:10px 0 0;padding:0 0 0 18px;border:0;background:none;border-radius:0;font-size:.8rem;color:var(--muted);max-width:none;position:relative}
+.geen-account::before{content:"";position:absolute;left:0;top:.45em;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.7}
+#test .geen-account{margin:0 0 12px}
