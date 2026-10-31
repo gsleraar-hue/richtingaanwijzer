@@ -23,6 +23,17 @@
     });
   };
 
+  const termNl = (s) => termMap.get(String(s).toLowerCase().replace(/[ -]/g, "")) || null;
+  // Onder een naam: Nederlandse vertaling (als de hele naam Engels is) en eventueel een echt andere naam
+  function naamRegels(naam, alt, label) {
+    let h = "";
+    const nl = termNl(naam);
+    if (nl) h += `<p class="eng">In het Nederlands: <strong>${esc(nl)}</strong></p>`;
+    const kaal = (x) => String(x).toLowerCase().replace(/[^a-z]/g, "");
+    if (alt && kaal(alt) !== kaal(naam) && !(nl && kaal(alt).startsWith(kaal(naam)))) h += `<p class="eng">${label || "Ook bekend als"}: ${esc(alt)}</p>`;
+    return h;
+  }
+
   /* ---------- Gids ---------- */
   const state = { zoek: "", niveau: "", gebied: "" };
   const NIVEAUS = ["mbo", "hbo", "wo"];
@@ -125,8 +136,8 @@
     const insts = o.i.slice(0, 40);
     $("#detailInhoud").innerHTML =
       `<div class="badges">${o.l.map((n) => `<span class="badge ${n}">${NIV_LABEL[n]}</span>`).join("")}<span class="badge gebied">${esc(f.naam)}</span></div>` +
-      `<h2 id="dTitel">${vt(o.n)}</h2>` +
-      (o.e ? `<p style="color:var(--muted)">Internationale naam: ${esc(o.e)}</p>` : "") +
+      `<h2 id="dTitel">${esc(o.n)}</h2>${naamRegels(o.n, o.e, "Internationale naam")}` +
+      
       `<h3>Wat betekent dit?</h3><p>${vt(f.uitleg)} Soortgelijke opleidingen vind je in dezelfde groep.</p>` +
       (X ? `<h3>Wat kun je ermee?</h3><ul>${X.kunJe.map((k) => `<li>${vt(k)}</li>`).join("")}</ul>` : "") +
       (X
@@ -166,7 +177,7 @@
       "button",
       { type: "button", class: "card" },
       badges(s) +
-        `<h3>${vt(s.naam)}</h3><p class="eng">Ook bekend als: ${esc(s.engels)}</p><p class="kort">${vt(s.kort)}</p><span class="more">Lees de uitleg →</span>`
+        `<h3>${esc(s.naam)}</h3>${naamRegels(s.naam, s.engels)}<p class="kort">${vt(s.kort)}</p><span class="more">Lees de uitleg →</span>`
     );
     b.addEventListener("click", () => openDetail(s.id));
     return b;
@@ -177,7 +188,7 @@
     if (!s) return;
     $("#detailInhoud").innerHTML =
       badges(s) +
-      `<h2 id="dTitel">${vt(s.naam)}</h2><p class="eng" style="color:var(--muted)">Ook bekend als: ${esc(s.engels)}</p>` +
+      `<h2 id="dTitel">${esc(s.naam)}</h2>${naamRegels(s.naam, s.engels)}` +
       `<h3>In gewone woorden</h3><p>${vt(s.kort)}</p>` +
       `<h3>Wat doe je er?</h3><p>${vt(s.doe)}</p>` +
       `<h3>Wat kun je ermee?</h3><ul>${s.kanJe.map((k) => `<li>${vt(k)}</li>`).join("")}</ul>` +
@@ -370,7 +381,7 @@
       h += `<h4>Dit hebben deze opleidingen gemeen</h4><ul>${g.gemeen.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
       h += `<h4>Wat kun je ermee?</h4><ul>${g.kunJe.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
       h += `<p style="margin-top:8px"><strong>Studies om te bekijken:</strong></p><div class="mini">` +
-        STUDIES.filter((s) => s.gebied === k).map((s) => `<button type="button" data-id="${s.id}">${vt(s.naam)} <small style="color:var(--muted)">(${s.niveau.join("/")})</small></button>`).join("") +
+        STUDIES.filter((s) => s.gebied === k).map((s) => `<button type="button" data-id="${s.id}">${esc(s.naam)} <small style="color:var(--muted)">(${s.niveau.join("/")})</small></button>`).join("") +
         "</div>";
       h += `<p style="margin-top:10px"><strong>Alle opleidingen in deze richting:</strong></p><div class="mini">` +
         FAMILIES.filter((f) => f.gebied === k).map((f) => `<button type="button" data-fam="${f.id}">${esc(f.naam)}</button>`).join("") +
