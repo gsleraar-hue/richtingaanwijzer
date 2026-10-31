@@ -1,0 +1,91 @@
+// Extra uitleg per groep: wat kun je ermee, wat heb je nodig
+const VOOROPLEIDING = {
+  hbo: "havo, vwo of mbo-4",
+  wo: "vwo (of een hbo-propedeuse)",
+  ad: "havo, vwo of mbo-4"
+};
+const FAM_EXTRA = {
+  onderwijs: { e: "🍎", kunJe: ["Leraar op de basisschool of middelbare school", "Onderwijskundige of schoolleider", "Begeleider of remedial teacher", "Opleider of trainer in bedrijven"], profiel: "Vaak geen vast profiel, maar je moet goed zijn in taal en rekenen (toets bij de pabo). Voor een tweedegraads lerarenopleiding helpt het als je het vak zelf goed beheerst.", eigen: ["Geduld en uitleggen", "Plezier in kinderen of jongeren", "Rustig blijven in een drukke klas"] },
+  design: { e: "🎨", kunJe: ["Ontwerper of vormgever", "Art director of creatief concept bedenken", "Maker van film, foto of games", "Interieurontwerper of modeontwerper"], profiel: "Meestal toelating via portfolio of talentselectie. Je profiel is minder belangrijk dan wat je zelf laat zien.", eigen: ["Nieuwsgierig en doorzetten", "Tegen kritiek kunnen", "Zelf veel maken en oefenen"] },
+  muziek: { e: "🎭", kunJe: ["Musicus, acteur of danser", "Docent muziek of theater", "Regisseur of producent", "Podium- of festivalwerk"], profiel: "Toelating gaat via een auditie of selectie. De vooropleiding telt minder zwaar.", eigen: ["Veel oefenen en discipline", "Tegen afwijzing kunnen", "Durven laten zien wat je maakt"] },
+  talen: { e: "📚", kunJe: ["Vertaler of tolk", "Docent of tekstschrijver", "Onderzoeker", "Werken bij musea, uitgeverijen of de overheid"], profiel: "Op het wo meestal vwo. Je moet goed zijn in lezen en schrijven in de taal of het vak dat je kiest.", eigen: ["Veel lezen en schrijven", "Nieuwsgierig naar cultuur", "Precies met woorden zijn"] },
+  gedrag: { e: "🧠", kunJe: ["Psycholoog (na een master en vervolgopleiding)", "Onderzoeker of beleidsmedewerker", "Coach, trainer of HR-adviseur", "Werken bij overheid, zorg of bedrijven"], profiel: "Op het wo meestal vwo. Wiskunde A of B helpt, want er is veel statistiek.", eigen: ["Statistiek moet niet eng zijn", "Nieuwsgierig naar mensen", "Zelf onderzoek willen doen"] },
+  communicatie: { e: "📣", kunJe: ["Communicatieadviseur of woordvoerder", "Journalist of redacteur", "Contentmaker of social media-specialist", "Marketingcommunicatie"], profiel: "Meestal geen vast profiel. Bij journalistiek is vaak een selectie of schrijfopdracht.", eigen: ["Goed schrijven", "Nieuwsgierig en snel werken", "Makkelijk contact maken"] },
+  economie: { e: "💶", kunJe: ["Accountant of financieel adviseur", "Econoom of analist", "Belastingadviseur", "Werken bij een bank of verzekeraar"], profiel: "Economie en wiskunde (A of B) helpen. Voor wo-economie en econometrie is wiskunde B vaak belangrijk.", eigen: ["Goed met cijfers", "Nauwkeurig", "Interesse in geld en markten"] },
+  management: { e: "🧩", kunJe: ["Manager of teamleider", "Adviseur of consultant", "Ondernemer", "Projectleider"], profiel: "Meestal geen vast profiel. Economie en wiskunde A helpen. Bij Engelstalige varianten wordt je Engels getoetst.", eigen: ["Samenwerken en organiseren", "Presenteren", "Leiding durven nemen"] },
+  marketing: { e: "🛍️", kunJe: ["Marketeer of merkmanager", "Accountmanager of verkoper", "Productmanager", "E-commerce-specialist"], profiel: "Geen vast profiel. Economie of wiskunde A kan helpen.", eigen: ["Creatief én analytisch", "Klantgericht", "Plezier in overtuigen"] },
+  recht: { e: "⚖️", kunJe: ["Advocaat of rechter (met vervolgopleiding)", "Jurist bij overheid of bedrijf", "Beleidsadviseur", "Notaris of belastingadviseur (na een master)"], profiel: "Geen vast profiel, maar je moet veel lezen en goed redeneren. Op het wo is vwo gebruikelijk.", eigen: ["Veel lezen en onthouden", "Argumenten bedenken", "Precies werken"] },
+  natuur: { e: "🔬", kunJe: ["Onderzoeker", "Labmedewerker", "Docent natuurwetenschappen", "Adviseur bij overheid of industrie"], profiel: "Vaak een natuurprofiel (N&T of N&G). Voor natuurkunde, scheikunde en wiskunde is wiskunde B meestal nodig.", eigen: ["Doorzetten", "Nauwkeurig", "Plezier in uitzoeken waarom"] },
+  ict: { e: "💻", kunJe: ["Software developer", "Data-analist of data scientist", "Security specialist", "Systeembeheerder of IT-consultant"], profiel: "Wiskunde wordt vaak gevraagd (A, B of C). Voor het wo vaak wiskunde B. Voor het hbo kan ook mbo-ICT.", eigen: ["Logisch nadenken", "Geduld bij fouten zoeken", "Zelf willen uitproberen"] },
+  techniek: { e: "⚙️", kunJe: ["Ingenieur of ontwerper", "Technisch adviseur", "Productiemanager", "Onderzoeker in de industrie"], profiel: "Op het wo meestal N&T met wiskunde B. Voor het hbo ook N&G, of mbo-techniek.", eigen: ["Praktisch en nieuwsgierig", "Plezier in rekenen en bouwen", "Samenwerken in een project"] },
+  bouw: { e: "🏗️", kunJe: ["Architect of bouwkundig ontwerper", "Constructeur of projectleider", "Planoloog of stedenbouwkundige", "Uitvoerder op de bouw"], profiel: "Een natuurprofiel helpt, voor het wo vaak wiskunde B. Voor hbo ook mbo-bouw.", eigen: ["Ruimtelijk inzicht", "Tekenen en ontwerpen", "Praktisch denken"] },
+  groen: { e: "🌱", kunJe: ["Ecoloog of natuurbeheerder", "Adviseur duurzaamheid of landbouw", "Agrarisch ondernemer", "Dierverzorger of dierenarts (met selectie)"], profiel: "Een natuurprofiel helpt. Voor het hbo ook mbo-groen. Diergeneeskunde heeft selectie.", eigen: ["Graag buiten werken", "Zorg voor dieren of planten", "Praktisch werken"] },
+  zorg: { e: "🩺", kunJe: ["Verpleegkundige", "Arts, tandarts of apotheker (wo)", "Verloskundige", "Medisch of laboratoriumtechnicus"], profiel: "Meestal Natuur & Gezondheid (N&G) of N&T. Geneeskunde, tandheelkunde en verloskunde hebben vaak loting of selectie.", eigen: ["Medeleven en verantwoordelijkheid", "Tegen stress en onregelmatige uren kunnen", "Netjes en precies"] },
+  therapie: { e: "🏃", kunJe: ["Fysiotherapeut", "Ergotherapeut of logopedist", "Sportcoach of leefstijlcoach", "Diëtist"], profiel: "Natuur & Gezondheid of N&T helpt. Er zijn vaak veel aanmeldingen, dus selectie of loting.", eigen: ["Contact met mensen", "Geduld", "Plezier in bewegen en gezondheid"] },
+  sociaal: { e: "🤝", kunJe: ["Maatschappelijk werker", "Jeugdzorgwerker", "Wijkcoach of jongerenwerker", "Begeleider in de gehandicaptenzorg"], profiel: "Geen vast profiel. Mbo-4, havo of vwo.", eigen: ["Goed luisteren", "Grenzen kunnen stellen", "Veerkracht"] },
+  horeca: { e: "🏨", kunJe: ["Hotelmanager of restaurantmanager", "Eventplanner", "Reisadviseur", "Facility manager"], profiel: "Geen vast profiel. Talen en klantgerichtheid helpen. Vaak veel stage in de praktijk.", eigen: ["Gastvrij en flexibel", "Organiseren", "Werken als anderen vrij zijn"] },
+  veilig: { e: "🛡️", kunJe: ["Beveiligingsadviseur", "Politie of defensie (met selectie)", "Logistiek manager", "Piloot of scheepsofficier (met selectie)"], profiel: "Politie, defensie en luchtvaart hebben strenge selecties (gezondheid, conditie). Logistiek en beveiliging zijn toegankelijker.", eigen: ["Alert en verantwoordelijk", "Fit en gezond", "Rustig onder druk"] }
+};
+
+// Wat heb je nodig, per uitgelichte studie
+const STUDIE_NODIG = {
+  verpleegkunde: "Mbo-4 of hbo: havo of mbo-4. Natuur & Gezondheid helpt. Je moet tegen nachtdiensten, ziekte en verdriet kunnen.",
+  fysio: "Havo of vwo (of mbo-4 met extra eisen). Natuur & Gezondheid of N&T. Er is vaak selectie of loting. Goed zijn in bewegen helpt niet, maar je moet wel gemotiveerd zijn voor veel anatomie.",
+  sport: "Havo of vwo. Geen vast profiel, wel conditie en belangstelling voor bewegen. Soms een sporttest.",
+  ba: "Havo of vwo. Geen vast profiel. Economie en wiskunde A helpen. Je moet goed kunnen samenwerken en presenteren.",
+  iba: "Havo of vwo. Goed Engels: de opleiding is Engelstalig. Soms een taaltest of motivatiegesprek.",
+  marketing: "Havo, vwo of mbo-4. Geen vast profiel. Economie of wiskunde A helpt.",
+  hrm: "Havo, vwo of mbo-4. Goed met mensen kunnen praten en je kunt omgaan met vertrouwelijke dingen.",
+  informatica: "Hbo: havo, vwo of mbo-ICT. Wo: vwo met wiskunde B (soms wiskunde A of C volstaat). Je moet logisch kunnen denken.",
+  datascience: "Wiskunde A of B, voor het wo meestal wiskunde B. Programmeren leer je op de opleiding. Doorzetten bij moeilijke wiskunde.",
+  softdev: "Mbo: vmbo-diploma (voor mbo-4 vaak vmbo tl of kader). Je hoeft nog niet te kunnen programmeren, wel logisch denken.",
+  ct: "Wiskunde A, B of C; soms aanvullende toets of motivatiebrief. Je moet zowel techniek als bedenken leuk vinden.",
+  ido: "Meestal N&T met wiskunde B voor het wo. Voor het hbo ook N&G of mbo-techniek. Tekenen of ontwerpen helpt, je krijgt het ook geleerd.",
+  cmd: "Havo, vwo of mbo-4. Geen vast profiel. Vaak een motivatie- of portfolio-opdracht. Je moet kunnen samenwerken.",
+  mediamaker: "Vmbo-diploma, vaak een intakegesprek of portfolio. Plezier in zelf maken is belangrijker dan een mooie vooropleiding.",
+  mic: "Havo of vwo. Geen vast profiel. Goed kunnen schrijven en lezen.",
+  creativebiz: "Havo, vwo of mbo-4. Vaak een motivatie en een idee. Je moet creatief zijn én durven te ondernemen.",
+  psychologie: "Wo: vwo, wiskunde A of B helpt voor de statistiek. Hbo: havo, vwo of mbo-4. Veel lezen en leren van onderzoek.",
+  sw: "Mbo-4 of havo. Geen vast profiel. Ervaring met vrijwilligerswerk of bijbaantjes in de zorg of jeugdwerk helpt.",
+  recht: "Wo: vwo, geen vast profiel. Veel lezen en schrijven, vaak een BSA waarbij je minstens 45 van de 60 punten moet halen in het eerste jaar.",
+  pabo: "Havo, vwo of mbo-4 (mbo-4 met extra vakken). Toets op taal en rekenen vóór of tijdens de opleiding.",
+  biomed: "Vwo met natuurprofiel (N&G of N&T). Wiskunde en scheikunde helpen. Soms een extra toets of selectie.",
+  las: "Vwo, vaak selectie met motivatiebrief en gesprek. Je moet zelf kunnen plannen en kiezen.",
+  biologie: "Hbo: havo of mbo-groen. Wo: vwo met natuurprofiel. Buiten werken, lab en data allemaal mogelijk."
+};
+
+// Woordenlijst
+const WOORDEN = [
+  ["🎓", "Bachelor", "De eerste opleiding op hbo of wo. Duur: 4 jaar (hbo) of 3 jaar (wo)."],
+  ["🎒", "Master", "Een vervolgopleiding na je bachelor, meestal 1 of 2 jaar. Voor sommige beroepen heb je er een nodig, zoals psycholoog."],
+  ["📊", "ECTS (studiepunten)", "De ‘munteenheid’ van studeren. 60 punten is een jaar fulltime studeren. Een bachelor op het hbo is 240, op het wo 180."],
+  ["🥇", "Associate degree (AD)", "Een korte hbo-opleiding van 2 jaar. Je kunt daarna werken of doorstromen naar de bachelor."],
+  ["🌱", "Propedeuse", "Het eerste jaar van je hbo- of wo-opleiding. Als je dit haalt, krijg je een getuigschrift."],
+  ["⚠️", "BSA (bindend studieadvies)", "Haal je in het eerste jaar te weinig punten, dan moet je stoppen met de opleiding. Meestal 45 van de 60 punten op het hbo."],
+  ["🎟️", "Numerus fixus, loting, selectie", "Een opleiding heeft maar beperkte plekken. Je wordt toegelaten via een loting, of via selectie (brief, gesprek, test)."],
+  ["🧬", "Profiel (N&T, N&G, E&M, C&M)", "Je profielkeuze op havo of vwo: Natuur & Techniek, Natuur & Gezondheid, Economie & Maatschappij, Cultuur & Maatschappij. Sommige studies eisen een bepaald profiel."],
+  ["🏫", "Hogeschool of universiteit", "Hogeschool (hbo) is praktijkgericht voor een beroep. Universiteit (wo) is theoretisch en gericht op onderzoek."],
+  ["🔁", "Voltijd, deeltijd, duaal", "Voltijd is fulltime studeren. Deeltijd is naast je werk of gezin. Duaal is combineren van een opleiding met een betaalde baan."],
+  ["🧪", "Minor", "Een half jaar waarin je iets anders kiest dan je studie: een ander vak, een andere stad of het buitenland."],
+  ["💼", "Stage", "Werken bij een echt bedrijf of instelling als onderdeel van je studie. Op het hbo vaak 3 maanden tot een half jaar."],
+  ["🔎", "Meeloopdag, open dag, proefstuderen", "Je loopt een dag mee met studenten of bezoekt de school. Met één dag weet je vaak al of een opleiding bij je past."],
+  ["🔀", "Doorstromen", "Van mbo naar hbo, of van hbo naar wo. Het kan, soms met een extra schakeljaar of toets."],
+  ["📋", "Accreditatie", "Een officiële goedkeuring dat een opleiding aan de kwaliteitseisen voldoet. Alleen dan krijg je een erkend diploma."],
+  ["💸", "Studiefinanciering en collegegeld", "Je betaalt collegegeld, en kunt een beurs en lening krijgen via DUO. De regels veranderen, dus check de actuele bedragen op duo.nl."]
+];
+
+// Fancy naam -> wat is het echt
+const VERTAAL = [
+  ["Creative Technology", "Slimme dingen bedenken en bouwen", "Je bouwt interactieve producten, zoals een game, een slimme lamp of een app. Een mix van techniek en design."],
+  ["Business Administration", "Bedrijfskunde", "Hoe een bedrijf werkt: geld, mensen, markt en strategie."],
+  ["Communication & Multimedia Design", "Websites en apps ontwerpen", "Je bedenkt en maakt websites, apps en visuele boodschappen waar mensen iets mee doen."],
+  ["Liberal Arts & Sciences", "Zelf je vakken samenstellen", "Een brede universitaire opleiding waarin je zelf kiest wat je leert, van natuur tot maatschappij."],
+  ["Facility Management", "Gebouwen en diensten beheren", "Je regelt dat een gebouw of locatie goed werkt: schoonmaak, catering, veiligheid en ruimte."],
+  ["Human Resource Management", "Personeelszaken", "Je zorgt dat een organisatie de juiste mensen heeft en dat zij gezond en gemotiveerd werken."],
+  ["Mechatronics", "Robots en slimme machines", "Mechanica, elektronica en software tegelijk. Denk aan robots, drones en slimme productiemachines."],
+  ["Cyber Security", "Digitaal beveiligen", "Je beschermt systemen en gegevens tegen hackers en bedenkt hoe aanvallen werken."],
+  ["Applied Data Science & AI", "Data en slimme computers", "Je haalt inzichten uit data en laat computers dingen leren. Veel programmeren en statistiek."],
+  ["Industrial Design Engineering", "Producten ontwerpen", "Je ontwerpt producten die werken én mooi zijn, van koptelefoon tot medisch apparaat."],
+  ["Sports Management", "Sportorganisaties leiden", "Je organiseert sport, evenementen en clubs. Meer bedrijfskunde dan sporten."],
+  ["Logistics Engineering", "Goederenstromen organiseren", "Hoe komt iets van een fabriek naar jouw huis? Dat ontwerp en regel je."]
+];
