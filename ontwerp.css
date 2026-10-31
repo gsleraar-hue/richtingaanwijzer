@@ -995,3 +995,16 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .sterkaart .st-info h4{display:inline;margin:0 8px 0 0;font-size:.85rem}
 .sterkaart .st-info .mini,.sterkaart .st-info .btn{margin-top:6px}
 .sterkaart .st-veld{height:min(72vh,680px)}
+
+/* Plan B: altijd doen, groot en bovenaan */
+.planb-altijd{margin:18px 0 26px;padding:22px 26px;border-radius:14px;background:var(--accent);color:#fff;max-width:none;font-size:1rem}
+.planb-altijd h3{margin:0 0 14px;color:#fff;font-size:1.3rem}
+.planb-altijd ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:pb}
+.planb-altijd li{counter-increment:pb;display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-radius:10px;background:rgba(255,255,255,.12)}
+.planb-altijd li::before{content:counter(pb);font:800 1.6rem/1 "Segoe UI",system-ui,sans-serif;opacity:.8}
+.planb-altijd strong{font-size:1.05rem}
+.planb-altijd span{font-size:.92rem;opacity:.95}
+.planb-altijd a{color:#fff;font-weight:700}
+.planb-sit{margin:6px 0 0}
+@media (max-width:760px){.planb-altijd ol{grid-template-columns:1fr}}
+:root[data-theme="dark"] .planb-altijd,:root:not([data-theme="light"]) .planb-altijd{color:#fff}
