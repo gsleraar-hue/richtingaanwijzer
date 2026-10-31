@@ -200,13 +200,13 @@ section.parents{border-top:3px solid var(--ink)}
 @media (prefers-reduced-motion:reduce){.card:hover h3{animation:none}.flip:hover{transform:none}}
 
 /* Landkaart */
-.kaartwrap{background:#e9f1e4;border:3px solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;color:#101a33}
+.kaartwrap{background:#cfe3b5;border:3px solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;color:#101a33}
 .kaartwrap svg{display:block;width:100%;height:auto}
 .kaartwrap .reg{cursor:pointer;outline:none}
 .kaartwrap .reg rect{stroke:#101a33;stroke-width:3;transition:transform .15s}
 .kaartwrap .reg:hover rect,.kaartwrap .reg:focus-visible rect{stroke:#ff5d4a;stroke-width:5}
 .kaartwrap .reg text{font-family:"Segoe UI",system-ui,sans-serif;font-weight:800;pointer-events:none}
-.kaartwrap .road{fill:none;stroke:#b7a98a;stroke-width:10;stroke-linecap:round}
+.kaartwrap .road{fill:none;stroke:#e8d9b0;stroke-width:12;stroke-linecap:round}
 .kaartwrap .roadmid{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:8 8;stroke-linecap:round}
 .kaartwrap .hot{stroke:#ff5d4a;stroke-width:14}
 .kaartwrap .hotmid{stroke:#ffc531;stroke-width:3;animation:marsj 1s linear infinite}
@@ -220,3 +220,6 @@ section.parents{border-top:3px solid var(--ink)}
 .actief{margin:0 0 12px}
 .actief .chip{margin-right:6px}
 @media (prefers-reduced-motion:reduce){.kaartwrap .hotmid,.kaartwrap .pulse{animation:none}}
+
+.kaartwrap .reg.top1 .roof,.kaartwrap .reg.top2 .roof{fill:#ff5d4a}
+.kaartwrap .reg:hover .roof,.kaartwrap .reg:focus-visible .roof{fill:#ff5d4a}

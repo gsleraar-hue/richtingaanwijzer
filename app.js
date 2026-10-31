@@ -98,7 +98,7 @@
       b.addEventListener("click", () => { reset(); renderChips(); renderList(); });
       act.appendChild(b);
     };
-    if (state.gebied) addChip("Gebied: " + GEBIEDEN[state.gebied].naam, () => (state.gebied = ""));
+    if (state.gebied) addChip("Faculteit: " + GEBIEDEN[state.gebied].naam, () => (state.gebied = ""));
     if (state.niveau) addChip("Route: " + state.niveau, () => (state.niveau = ""));
     if (state.zoek) addChip("Zoekterm: " + state.zoek, () => { state.zoek = ""; $("#zoek").value = ""; });
     $("#alleLeeg").hidden = total > 0;
@@ -353,7 +353,7 @@
     box.innerHTML = h;
     box.hidden = false;
     const uk = $("#uitslagKaart");
-    uk.innerHTML = buildMap() + `<div class="kaartleg"><span>🔴 Jouw route: rode wegen</span><span>👆 Klik op een gebied voor de opleidingen</span></div>`;
+    uk.innerHTML = buildMap() + `<div class="kaartleg"><span>🔴 Jouw route: de rode paadjes</span><span>👆 Klik op een faculteit voor de opleidingen</span></div>`;
     highlightMap(uk, top);
     highlightMap($("#kaartKaart"), top);
     box.querySelectorAll(".mini button").forEach((b) =>
@@ -416,18 +416,25 @@
     });
     Object.keys(REG).forEach((k) => {
       const [cx, cy, em, fill] = REG[k];
-      regs += `<g class="reg" data-gebied="${k}" tabindex="0" role="button" aria-label="${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
-        `<rect x="${cx - 105}" y="${cy - 60}" width="210" height="120" rx="46" fill="${fill}" transform="rotate(${k.length % 2 ? -2 : 2} ${cx} ${cy})"/>` +
-        `<text x="${cx}" y="${cy - 6}" font-size="38" text-anchor="middle">${em}</text>` +
-        `<text x="${cx}" y="${cy + 30}" font-size="16" text-anchor="middle" fill="#101a33">${esc(GEBIEDEN[k].naam)}</text></g>`;
+      regs += `<g class="reg" data-gebied="${k}" tabindex="0" role="button" aria-label="Faculteit ${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
+        `<rect x="${cx - 105}" y="${cy - 52}" width="210" height="108" rx="8" fill="${fill}"/>` +
+        `<rect class="roof" x="${cx - 114}" y="${cy - 72}" width="228" height="26" rx="6" fill="#101a33"/>` +
+        `<text x="${cx}" y="${cy - 54}" font-size="12" text-anchor="middle" fill="#fff" letter-spacing="3">FACULTEIT</text>` +
+        `<text x="${cx}" y="${cy - 8}" font-size="34" text-anchor="middle">${em}</text>` +
+        `<text x="${cx}" y="${cy + 24}" font-size="15" text-anchor="middle" fill="#101a33">${esc(GEBIEDEN[k].naam)}</text>` +
+        `<rect x="${cx - 10}" y="${cy + 34}" width="20" height="22" rx="3" fill="#101a33"/></g>`;
     });
-    const grid = Array.from({ length: 9 }, (_, i) => `<line x1="${i * 112}" y1="0" x2="${i * 112}" y2="520" />`).join("") +
-      Array.from({ length: 5 }, (_, i) => `<line x1="0" y1="${i * 112}" x2="900" y2="${i * 112}" />`).join("");
-    return `<svg viewBox="0 0 900 520" role="group" aria-label="Kaart met zes gebieden van studies">` +
-      `<g stroke="#101a33" stroke-opacity=".08">${grid}</g>` +
-      `<path d="M0 520 C 120 470 230 505 330 480 S 560 495 900 450 L900 520Z" fill="#9fc6e8" opacity=".6"/>` +
+    const TREES = [[40, 45], [310, 40], [600, 50], [870, 45], [40, 215], [610, 215], [870, 215], [40, 420], [300, 420], [610, 420], [870, 440], [120, 495], [780, 495], [250, 275], [660, 255], [345, 175], [575, 175]];
+    const trees = TREES.map(([x, y], i) => `<g transform="translate(${x} ${y})"><rect x="-3" y="4" width="6" height="14" fill="#8a6a3d"/><circle cy="-5" r="${i % 3 ? 17 : 21}" fill="${i % 2 ? "#5aa05a" : "#6bb36b"}" stroke="#2f6b3a" stroke-width="2"/></g>`).join("");
+    return `<svg viewBox="0 0 900 520" role="group" aria-label="Campuskaart met zes faculteiten">` +
+      `<rect width="900" height="520" fill="#cfe3b5"/>` +
+      `<g stroke="#bcd7a0" stroke-width="2" fill="none"><path d="M0 60 C200 20 380 80 560 40 S800 20 900 50"/><path d="M0 220 C150 190 330 250 520 215 S800 190 900 230"/><path d="M0 410 C170 380 330 430 520 400 S780 380 900 410"/></g>` +
+      `<ellipse cx="300" cy="212" rx="62" ry="30" fill="#8ec5ea" stroke="#4f8fba" stroke-width="3"/><ellipse cx="292" cy="208" rx="22" ry="7" fill="#fff" opacity=".45"/>` +
+      trees +
       roads + regs +
-      `<g class="hier" transform="translate(${START[0]} ${START[1]})"><circle class="pulse" r="22" fill="#ff5d4a"/><circle r="12" fill="#ff5d4a" stroke="#101a33" stroke-width="3"/>` +
+      `<g class="hier" transform="translate(${START[0]} ${START[1]})"><circle class="pulse" r="22" fill="#ff5d4a"/>` +
+      `<rect x="-52" y="-46" width="10" height="34" fill="#8a6a3d" stroke="#101a33" stroke-width="2"/><rect x="42" y="-46" width="10" height="34" fill="#8a6a3d" stroke="#101a33" stroke-width="2"/><rect x="-66" y="-58" width="132" height="20" rx="10" fill="#ff5d4a" stroke="#101a33" stroke-width="2"/><text y="-44" text-anchor="middle" font-size="11" fill="#fff" letter-spacing="2">HOOFDINGANG</text>` +
+      `<circle r="9" fill="#ffc531" stroke="#101a33" stroke-width="3"/>` +
       `<rect x="-62" y="16" width="124" height="26" rx="13" fill="#101a33"/><text y="34" text-anchor="middle" font-size="13" fill="#fff">JIJ BENT HIER</text></g>` +
       `<g transform="translate(850 55)"><circle r="34" fill="none" stroke="#101a33" stroke-width="2"/><polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#101a33"/><polygon points="0,-32 6,-6 -6,-6" fill="#ff5d4a"/><text y="-40" text-anchor="middle" font-size="14" font-weight="800" fill="#101a33">N</text></g>` +
       `</svg>`;
@@ -450,7 +457,7 @@
     $("#alle").scrollIntoView({ behavior: "smooth", block: "start" });
   }
   $("#kaartKaart").innerHTML = buildMap() +
-    `<div class="kaartleg"><span>🔴 Jouw route (na de test)</span><span>🟫 Weg naar een gebied: via mbo, hbo of wo</span><span>👆 Klik op een gebied</span></div>`;
+    `<div class="kaartleg"><span>🔴 Jouw route (na de test)</span><span>🟫 Paadje naar een faculteit: via mbo, hbo of wo</span><span>👆 Klik op een faculteit</span></div>`;
   document.addEventListener("click", (e) => {
     const g = e.target.closest("[data-gebied]");
     if (g) openRegion(g.dataset.gebied);
