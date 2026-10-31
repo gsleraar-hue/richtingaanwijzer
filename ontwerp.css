@@ -719,3 +719,119 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 #test .geen-account{margin:0 0 14px}
 @media print{.geen-account{display:none!important}}
 .hero h1 .eigen{font-style:normal;text-decoration:underline;text-decoration-thickness:.09em;text-underline-offset:.1em;text-decoration-color:#fff}
+
+/* Lievelingsvak: knoppen + één breed paneel */
+.vakknoppen{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.vakknop{font:inherit;font-weight:600;padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s}
+.vakknop:hover{border-color:var(--accent)}
+.vakknop[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.vak-paneel{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 40px;padding:24px 28px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.vak-paneel h3{margin:0 0 4px;font-size:1.5rem}
+.vak-paneel h4{margin:16px 0 6px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.vak-paneel p{margin:0}
+.vak-paneel .vakwerk{margin:0;padding-left:18px;columns:2;column-gap:24px}
+.vak-paneel .vakwerk li{break-inside:avoid;margin-bottom:4px}
+.vak-let{margin-top:16px!important;font-size:.92rem;opacity:.85}
+.vak-paneel .btn{margin-top:16px}
+@media (max-width:760px){.vak-paneel{grid-template-columns:1fr;padding:18px}.vak-paneel .vakwerk{columns:1}}
+
+/* Levend pad in de Padvinder */
+.testgrid{grid-template-columns:minmax(0,1fr) 320px}
+.levendpad{margin:0;position:sticky;top:90px;padding:12px 12px 14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.levendpad svg{display:block;width:100%;height:auto;overflow:visible}
+.levendpad figcaption{font-size:.85rem;color:var(--muted);text-align:center;margin-top:4px;min-height:2.6em}
+.lp-voet{fill:none;stroke:var(--tint);stroke-width:14;stroke-linecap:round}
+.lp-pad{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round}
+#lpOpties line{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:2 6;transition:opacity .4s}
+.lp-vork{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;animation:lpVork 1s .2s ease forwards}
+@keyframes lpVork{to{stroke-dashoffset:0}}
+.lp-knoop circle{fill:var(--card);stroke:var(--muted);stroke-width:2;transition:r .4s ease}
+.lp-knoop text{font:600 12px "Segoe UI",system-ui,sans-serif;fill:var(--muted);text-anchor:middle}
+.lp-knoop.gekozen circle{fill:var(--accent);stroke:var(--accent)}
+.lp-knoop.gekozen text{fill:var(--ink);font-weight:800}
+.lp-kop{transition:transform .6s ease}
+.lp-kop circle{fill:var(--accent)}
+.lp-kop .lp-ring{fill:none;stroke:var(--accent);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:lpPuls 1.8s ease-out infinite}
+@keyframes lpPuls{from{transform:scale(1);opacity:.8}to{transform:scale(2.8);opacity:0}}
+.lp-start{fill:var(--ink)}
+.lp-jij{font:700 12px "Segoe UI",system-ui,sans-serif;fill:var(--ink);text-anchor:middle}
+@media (max-width:900px){.levendpad{position:static;max-width:340px;width:100%;margin:8px auto 0}}
+@media (prefers-reduced-motion:reduce){.lp-kop,.lp-kop .lp-ring,.lp-vork{transition:none;animation:none}.lp-vork{stroke-dashoffset:0}}
+
+/* Sterrenkaart */
+.tegel.t-donker{background:linear-gradient(135deg,#1b1b1f,#4a141e);border-color:#1b1b1f;color:#fff}
+.tegel.t-donker span{opacity:.85}
+.sterkaart,.metrokaart{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;margin-top:16px;align-items:start}
+.st-veld{position:relative;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 45%,#2c1519 0%,#151518 58%,#0d0d0f 100%);height:min(72vh,660px)}
+.ster-svg{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.ster-svg:active{cursor:grabbing}
+.st-stof circle{fill:#fff}
+.st-l1{stroke:rgba(255,255,255,.3);stroke-width:1.5}
+.st-l1.mijn{stroke:#ff5a5a;stroke-width:3.5}
+.st-l2{stroke:rgba(255,255,255,.14);stroke-width:1}
+.st-l2.aan{stroke:#ff8a8a;stroke-width:2}
+.st-l3{stroke:rgba(255,138,138,.5);stroke-width:1;animation:stIn .45s both}
+.st-k{cursor:pointer;outline:none}
+.st-k text{fill:#ececf1;font:600 15px "Segoe UI",system-ui,sans-serif}
+.st-geb circle{fill:#27272d;stroke:rgba(255,255,255,.55);stroke-width:2}
+.st-geb text{font-size:17px;font-weight:800}
+.st-geb.mijn circle{fill:#d62828;stroke:#ffb3b3;filter:drop-shadow(0 0 14px rgba(214,40,40,.9))}
+.st-fam circle{fill:#fff;filter:drop-shadow(0 0 6px rgba(255,255,255,.75))}
+.st-fam.open circle{fill:#ff5a5a}
+.st-fam.open text{fill:#ffb3b3}
+.st-k:hover circle,.st-k:focus-visible circle{fill:#ff5a5a;stroke:#fff;stroke-width:3}
+.st-k:hover text,.st-k:focus-visible text{fill:#fff;text-decoration:underline}
+.st-opl{animation:stIn .45s both}
+.st-opl circle{fill:#ffd9d9}
+.st-opl text{font-size:13px;font-weight:500}
+.st-opl .st-niv{fill:#ff9a9a;font-size:11px;font-weight:700}
+.st-opl.meer circle{fill:none;stroke:#ff9a9a;stroke-width:2}
+.st-opl.meer text{fill:#ff9a9a;font-weight:700}
+.st-jij circle{fill:#d62828;stroke:#fff;stroke-width:3}
+.st-jij text{font-size:19px;font-weight:800;fill:#fff}
+@keyframes stIn{from{opacity:0}to{opacity:1}}
+.st-knoppen{position:absolute;right:12px;bottom:12px;display:flex;gap:6px}
+.st-knoppen button{min-width:40px;height:40px;padding:0 14px;border-radius:20px;border:1px solid rgba(255,255,255,.3);background:rgba(18,18,21,.85);color:#fff;font:600 .95rem "Segoe UI",system-ui,sans-serif;cursor:pointer}
+.st-knoppen button:hover{border-color:#ff8a8a}
+.st-info{padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.st-info h3{margin:0 0 6px}
+.st-info h4{margin:16px 0 6px}
+.st-info p{margin:0 0 10px}
+.st-soort{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 4px!important}
+
+/* Metrokaart */
+.m-veld{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:10px;overflow-x:auto}
+.metro-svg{width:100%;min-width:640px;display:block}
+.m-lijn{fill:none;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;transition:opacity .3s}
+.m-lijn.l-vwo{stroke:var(--ink)}
+.m-lijn.l-havo{stroke:#d62828}
+.m-lijn.l-vmbo{stroke:#9e1b32}
+.m-over{stroke:#c8c1c1;stroke-width:9;stroke-linecap:round;cursor:pointer}
+.m-over:hover{stroke:#f0a3a3}
+.m-later{fill:none;stroke:var(--muted);stroke-width:3;stroke-dasharray:2 8;stroke-linecap:round}
+.m-st{cursor:pointer;outline:none;transition:opacity .3s}
+.m-st circle{fill:var(--paper);stroke:var(--ink);stroke-width:4}
+.m-st.l-havo circle{stroke:#d62828}
+.m-st.l-vmbo circle{stroke:#9e1b32}
+.m-st.m-ov circle{stroke:var(--ink);stroke-width:4.5}
+.m-st.m-werk circle{fill:var(--accent);stroke:var(--ink)}
+.m-st text{font:600 15px "Segoe UI",system-ui,sans-serif;fill:var(--ink)}
+.m-st.m-werk text{font-size:19px;font-weight:800}
+.m-eind rect{fill:#9e1b32}
+.m-eind.l-havo rect{fill:#d62828}
+.m-eind.l-vwo rect{fill:var(--ink)}
+.m-eind text{fill:#fff;font-weight:800;font-size:16px}
+.m-eind.l-vwo text{fill:var(--paper)}
+.m-tekst text{fill:var(--muted);font-size:14px}
+.m-st:hover circle,.m-st:focus-visible circle{fill:var(--accent)}
+.m-st:hover text,.m-st:focus-visible text{text-decoration:underline}
+.m-trein{fill:#fff;stroke:var(--accent);stroke-width:4}
+.kies-vmbo .m-lijn:not(.l-vmbo),.kies-havo .m-lijn:not(.l-havo),.kies-vwo .m-lijn:not(.l-vwo){opacity:.15}
+.kies-vmbo .m-st.l-havo,.kies-vmbo .m-st.l-vwo,.kies-havo .m-st.l-vmbo,.kies-havo .m-st.l-vwo,.kies-vwo .m-st.l-vmbo,.kies-vwo .m-st.l-havo{opacity:.4}
+@media (max-width:900px){.sterkaart,.metrokaart{grid-template-columns:1fr}.st-veld{height:62vh}}
+.metrokaart{grid-template-columns:1fr}
+.metrokaart .st-info{max-width:640px}
+.m-st text{font-size:19px}
+.m-st.m-werk text{font-size:22px}
+.m-eind text{font-size:19px}
+.m-tekst text{font-size:17px}

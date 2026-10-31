@@ -6,7 +6,7 @@
 <title>Wat studeer je eigenlijk?</title>
 <meta name="description" content="Wat is die studie nou eigenlijk, en wat kun je ermee? Uitleg in gewone taal, voor leerlingen én ouders.">
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=50">
+<link rel="stylesheet" href="ontwerp.css?v=53">
 </head>
 <body>
 
@@ -53,6 +53,8 @@
     <p class="sub">Kies zelf. Er is geen goede of foute volgorde.</p>
     <div class="tegels">
       <a class="tegel t-rood" href="#/test"><strong>Welke kant op?</strong><span>Doe de Padvinder, in 5 minuten</span></a>
+      <a class="tegel t-donker" href="#/sterren"><strong>Sterrenkaart</strong><span>Verken vrij, van wat je leuk vindt tot opleidingen</span></a>
+      <a class="tegel t-donker" href="#/metro"><strong>Metrokaart</strong><span>Alle routes van school naar werk</span></a>
       <a class="tegel" href="#/droom"><strong>Later word ik de nieuwe…</strong><span>Van droombaan naar echte banen</span></a>
       <a class="tegel" href="#/te"><strong>Mensen vinden mij te…</strong><span>Je minpunt is ergens een kracht</span></a>
       <a class="tegel" href="#vakken"><strong>Mijn lievelingsvak</strong><span>Wat zegt het over jou, wat kun je ermee?</span></a>
@@ -63,6 +65,33 @@
       <a class="tegel" href="#/ouders"><strong>Voor ouders</strong><span>Zo voer je het gesprek</span></a>
     </div>
     <p class="geen-account"><strong>Geen account nodig.</strong> Je browser onthoudt waar je gebleven bent. Dat werkt alleen op hetzelfde apparaat. Tip: gebruik de laptop of computer die je ook voor school gebruikt.</p>
+  </section>
+
+  <section id="sterren">
+    <h2>Sterrenkaart</h2>
+    <p class="sub">Geen begin en geen eind. In het midden sta jij, daaromheen alles wat je kunt worden. Klik, sleep en zoom.</p>
+    <div class="sterkaart">
+      <div class="st-veld">
+        <svg id="sterSvg" class="ster-svg" role="application" aria-label="Sterrenkaart van gebieden, groepen en opleidingen"></svg>
+        <div class="st-knoppen"><button type="button" id="sterIn" aria-label="Inzoomen">+</button><button type="button" id="sterUit" aria-label="Uitzoomen">−</button><button type="button" id="sterReset">Terug naar jij</button></div>
+      </div>
+      <aside id="sterInfo" class="st-info" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <section id="metro">
+    <h2>Metrokaart: alle routes</h2>
+    <p class="sub">Elke schoolsoort is een lijn. Bij de overstapstations kun je wisselen, en alle lijnen komen uit bij werk. Klik op een station.</p>
+    <div class="chips" id="metroLijnen" role="group" aria-label="Kies je lijn">
+      <button type="button" class="chip" data-lijn="vmbo">Vmbo-lijn</button>
+      <button type="button" class="chip" data-lijn="havo">Havo-lijn</button>
+      <button type="button" class="chip" data-lijn="vwo">Vwo-lijn</button>
+      <button type="button" class="chip" data-lijn="alle">Alle lijnen</button>
+    </div>
+    <div class="metrokaart">
+      <div class="m-veld"><svg id="metroSvg" class="metro-svg" viewBox="0 0 1080 500" role="img" aria-label="Metrokaart van vmbo, havo en vwo naar werk"></svg></div>
+      <aside id="metroInfo" class="st-info" aria-live="polite"><h3>Klik op een station</h3><p>Of op een grijze overstap. Kies hierboven je eigen lijn, dan rijdt er een treintje over.</p></aside>
+    </div>
   </section>
 
   <section id="droom">
@@ -150,7 +179,7 @@
   <section id="niveaus">
     <figure class="banner"><img src="img/px-baksteen-lopen.jpg" alt="Studenten lopen pratend langs een bakstenen gebouw" loading="lazy"></figure>
     <h2>Drie paden over de campus</h2>
-    <p class="sub">Er zijn drie hoofdpaden. Welk pad je kunt nemen hangt af van je school nu, maar geen enkel pad is doodlopend. Je kunt vaak overstappen op een andere route.</p>
+    <p class="sub">Er zijn drie hoofdpaden. Welk pad je kunt nemen hangt af van je school nu, maar geen enkel pad is doodlopend. Je kunt vaak overstappen op een andere route. <a href="#/metro">Bekijk het op de metrokaart →</a></p>
     <div class="levels">
       <article class="level mbo">
         <h3>mbo</h3>
@@ -181,8 +210,9 @@
 
   <section id="vakken">
     <h2>Je lievelingsvak: wat kun je ermee?</h2>
-    <p class="sub">Welk vak vind jij leuk? Klik erop. Je ziet wat je er waarschijnlijk écht leuk aan vindt, welke beroepen erbij passen en in welke opleidingen het terugkomt.</p>
-    <div id="vakkenLijst" class="vakken"></div>
+    <p class="sub">Welk vak vind jij leuk? Kies het hieronder. Je ziet wat je er waarschijnlijk écht leuk aan vindt, welke beroepen erbij passen en in welke opleidingen het terugkomt.</p>
+    <div id="vakkenLijst" class="vakknoppen" role="group" aria-label="Kies een vak"></div>
+    <div id="vakPaneel" class="vak-paneel" aria-live="polite" hidden></div>
     <h3 class="part" style="margin-top:26px">En studies die je op school nog niet kent</h3>
     <p class="sub">Deze vakken had je nooit, maar ze kunnen wel goed bij je passen.</p>
     <div id="nieuwLijst" class="nieuw"></div>
@@ -198,7 +228,7 @@
     <p class="geen-account"><strong>Geen account nodig.</strong> Je browser onthoudt waar je gebleven bent. Dat werkt alleen op hetzelfde apparaat. Tip: gebruik de laptop of computer die je ook voor school gebruikt.</p>
     <div class="testgrid">
       <form id="testForm" class="quiz"></form>
-      <figure class="testfoto"><img src="img/tafel-lachen.jpg" alt="Drie studenten lachen samen achter een laptop" loading="lazy"></figure>
+      <figure class="levendpad" id="levendPad"></figure>
     </div>
     <div id="uitslag" class="result" hidden tabindex="-1"></div>
   </section>
@@ -305,12 +335,12 @@
   </div>
 </footer>
 
-<script src="data.js?v=50"></script>
-<script src="opleidingen.js?v=50"></script>
-<script src="uitleg.js?v=50"></script>
-<script src="mbo.js?v=50"></script>
-<script src="locaties.js?v=50"></script>
-<script src="opendagen.js?v=50"></script>
-<script src="app.js?v=50"></script>
+<script src="data.js?v=53"></script>
+<script src="opleidingen.js?v=53"></script>
+<script src="uitleg.js?v=53"></script>
+<script src="mbo.js?v=53"></script>
+<script src="locaties.js?v=53"></script>
+<script src="opendagen.js?v=53"></script>
+<script src="app.js?v=53"></script>
 </body>
 </html>

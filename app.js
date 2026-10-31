@@ -437,6 +437,7 @@
     const n = sets.filter((f) => f.querySelector("input:checked")).length;
     $("#voortgang").textContent = `${n} van ${sets.length} ingevuld`;
     $("#klaar").disabled = n < sets.length || !form.querySelector("fieldset.diep");
+    tekenPad();
   }
   form.addEventListener("change", updateProgress);
 
@@ -647,24 +648,31 @@
   }
 
   /* ---------- Schoolvak -> studie ---------- */
-  VAKKEN.forEach((v) => {
-    const d = el("details", { class: "fam" });
-    d.innerHTML =
-      `<summary><span class="fname">${esc(v[0])}</span><span class="fgebied">${v[5].length} beroepen</span></summary>` +
-      `<div class="vakbody"><h4>Wat zegt dit vak over jou?</h4>` +
-      (VAKKEN_OVERJOU[v[0]] ? `<p><strong>Je bent waarschijnlijk goed in:</strong> ${VAKKEN_OVERJOU[v[0]][0].map(esc).join(", ")}.<br><strong>Je bent waarschijnlijk geïnteresseerd in:</strong> ${VAKKEN_OVERJOU[v[0]][1].map(esc).join(", ")}.</p>` : "") +
-      `<h4>Wat je er waarschijnlijk écht leuk aan vindt</h4><p>${vt(v[1])}</p>` +
-      `<h4>Wat kun je ermee?</h4><ul class="vakwerk">${v[5].map((t) => `<li>${vt(t)}</li>`).join("")}</ul>` +
+  // Vakken als knoppen; het gekozen vak opent breed in één paneel eronder
+  $("#vakkenLijst").innerHTML = VAKKEN.map((v, i) => `<button type="button" class="vakknop" data-vak="${i}" aria-pressed="false">${esc(v[0])}</button>`).join("");
+  function toonVak(i) {
+    const v = VAKKEN[i];
+    if (!v) return;
+    document.querySelectorAll("#vakkenLijst .vakknop").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.vak === String(i))));
+    const oj = VAKKEN_OVERJOU[v[0]];
+    const tags = (l) => `<div class="tags">${l.map((t) => `<span class="tag2">${esc(t)}</span>`).join("")}</div>`;
+    $("#vakPaneel").innerHTML =
+      `<div class="vak-kol"><h3>${esc(v[0])}</h3>` +
+      (oj ? `<h4>Je bent waarschijnlijk goed in</h4>${tags(oj[0])}<h4>Je bent waarschijnlijk geïnteresseerd in</h4>${tags(oj[1])}` : "") +
+      `<h4>Wat je er waarschijnlijk écht leuk aan vindt</h4><p>${vt(v[1])}</p></div>` +
+      `<div class="vak-kol"><h4>Wat kun je ermee?</h4><ul class="vakwerk">${v[5].map((t) => `<li>${vt(t)}</li>`).join("")}</ul>` +
       `<h4>Waar dat terugkomt</h4><p>${vt(v[2])}</p>` +
-      `<h4>Let op</h4><p>${vt(v[3])}</p>` +
-      `<p><button type="button" class="chip" data-fams="${esc(v[4])}">Bekijk die opleidingen</button></p></div>`;
-    $("#vakkenLijst").appendChild(d);
-  });
-  $("#vakkenLijst").addEventListener("click", (e) => {
+      `<p class="vak-let"><strong>Let op:</strong> ${vt(v[3])}</p>` +
+      `<p><button type="button" class="btn" data-fams="${esc(v[4])}">Bekijk die opleidingen</button></p></div>`;
+    $("#vakPaneel").hidden = false;
+    bewaar("vak", i);
+  }
+  $("#vakkenLijst").addEventListener("click", (e) => { const b = e.target.closest("[data-vak]"); if (b) toonVak(Number(b.dataset.vak)); });
+  $("#vakPaneel").addEventListener("click", (e) => {
     const b = e.target.closest("[data-fams]");
-    if (!b) return;
-    openFamily(b.dataset.fams.split(",")[0].trim());
+    if (b) openFamily(b.dataset.fams.split(",")[0].trim());
   });
+  toonVak(lees("vak", 0));
   NIEUW.forEach((n) => {
     $("#nieuwLijst").appendChild(el("div", { class: "nw" }, `<strong>${vt(n[0])}</strong><span>${vt(n[1])}</span>`));
   });
@@ -770,6 +778,8 @@
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
   const TEGELS = {
     test: ["#/test", "Welke kant op?", "Doe de Padvinder, in 5 minuten"],
+    sterren: ["#/sterren", "Sterrenkaart", "Verken vrij, van wat je leuk vindt tot opleidingen"],
+    metro: ["#/metro", "Metrokaart", "Alle routes van school naar werk"],
     droom: ["#/droom", "Later word ik de nieuwe…", "Van droombaan naar echte banen"],
     te: ["#/te", "Mensen vinden mij te…", "Je minpunt is ergens een kracht"],
     opleidingen: ["#/opleidingen", "Alle opleidingen", "Mbo, hbo en wo in gewone taal"],
@@ -787,13 +797,14 @@
   };
   const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
   const VERDER = {
-    test: ["droom", "te", "opleidingen", "plan"], droom: ["te", "test", "vakken", "opendagen"], te: ["droom", "test", "vakken", "opleidingen"],
-    opleidingen: ["vertaal", "opendagen", "droom", "plan"], opendagen: ["plan", "ouders", "opleidingen", "geld"], plan: ["geld", "opendagen", "toelating", "ouders"],
-    uitleg: ["plan", "test", "opendagen", "ouders"], ouders: ["plan", "test", "geld", "opendagen"],
+    test: ["sterren", "droom", "te", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
+    opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["plan", "metro", "ouders", "geld"], plan: ["metro", "geld", "opendagen", "ouders"],
+    uitleg: ["metro", "plan", "test", "ouders"], ouders: ["metro", "plan", "test", "geld"],
+    sterren: ["test", "droom", "metro", "opleidingen"], metro: ["plan", "toelating", "sterren", "geld"],
   };
   const UITLEG = ["route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -808,8 +819,9 @@
       if (VERDER[v]) $("#verderTegels").innerHTML = VERDER[v].map(tegelHtml).join("");
       $(".hero").hidden = v !== "start";
       document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.view === v ? "page" : "false"));
-      if (location.hash !== "#/" + v) history.replaceState(null, "", "#/" + v);
     }
+    const adres = los ? "#" + target : "#/" + v;
+    if (location.hash !== adres) history.replaceState(null, "", adres);
     const t = target && document.getElementById(v === "uitleg" ? "uitlegmenu" : target);
     window.scrollTo({ top: t ? t.getBoundingClientRect().top + window.scrollY - 84 : 0, behavior: "instant" });
   }
@@ -1160,7 +1172,7 @@
   if (TE[lees("te", -1)]) $(`#teChips [data-te="${lees("te", -1)}"]`).click();
 
   /* ---------- Bewaard op dit apparaat ---------- */
-  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "thema"];
+  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "vak", "thema"];
   function renderBewaard() {
     let wp = "";
     try { wp = localStorage.getItem("woonplaats") || ""; } catch (e) {}
@@ -1216,6 +1228,310 @@
   }
   $("#printPagina").addEventListener("click", () => printMet("print-scherm"));
   $("#printDialoog").addEventListener("click", () => printMet("print-dialoog"));
+
+  /* ---------- Levend pad: groeit mee met je antwoorden ---------- */
+  const PAD_ORDE = ["creatief", "mens", "zorg", "bedrijf", "tech", "weten"];
+  const PAD_KORT = { creatief: "Creatief", mens: "Mens", zorg: "Zorg", bedrijf: "Bedrijf", tech: "Techniek", weten: "Wetenschap" };
+  const padKnoop = (k) => { const i = PAD_ORDE.indexOf(k); return [30 + i * 56, 78 + (i - 2.5) ** 2 * 5]; };
+  let padX = [];
+  let padLengte = 0;
+  function tekenPad() {
+    const box = $("#levendPad");
+    if (!box) return;
+    if (!box.querySelector("svg")) {
+      box.innerHTML = `<svg viewBox="0 0 340 420" role="img" aria-label="Jouw pad over de campus, groeit mee met je antwoorden">` +
+        `<g id="lpOpties"></g><path id="lpVoet" class="lp-voet" d=""/><path id="lpPad" class="lp-pad" d=""/><g id="lpVork"></g><g id="lpKnopen"></g>` +
+        `<circle class="lp-start" cx="170" cy="392" r="5"/><text class="lp-jij" x="170" y="414">jij</text>` +
+        `<g id="lpKop" class="lp-kop" style="transform:translate(170px,392px)"><circle class="lp-ring" r="7"/><circle r="6"/></g></svg>` +
+        `<figcaption id="lpTekst"></figcaption>`;
+    }
+    const sets = [...form.querySelectorAll("fieldset.q")].filter((f) => f.querySelector("input[type=radio]"));
+    const n = sets.filter((f) => f.querySelector("input:checked")).length;
+    const tot = Math.max(sets.length, 1);
+    const { score, max, rank } = bereken();
+    const ratio = (k) => (max[k] ? score[k] / max[k] : 0);
+    let sw = 0, sx = 0;
+    PAD_ORDE.forEach((k) => { const w = ratio(k) ** 3 + 0.0001; sw += w; sx += w * padKnoop(k)[0]; });
+    const doel = 170 + (sx / sw - 170) * Math.min(1, (n / tot) * 1.6);
+    padX = padX.slice(0, n);
+    for (let i = 0; i < n; i++) if (padX[i] == null) padX[i] = 170 + ((doel - 170) * (i + 1)) / n;
+    // rustig bijsturen: elk antwoord buigt het pad maar een stukje
+    if (n) padX[n - 1] = (padX[n - 2] ?? 170) + (doel - (padX[n - 2] ?? 170)) * 0.5;
+    const pts = [[170, 392], ...padX.map((px, i) => [px, 392 - ((i + 1) / tot) * 262])];
+    // vloeiende lijn door alle punten (Catmull-Rom als Bézier)
+    let d = `M170 392`;
+    for (let i = 1; i < pts.length; i++) {
+      const p0 = pts[i - 2] || pts[i - 1], p1 = pts[i - 1], p2 = pts[i], p3 = pts[i + 1] || p2;
+      const f = (v) => v.toFixed(1);
+      d += ` C${f(p1[0] + (p2[0] - p0[0]) / 6)} ${f(p1[1] + (p2[1] - p0[1]) / 6)} ${f(p2[0] - (p3[0] - p1[0]) / 6)} ${f(p2[1] - (p3[1] - p1[1]) / 6)} ${f(p2[0])} ${f(p2[1])}`;
+    }
+    const [kx, ky] = pts[pts.length - 1];
+    const af = n >= tot && n > 0;
+    const top2 = af ? rank.slice(0, 2) : [];
+    $("#lpVoet").setAttribute("d", d);
+    const pad = $("#lpPad");
+    pad.setAttribute("d", d);
+    try {
+      const L = pad.getTotalLength();
+      pad.style.transition = "none";
+      pad.style.strokeDasharray = `${L} ${L}`;
+      pad.style.strokeDashoffset = String(Math.max(0, L - padLengte));
+      pad.getBoundingClientRect();
+      pad.style.transition = "stroke-dashoffset .6s ease";
+      pad.style.strokeDashoffset = "0";
+      padLengte = L;
+    } catch (e) {}
+    $("#lpKop").style.transform = `translate(${kx}px,${ky}px)`;
+    // de mogelijkheden waaieren uit vanaf de kop van je pad
+    $("#lpOpties").innerHTML = af ? "" : PAD_ORDE.map((k) => { const [nx, ny] = padKnoop(k); return `<line x1="${kx.toFixed(1)}" y1="${ky.toFixed(1)}" x2="${nx}" y2="${ny}" style="opacity:${(0.12 + ratio(k) * 0.7).toFixed(2)}"/>`; }).join("");
+    $("#lpVork").innerHTML = top2.map((k) => { const [nx, ny] = padKnoop(k); return `<path class="lp-vork" d="M${kx.toFixed(1)} ${ky.toFixed(1)} C${kx.toFixed(1)} ${(ky - 40).toFixed(1)} ${nx} ${ny + 40} ${nx} ${ny}"/>`; }).join("");
+    $("#lpKnopen").innerHTML = PAD_ORDE.map((k, i) => {
+      const [nx, ny] = padKnoop(k);
+      const r = 4 + ratio(k) * 9;
+      return `<g class="lp-knoop${top2.includes(k) ? " gekozen" : ""}"><circle cx="${nx}" cy="${ny}" r="${r.toFixed(1)}"/><text x="${nx}" y="${(ny - r - (i % 2 ? 20 : 7)).toFixed(1)}">${PAD_KORT[k]}</text></g>`;
+    }).join("");
+    $("#lpTekst").textContent = !n ? "Je pad begint hier. Elk antwoord buigt het een kant op." : af ? `Je pad splitst zich: ${GEBIEDEN[top2[0]].naam} en ${GEBIEDEN[top2[1]].naam}.` : "Nog niets ligt vast. Elk antwoord buigt je pad een beetje.";
+  }
+
+  /* ---------- Sterrenkaart: vrij verkennen ---------- */
+  const GEB = Object.keys(GEBIEDEN);
+  const polar = (r, a) => [r * Math.cos(a), r * Math.sin(a)];
+  const gebHoek = {}, famHoek = {};
+  GEB.forEach((k, i) => (gebHoek[k] = -Math.PI / 2 + (i * 2 * Math.PI) / GEB.length));
+  GEB.forEach((k) => {
+    const fs = FAMILIES.filter((f) => f.gebied === k);
+    const spread = ((2 * Math.PI) / GEB.length) * 0.78;
+    fs.forEach((f, j) => (famHoek[f.id] = gebHoek[k] + (fs.length > 1 ? -spread / 2 + (spread * j) / (fs.length - 1) : 0)));
+  });
+  const STER_START = [-470, -400, 940, 800];
+  const ster = { open: null, vb: STER_START.slice(), sleep: null, bewogen: false };
+  const stofHtml = (() => {
+    let s = 7, h = "";
+    const rnd = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+    for (let i = 0; i < 260; i++) h += `<circle cx="${(rnd() * 2400 - 1200).toFixed(0)}" cy="${(rnd() * 2400 - 1200).toFixed(0)}" r="${(rnd() * 1.6 + 0.3).toFixed(1)}" style="opacity:${(rnd() * 0.6 + 0.15).toFixed(2)}"/>`;
+    return h;
+  })();
+  const kortNaam = (t, n) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
+  const famOpls = (id) => OPLEIDINGEN.filter((o) => o.f === id).sort((a, b) => b.i.length - a.i.length);
+  function tekenSter() {
+    const mijn = (lees("padvinder", null) || {}).top || [];
+    let lijnen = "", knopen = "";
+    GEB.forEach((k) => {
+      const [x, y] = polar(170, gebHoek[k]);
+      lijnen += `<line class="st-l1${mijn.includes(k) ? " mijn" : ""}" x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+    });
+    FAMILIES.forEach((f) => {
+      const [x1, y1] = polar(170, gebHoek[f.gebied]);
+      const [x2, y2] = polar(330, famHoek[f.id]);
+      lijnen += `<line class="st-l2${ster.open === f.id ? " aan" : ""}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+      const links = Math.cos(famHoek[f.id]) < -0.2, rechts = Math.cos(famHoek[f.id]) > 0.2;
+      const [lx, ly] = polar(350, famHoek[f.id]);
+      knopen += `<g class="st-k st-fam${ster.open === f.id ? " open" : ""}" data-ster="fam:${f.id}" tabindex="0" role="button" aria-label="${esc(f.naam)}"><circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="9"/>` +
+        `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" text-anchor="${links ? "end" : rechts ? "start" : "middle"}">${esc(kortNaam(f.naam, 26))}</text></g>`;
+    });
+    if (ster.open) {
+      const f = FAMILIES.find((x) => x.id === ster.open);
+      const alle = famOpls(f.id);
+      const toon = alle.slice(0, 12);
+      const stap = 0.075;
+      const items = toon.map((o) => ["opl", o]).concat(alle.length > toon.length ? [["meer", alle.length - toon.length]] : []);
+      items.forEach(([soort, o], j) => {
+        const a = famHoek[f.id] + (j - (items.length - 1) / 2) * stap;
+        const [x1, y1] = polar(330, famHoek[f.id]);
+        const [x2, y2] = polar(500, a);
+        const graden = (a * 180) / Math.PI;
+        const links = Math.cos(a) < 0;
+        const [tx, ty] = polar(514, a);
+        lijnen += `<line class="st-l3" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" style="animation-delay:${j * 25}ms"/>`;
+        const label = soort === "opl" ? `${esc(kortNaam(o.n, 34))} <tspan class="st-niv">${o.l.join(" · ")}</tspan>` : `+ ${o} meer opleidingen`;
+        knopen += `<g class="st-k st-opl${soort === "meer" ? " meer" : ""}" data-ster="${soort === "opl" ? "opl:" + OPLEIDINGEN.indexOf(o) : "meer:" + f.id}" tabindex="0" role="button" style="animation-delay:${j * 25}ms">` +
+          `<circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="${soort === "opl" ? 5 : 7}"/>` +
+          `<text transform="translate(${tx.toFixed(1)} ${ty.toFixed(1)}) rotate(${(links ? graden + 180 : graden).toFixed(1)})" text-anchor="${links ? "end" : "start"}" dy="4">${label}</text></g>`;
+      });
+    }
+    GEB.forEach((k) => {
+      const [x, y] = polar(170, gebHoek[k]);
+      knopen += `<g class="st-k st-geb${mijn.includes(k) ? " mijn" : ""}" data-ster="geb:${k}" tabindex="0" role="button" aria-label="${esc(GEBIEDEN[k].naam)}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="20"/>` +
+        `<text x="${x.toFixed(1)}" y="${(y + 40).toFixed(1)}" text-anchor="middle">${esc(GEBIEDEN[k].naam)}</text></g>`;
+    });
+    knopen += `<g class="st-k st-jij" data-ster="jij" tabindex="0" role="button" aria-label="Terug naar het midden"><circle cx="0" cy="0" r="30"/><text x="0" y="6" text-anchor="middle">jij</text></g>`;
+    $("#sterSvg").innerHTML = `<g class="st-stof">${stofHtml}</g>${lijnen}${knopen}`;
+    $("#sterSvg").setAttribute("viewBox", ster.vb.join(" "));
+  }
+  function sterNaar(doel, ms = 480) {
+    const van = ster.vb.slice(), t0 = performance.now();
+    const stap = (t) => {
+      const p = Math.min(1, (t - t0) / ms), e = 1 - (1 - p) ** 3;
+      ster.vb = van.map((v, i) => v + (doel[i] - v) * e);
+      $("#sterSvg").setAttribute("viewBox", ster.vb.join(" "));
+      if (p < 1) requestAnimationFrame(stap);
+    };
+    requestAnimationFrame(stap);
+  }
+  const sterKader = (cx, cy, w) => { const h = w * (ster.vb[3] / ster.vb[2]); return [cx - w / 2, cy - h / 2, w, h]; };
+  function sterInfo(html) { $("#sterInfo").innerHTML = html; }
+  const STER_UITLEG = `<h3>Zo werkt het</h3><p>Sleep om te bewegen en zoom met je muiswiel of de knoppen. Klik op een ster om hem open te klappen.</p><p>In het midden sta jij. Daaromheen liggen de zes gebieden, dan de groepen opleidingen en helemaal buiten de opleidingen zelf.</p>`;
+  function sterKlik(code) {
+    const [soort, id] = code.split(":");
+    if (soort === "jij") {
+      ster.open = null;
+      tekenSter();
+      sterNaar(STER_START);
+      const mijn = (lees("padvinder", null) || {}).top;
+      sterInfo(STER_UITLEG + (mijn ? `<p><strong>Rood</strong> zijn de richtingen uit jouw Padvinder: ${mijn.slice(0, 2).map((k) => esc(GEBIEDEN[k].naam)).join(" en ")}.</p>` : `<p><a href="#/test">Doe de Padvinder</a>, dan kleuren jouw richtingen rood.</p>`));
+    } else if (soort === "geb") {
+      const fs = FAMILIES.filter((f) => f.gebied === id);
+      const [x, y] = polar(260, gebHoek[id]);
+      sterNaar(sterKader(x, y, 760));
+      sterInfo(`<p class="st-soort">Gebied</p><h3>${esc(GEBIEDEN[id].naam)}</h3><p>${vt(GEBIEDEN[id].uitleg)}</p><div class="mini">${fs.map((f) => `<button type="button" data-sterfam="${f.id}">${esc(f.naam)}</button>`).join("")}</div>`);
+    } else if (soort === "fam") {
+      ster.open = ster.open === id ? null : id;
+      tekenSter();
+      const f = FAMILIES.find((x) => x.id === id);
+      if (ster.open) {
+        const [x, y] = polar(440, famHoek[id]);
+        sterNaar(sterKader(x, y, 820));
+      }
+      const dromen = DROOM.map((d, i) => [d, i]).filter(([d]) => d[5].includes(id));
+      sterInfo(`<p class="st-soort">Groep opleidingen</p><h3>${esc(f.naam)}</h3><p>${vt(f.uitleg)}</p>` +
+        `<p><button type="button" class="btn" data-famopen="${id}">Bekijk alle ${famOpls(id).length} opleidingen</button></p>` +
+        (dromen.length ? `<h4>Droombanen in deze hoek</h4><div class="mini">${dromen.map(([d, i]) => `<button type="button" data-droom="${i}">De nieuwe ${esc(d[0])}</button>`).join("")}</div>` : ""));
+    } else if (soort === "opl") {
+      const o = OPLEIDINGEN[Number(id)];
+      openOpleiding(o, FAMILIES.find((x) => x.id === o.f));
+    } else if (soort === "meer") {
+      openFamily(id);
+    }
+  }
+  (() => {
+    const svg = $("#sterSvg");
+    svg.addEventListener("pointerdown", (e) => { ster.sleep = [e.clientX, e.clientY]; ster.bewogen = false; });
+    window.addEventListener("pointermove", (e) => {
+      if (!ster.sleep) return;
+      const dx = e.clientX - ster.sleep[0], dy = e.clientY - ster.sleep[1];
+      if (!ster.bewogen && Math.hypot(dx, dy) < 5) return;
+      if (!ster.bewogen) svg.setPointerCapture?.(e.pointerId);
+      ster.bewogen = true;
+      const s = ster.vb[2] / svg.clientWidth;
+      ster.vb[0] -= dx * s;
+      ster.vb[1] -= dy * s;
+      ster.sleep = [e.clientX, e.clientY];
+      svg.setAttribute("viewBox", ster.vb.join(" "));
+    });
+    window.addEventListener("pointerup", () => (ster.sleep = null));
+    const zoom = (f, cx, cy) => {
+      const [x, y, w, h] = ster.vb;
+      const nw = Math.min(2600, Math.max(320, w * f)), k = nw / w;
+      const px = cx == null ? x + w / 2 : cx, py = cy == null ? y + h / 2 : cy;
+      ster.vb = [px - (px - x) * k, py - (py - y) * k, nw, h * k];
+      svg.setAttribute("viewBox", ster.vb.join(" "));
+    };
+    svg.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const r = svg.getBoundingClientRect();
+      zoom(e.deltaY > 0 ? 1.12 : 1 / 1.12, ster.vb[0] + ((e.clientX - r.left) / r.width) * ster.vb[2], ster.vb[1] + ((e.clientY - r.top) / r.height) * ster.vb[3]);
+    }, { passive: false });
+    svg.addEventListener("click", (e) => {
+      if (ster.bewogen) return;
+      const k = e.target.closest("[data-ster]");
+      if (k) sterKlik(k.dataset.ster);
+    });
+    svg.addEventListener("keydown", (e) => {
+      const k = e.target.closest("[data-ster]");
+      if (k && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); sterKlik(k.dataset.ster); }
+    });
+    $("#sterIn").addEventListener("click", () => zoom(1 / 1.3));
+    $("#sterUit").addEventListener("click", () => zoom(1.3));
+    $("#sterReset").addEventListener("click", () => sterKlik("jij"));
+    $("#sterInfo").addEventListener("click", (e) => { const b = e.target.closest("[data-sterfam]"); if (b) sterKlik("fam:" + b.dataset.sterfam); });
+  })();
+
+  /* ---------- Metrokaart: alle routes ---------- */
+  const LIJNEN = {
+    vwo: ["Vwo", "M70 90 H770 L880 200 V250"],
+    havo: ["Havo", "M70 250 H880"],
+    vmbo: ["Vmbo", "M70 410 H770 L880 300 V250"],
+  };
+  // id: [naam, x, y, lijn, uitleg, niveau-knop]
+  const STATIONS = {
+    vmbo: ["Vmbo", 70, 410, "vmbo", "Vier leerwegen: basis, kader, gemengd en theoretisch. Na je diploma ga je meestal naar het mbo."],
+    vmbod: ["Vmbo-diploma", 170, 410, "vmbo", "Daarmee kun je naar mbo 2, 3 of 4. Met een diploma van de gemengde of theoretische leerweg kun je ook naar havo 4."],
+    mbo2: ["Mbo 2", 320, 410, "vmbo", "Basisberoep, 1 tot 2 jaar. Je leert een vak, zoals kok, verkoper of monteur.", "mbo"],
+    mbo3: ["Mbo 3", 430, 410, "vmbo", "Vakopleiding, 2 tot 3 jaar. Je werkt zelfstandig in je vak.", "mbo"],
+    mbo4: ["Mbo 4", 540, 410, "vmbo", "Middenkader of specialist, 3 tot 4 jaar. Daarna kun je gaan werken of doorstromen naar het hbo.", "mbo"],
+    havo: ["Havo", 70, 250, "havo", "Vijf jaar. Een voorbereiding op het hbo."],
+    havo4: ["Havo 4", 170, 250, "havo", "Hier stap je in als je met een vmbo-diploma doorstroomt."],
+    havod: ["Havodiploma", 290, 250, "havo", "Daarmee kun je naar het hbo, naar mbo 4 of naar vwo 5."],
+    hbop: ["Hbo, 1e jaar", 540, 250, "havo", "Het eerste jaar heet de propedeuse. Haal je die, dan kun je ook overstappen naar de universiteit.", "hbo"],
+    hbob: ["Hbo-bachelor", 700, 250, "havo", "Meestal 4 jaar. Praktijkgericht, met stages.", "hbo"],
+    vwo: ["Vwo", 70, 90, "vwo", "Zes jaar, atheneum of gymnasium. Een voorbereiding op de universiteit."],
+    vwo5: ["Vwo 5", 290, 90, "vwo", "Hier stap je in als je met een havodiploma doorstroomt."],
+    vwod: ["Vwo-diploma", 400, 90, "vwo", "Daarmee kun je naar de universiteit, maar ook naar het hbo of het mbo."],
+    wob: ["Wo-bachelor", 540, 90, "vwo", "3 jaar aan de universiteit. Theoretischer, met veel onderzoek.", "wo"],
+    wom: ["Wo-master", 700, 90, "vwo", "1 tot 2 jaar. De meeste studenten aan de universiteit doen er een master achteraan.", "wo"],
+    werk: ["Aan het werk", 880, 250, "alle", "Alle lijnen komen hier uit. Geen enkele route is doodlopend."],
+    later: ["Later nog leren", 640, 470, "alle", "In deeltijd, via bbl naast je werk of met een cursus. Je kunt altijd weer instappen."],
+  };
+  const OVERSTAP = [
+    ["vmbod", "havo4", "Doorstromen naar de havo"],
+    ["havod", "vwo5", "Doorstromen naar het vwo"],
+    ["mbo4", "hbop", "Met mbo 4 naar het hbo"],
+    ["hbop", "wob", "Met je propedeuse naar de universiteit"],
+    ["hbob", "wom", "Via een schakeljaar naar een wo-master"],
+  ];
+  const overstapIds = new Set(OVERSTAP.flatMap((o) => [o[0], o[1]]));
+  let metroLijn = "alle";
+  function tekenMetro() {
+    let h = `<path class="m-later" d="M880 266 C950 300 950 470 800 470 H470 C435 470 430 445 430 424"/>`;
+    OVERSTAP.forEach(([a, b], i) => { const A = STATIONS[a], B = STATIONS[b]; h += `<line class="m-over" data-metro="ov${i}" x1="${A[1]}" y1="${A[2]}" x2="${B[1]}" y2="${B[2]}"/>`; });
+    Object.entries(LIJNEN).forEach(([k, [, d]]) => (h += `<path class="m-lijn l-${k}" d="${d}"/>`));
+    if (metroLijn !== "alle" && !matchMedia("(prefers-reduced-motion: reduce)").matches) h += `<circle class="m-trein" r="8"><animateMotion dur="7s" repeatCount="indefinite" path="${LIJNEN[metroLijn][1]}"/></circle>`;
+    Object.entries(STATIONS).forEach(([id, [naam, x, y, lijn]]) => {
+      if (id === "later") { h += `<g class="m-st m-tekst" data-metro="${id}" tabindex="0" role="button"><text x="${x}" y="${y - 10}" text-anchor="middle">Later nog leren ↺</text></g>`; return; }
+      const eind = ["vmbo", "havo", "vwo"].includes(id);
+      if (eind) { h += `<g class="m-st m-eind l-${lijn}" data-metro="${id}" tabindex="0" role="button"><rect x="${x - 50}" y="${y - 20}" width="100" height="40" rx="20"/><text x="${x}" y="${y + 7}" text-anchor="middle">${naam}</text></g>`; return; }
+      const r = id === "werk" ? 17 : overstapIds.has(id) ? 10 : 8;
+      const tx = id === "werk" ? x - 20 : x + 13, ty = id === "werk" ? y - 30 : y - 16;
+      h += `<g class="m-st l-${lijn}${overstapIds.has(id) ? " m-ov" : ""}${id === "werk" ? " m-werk" : ""}" data-metro="${id}" tabindex="0" role="button"><circle cx="${x}" cy="${y}" r="${r}"/><text x="${tx}" y="${ty}">${naam}</text></g>`;
+    });
+    const svg = $("#metroSvg");
+    svg.innerHTML = h;
+    svg.setAttribute("class", "metro-svg kies-" + metroLijn);
+    document.querySelectorAll("#metroLijnen .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lijn === metroLijn)));
+  }
+  function metroInfo(code) {
+    let html;
+    if (code.startsWith("ov")) {
+      const [a, b, t] = OVERSTAP[Number(code.slice(2))];
+      html = `<p class="st-soort">Overstap</p><h3>${t}</h3><p>Van <strong>${STATIONS[a][0]}</strong> naar <strong>${STATIONS[b][0]}</strong>. Vaak gelden er extra eisen, zoals een bepaald vak of een gemiddeld cijfer. Check het bij de school of opleiding.</p>`;
+    } else {
+      const [naam, , , , tekst, niv] = STATIONS[code];
+      html = `<p class="st-soort">Station</p><h3>${naam}</h3><p>${vt(tekst)}</p>` + (niv ? `<p><button type="button" class="btn" data-metroniv="${niv}">Bekijk ${niv}-opleidingen</button></p>` : "");
+    }
+    $("#metroInfo").innerHTML = html;
+  }
+  (() => {
+    const k = lees("klas", "");
+    metroLijn = k.startsWith("vmbo") || k === "mbo4" ? "vmbo" : k.startsWith("havo") ? "havo" : k.startsWith("vwo") ? "vwo" : "alle";
+    $("#metroLijnen").addEventListener("click", (e) => { const b = e.target.closest("[data-lijn]"); if (b) { metroLijn = b.dataset.lijn; tekenMetro(); } });
+    const kies = (e) => { const g = e.target.closest("[data-metro]"); if (g) metroInfo(g.dataset.metro); };
+    $("#metroSvg").addEventListener("click", kies);
+    $("#metroSvg").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); kies(e); } });
+    $("#metroInfo").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-metroniv]");
+      if (!b) return;
+      state.zoek = "";
+      $("#zoek").value = "";
+      state.gebied = "";
+      state.niveau = b.dataset.metroniv;
+      renderChips();
+      renderList();
+      go("opleidingen", "alle");
+    });
+  })();
+  tekenSter();
+  sterKlik("jij");
+  tekenMetro();
 
   /* ---------- Licht / donker ---------- */
   $("#thema").addEventListener("click", () => {
