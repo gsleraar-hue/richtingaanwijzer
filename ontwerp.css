@@ -700,3 +700,21 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .sdots button:disabled{cursor:default;opacity:.35}
 .sdots button:not(:disabled):hover{opacity:1;border-color:var(--accent)}
 @media print{.verder,#uitlegmenu{display:none!important}}
+
+/* Bewaard op dit apparaat */
+.bewaard{margin-top:28px;padding:20px 22px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.bewaard h3{margin:0 0 4px}
+.bewaard-lijst{list-style:none;padding:0;margin:12px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px 20px}
+.bewaard-lijst li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:6px;font-size:.92rem}
+.bewaard-lijst strong{text-align:right}
+.bestandknop{cursor:pointer}
+@media print{.bewaard{display:none!important}}
+
+/* Printen zonder URL, datum en titel van de browser: die staan in de paginamarge */
+@media print{
+  @page{margin:0}
+  body{padding:12mm 14mm!important;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+}
+.geen-account{margin:14px 0 0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--tint);border-radius:6px;font-size:.9rem;max-width:760px}
+#test .geen-account{margin:0 0 14px}
+@media print{.geen-account{display:none!important}}

@@ -440,6 +440,36 @@
   }
   form.addEventListener("change", updateProgress);
 
+  // Antwoorden blijven bewaard op dit apparaat, ook als je halverwege stopt
+  function bewaarAntwoorden() {
+    const vals = {};
+    form.querySelectorAll("input[type=radio]:checked").forEach((i) => (vals[i.name] = i.value));
+    bewaar("antwoorden", { who, cur, vals, kind: [...form.querySelectorAll("input[name=kind]:checked")].map((i) => i.value) });
+  }
+  form.addEventListener("change", () => setTimeout(bewaarAntwoorden, 300));
+  form.addEventListener("click", (e) => { if (e.target.closest("#vorige, #volgende, [data-step]")) bewaarAntwoorden(); });
+  function herstelAntwoorden() {
+    const ant = lees("antwoorden", null);
+    if (!ant) return;
+    if (ant.who && ant.who !== who) {
+      who = ant.who;
+      document.querySelectorAll(".who .chip").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.who === who)));
+      buildQuiz();
+    }
+    const zet = (naam, v) => { const i = form.querySelector(`input[name="${naam}"][value="${v}"]`); if (i) i.checked = true; };
+    const vals = ant.vals || {};
+    (ant.kind || []).forEach((v) => zet("kind", v));
+    Object.keys(vals).filter((k) => !k.startsWith("z_")).forEach((k) => zet(k, vals[k]));
+    if (vals.t0 != null) {
+      voegDiepToe();
+      Object.keys(vals).filter((k) => k.startsWith("z_")).forEach((k) => zet(k, vals[k]));
+    }
+    updateProgress();
+    toStep(Math.min(ant.cur || 0, form.querySelectorAll("fieldset.q").length - 1), true);
+    // Was de Padvinder al af, dan staat je uitslag meteen weer klaar
+    if (padvinder && !$("#klaar").disabled) form.requestSubmit();
+  }
+
   document.querySelectorAll(".who .chip").forEach((b) =>
     b.addEventListener("click", () => {
       who = b.dataset.who;
@@ -603,6 +633,7 @@
       window.scrollTo({ top: 0, behavior: "instant" });
     });
     $("#opnieuw").addEventListener("click", () => {
+      bewaar("antwoorden", null);
       form.reset();
       cur = 0;
       buildQuiz();
@@ -986,6 +1017,7 @@
   }
 
   function renderPlan() {
+    setTimeout(renderBewaard);
     const sel = $("#planKlas");
     if (!sel.options.length) sel.innerHTML = KLASSEN.map((k) => `<option value="${k[0]}">${esc(k[1])}</option>`).join("");
     sel.value = lees("klas", "");
@@ -1118,10 +1150,60 @@
     const b = e.target.closest("[data-te]");
     if (!b) return;
     const t = TE[Number(b.dataset.te)];
+    bewaar("te", Number(b.dataset.te));
     document.querySelectorAll("#teChips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     const k = $("#teKaart");
     k.innerHTML = `<p class="te-kop"><span class="te-oud">Te ${esc(t[0])}?</span> <span class="te-nieuw">Nee: ${esc(t[1])}.</span></p><p>${vt(t[2])}</p><p><strong>Hier is het een kracht:</strong></p><div class="mini">${t[3].map((f) => `<button type="button" data-famopen="${f}">${famNm(f)}</button>`).join("")}</div>`;
     k.hidden = false;
+  });
+
+  if (TE[lees("te", -1)]) $(`#teChips [data-te="${lees("te", -1)}"]`).click();
+
+  /* ---------- Bewaard op dit apparaat ---------- */
+  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "thema"];
+  function renderBewaard() {
+    let wp = "";
+    try { wp = localStorage.getItem("woonplaats") || ""; } catch (e) {}
+    const klas = (KLASSEN.find((k) => k[0] && k[0] === lees("klas", "")) || [])[1];
+    const ant = lees("antwoorden", null);
+    const gedaan = ant ? Object.keys(ant.vals || {}).length : 0;
+    const vinkjes = Object.values(lees("afgevinkt", {})).filter(Boolean).length;
+    const te = TE[lees("te", -1)];
+    const rij = (k, v) => `<li><span>${k}</span><strong>${v}</strong></li>`;
+    $("#bewaardLijst").innerHTML =
+      rij("Padvinder", padvinder ? `af, op ${esc(new Date(padvinder.datum).toLocaleDateString("nl-NL", { day: "numeric", month: "long" }))}` : gedaan ? `half af (${gedaan} vragen)` : "nog niet gedaan") +
+      rij("Mijn lijst", `${favorieten.length} ${favorieten.length === 1 ? "opleiding" : "opleidingen"}`) +
+      rij("Stappen afgevinkt", String(vinkjes)) +
+      rij("Woonplaats", wp ? esc(wp) : "niet ingevuld") +
+      rij("Klas", klas ? esc(klas) : "niet ingevuld") +
+      (te ? rij("Mensen vinden mij te…", esc(te[0]) + " (" + esc(te[1]) + ")") : "");
+  }
+  $("#bewaarBestand").addEventListener("click", () => {
+    const data = {};
+    try { BEWAAR_SLEUTELS.forEach((k) => { const v = localStorage.getItem(k); if (v !== null) data[k] = v; }); } catch (e) {}
+    const blob = new Blob([JSON.stringify({ app: "watstudeerje", versie: 1, datum: new Date().toISOString().slice(0, 10), data }, null, 1)], { type: "application/json" });
+    const link = el("a", { href: URL.createObjectURL(blob), download: "wat-studeer-je-eigenlijk.json" });
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  });
+  $("#bewaarTerug").addEventListener("change", async (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    try {
+      const j = JSON.parse(await f.text());
+      if (j.app !== "watstudeerje" || !j.data) throw new Error();
+      BEWAAR_SLEUTELS.forEach((k) => (typeof j.data[k] === "string" ? localStorage.setItem(k, j.data[k]) : localStorage.removeItem(k)));
+      location.reload();
+    } catch (err) {
+      alert("Dit bestand kan ik niet lezen. Kies het bestand dat je eerder op deze site hebt bewaard.");
+    }
+    e.target.value = "";
+  });
+  $("#bewaarWis").addEventListener("click", () => {
+    if (!confirm("Alles wissen wat op dit apparaat is bewaard? Je lijst, je Padvinder en je plan zijn dan weg.")) return;
+    try { BEWAAR_SLEUTELS.forEach((k) => localStorage.removeItem(k)); } catch (e) {}
+    location.reload();
   });
 
   /* ---------- Printen: elk scherm en elke kaart ---------- */
@@ -1156,6 +1238,7 @@
   renderChips();
   renderList();
   buildQuiz();
+  herstelAntwoorden();
   renderOpenDagen();
   renderPlan();
   route();

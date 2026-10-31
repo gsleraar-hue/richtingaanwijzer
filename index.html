@@ -6,7 +6,7 @@
 <title>Wat studeer je eigenlijk?</title>
 <meta name="description" content="Wat is die studie nou eigenlijk, en wat kun je ermee? Uitleg in gewone taal, voor leerlingen én ouders.">
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=46">
+<link rel="stylesheet" href="ontwerp.css?v=49">
 </head>
 <body>
 
@@ -62,6 +62,7 @@
       <a class="tegel" href="#/plan"><strong>Mijn stappenplan</strong><span>Van nu tot je eerste studiedag</span></a>
       <a class="tegel" href="#/ouders"><strong>Voor ouders</strong><span>Zo voer je het gesprek</span></a>
     </div>
+    <p class="geen-account"><strong>Geen account nodig.</strong> Je browser onthoudt waar je gebleven bent. Dat werkt alleen op hetzelfde apparaat. Tip: gebruik de laptop of computer die je ook voor school gebruikt.</p>
   </section>
 
   <section id="droom">
@@ -102,6 +103,16 @@
       <button type="button" class="btn" id="planPrint">Print mijn plan</button>
       <button type="button" class="btn ghost" id="planKoelkast">Print voor op de koelkast</button>
       <button type="button" class="btn ghost" id="planAgenda">Zet de data in mijn agenda</button>
+    </div>
+    <div class="bewaard" id="bewaard">
+      <h3>Bewaard op dit apparaat</h3>
+      <p class="sub">Je hebt geen account nodig. Wat je invult, blijft in deze browser staan, ook als je de site sluit. Wij zien het niet. Werk daarom steeds op hetzelfde apparaat, het liefst de laptop of computer die je ook voor school gebruikt. Op een ander apparaat of na het wissen van je browsergegevens ben je het kwijt. Bewaar het daarom ook als bestand: dat kun je op een ander apparaat terugzetten.</p>
+      <ul id="bewaardLijst" class="bewaard-lijst"></ul>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="bewaarBestand">Bewaar als bestand</button>
+        <label class="btn ghost bestandknop">Zet terug uit bestand<input type="file" id="bewaarTerug" accept=".json,application/json" hidden></label>
+        <button type="button" class="btn ghost" id="bewaarWis">Alles wissen</button>
+      </div>
     </div>
   </section>
 
@@ -184,6 +195,7 @@
       <button type="button" class="chip" data-who="leerling" aria-pressed="true">Ik ben leerling</button>
       <button type="button" class="chip" data-who="ouder" aria-pressed="false">Ik ben ouder (ik vul in over mijn kind)</button>
     </div>
+    <p class="geen-account"><strong>Geen account nodig.</strong> Je browser onthoudt waar je gebleven bent. Dat werkt alleen op hetzelfde apparaat. Tip: gebruik de laptop of computer die je ook voor school gebruikt.</p>
     <div class="testgrid">
       <form id="testForm" class="quiz"></form>
       <figure class="testfoto"><img src="img/tafel-lachen.jpg" alt="Drie studenten lachen samen achter een laptop" loading="lazy"></figure>
@@ -288,16 +300,17 @@
 <footer>
   <div class="wrap">
     <p><strong>Wat studeer je eigenlijk?</strong> geeft algemene uitleg en is geen vervanging voor de officiële info van een opleiding. Namen, inhoud en toelatingseisen verschillen per school en veranderen. Check altijd de website van de opleiding zelf.</p>
+    <p>Deze site werkt zonder account. Wat je invult, blijft alleen in je eigen browser staan.</p>
     <p class="credits">Foto's via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a> (Unsplash License): Naassom Azevedo, Brooke Cagle, Vitaly Gariev, javier trueba, Mimi Thian, Meredith Spencer en Divaris Shirichena, en via <a href="https://www.pexels.com" target="_blank" rel="noopener">Pexels</a> (Pexels-licentie).</p>
   </div>
 </footer>
 
-<script src="data.js?v=46"></script>
-<script src="opleidingen.js?v=46"></script>
-<script src="uitleg.js?v=46"></script>
-<script src="mbo.js?v=46"></script>
-<script src="locaties.js?v=46"></script>
-<script src="opendagen.js?v=46"></script>
-<script src="app.js?v=46"></script>
+<script src="data.js?v=49"></script>
+<script src="opleidingen.js?v=49"></script>
+<script src="uitleg.js?v=49"></script>
+<script src="mbo.js?v=49"></script>
+<script src="locaties.js?v=49"></script>
+<script src="opendagen.js?v=49"></script>
+<script src="app.js?v=49"></script>
 </body>
 </html>
