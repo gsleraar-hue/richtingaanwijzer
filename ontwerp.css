@@ -188,15 +188,19 @@ dialog::backdrop{background:rgba(10,16,32,.6)}
 .kaartwrap{background:#c0d3a8;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;color:#14213d}
 .kaartwrap svg{display:block;width:100%;height:auto}
 .kaartwrap .reg{cursor:pointer;outline:none}
-.kaartwrap .reg .disc{fill:#f8f5ec;stroke:#14213d;stroke-width:1.6;transition:fill .2s}
+.kaartwrap .reg .disc{fill:#f8f5ec;stroke:#14213d;stroke-width:1.6;transition:fill .25s,stroke .25s}
+.kaartwrap .reg .ico,.kaartwrap .reg .ring,.kaartwrap .reg .bnr circle{transition:stroke .25s,fill .25s}
 .kaartwrap .reg .ring{fill:none;stroke:#14213d;stroke-opacity:.25;stroke-width:1}
 .kaartwrap .reg .ico{stroke:#14213d}
 .kaartwrap .reg .bnr circle{fill:#14213d}
-.kaartwrap .reg.top1 .bnr circle,.kaartwrap .reg.top2 .bnr circle{fill:#14213d}
+.kaartwrap .reg.top1 .bnr circle,.kaartwrap .reg.top2 .bnr circle{fill:var(--c)}
 .kaartwrap .reg .bnr text{font:600 13px Georgia,serif;fill:#f4f1ea;text-anchor:middle}
 .kaartwrap .reg .nm{font:600 15px "Segoe UI",system-ui,sans-serif;fill:#14213d;text-anchor:middle;paint-order:stroke;stroke:#c4d6ac;stroke-width:5px;stroke-linejoin:round;pointer-events:none}
-.kaartwrap .reg:hover .disc,.kaartwrap .reg:focus-visible .disc{stroke:#9a3b2e;stroke-width:3}
-.kaartwrap .reg.top1 .disc,.kaartwrap .reg.top2 .disc{fill:#9a3b2e;stroke:#9a3b2e}
+.kaartwrap .reg:hover .disc,.kaartwrap .reg:focus-visible .disc{fill:var(--c);stroke:var(--c)}
+.kaartwrap .reg:hover .ico,.kaartwrap .reg:focus-visible .ico{stroke:#fff}
+.kaartwrap .reg:hover .ring,.kaartwrap .reg:focus-visible .ring{stroke:#fff;stroke-opacity:.45}
+.kaartwrap .reg:hover .bnr circle,.kaartwrap .reg:focus-visible .bnr circle{fill:var(--c)}
+.kaartwrap .reg.top1 .disc,.kaartwrap .reg.top2 .disc{fill:var(--c);stroke:var(--c)}
 .kaartwrap .reg.top1 .ring,.kaartwrap .reg.top2 .ring{stroke:#f4f1ea;stroke-opacity:.5}
 .kaartwrap .reg.top1 .ico,.kaartwrap .reg.top2 .ico{stroke:#f4f1ea}
 .kaartwrap .reg.top1 .bnr circle,.kaartwrap .reg.top2 .bnr circle{fill:#9a3b2e}
@@ -227,3 +231,7 @@ footer a{color:#e8a08f}
 .kaartlijst button.top1 .ik,.kaartlijst button.top2 .ik{color:var(--accent)}
 .res-ic{color:var(--accent);display:inline-flex}
 .hero .logo svg{stroke:currentColor}
+
+.kaartlijst button .ik{transition:color .2s}
+.kaartlijst button:hover .ik,.kaartlijst button:focus-visible .ik{color:color-mix(in srgb,var(--c) 62%,#fff)}
+.kaartlijst button:hover small,.kaartlijst button:focus-visible small{color:color-mix(in srgb,var(--c) 62%,#fff)}

@@ -411,6 +411,7 @@
     bedrijf: [620, 385, 6]
   };
   const START = [470, 556];
+  const COL = { zorg: "#b4443a", weten: "#1f7a64", tech: "#2d5f9a", mens: "#7a4f9a", creatief: "#c9781f", bedrijf: "#17697a" };
   const PATHS = {
     creatief: "M470 538 C380 532 305 490 292 445 S238 408 215 396",
     mens: "M470 538 C535 505 490 452 438 425 S345 345 400 296",
@@ -434,7 +435,7 @@
   }
   function building(k) {
     const [cx, cy, n] = REG[k];
-    return `<g class="reg" data-gebied="${k}" tabindex="0" role="button" aria-label="Faculteit ${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
+    return `<g class="reg" style="--c:${COL[k]}" data-gebied="${k}" tabindex="0" role="button" aria-label="Faculteit ${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
       `<circle class="disc" cx="${cx}" cy="${cy}" r="58"/><circle class="ring" cx="${cx}" cy="${cy}" r="52"/>` +
       `<g class="ico" transform="translate(${cx - 36} ${cy - 36}) scale(1.125)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</g>` +
       `<g class="bnr"><circle cx="${cx - 46}" cy="${cy - 46}" r="13"/><text x="${cx - 46}" y="${cy - 41}">${n}</text></g>` +
@@ -466,7 +467,7 @@
       `<g class="hier" transform="translate(${START[0]} ${START[1]})"><rect x="-70" y="-16" width="140" height="32" rx="4" fill="#14213d"/><text y="5" text-anchor="middle" fill="#f4f1ea">HOOFDINGANG</text></g>` +
       `<g transform="translate(850 52)"><circle r="24" fill="none" stroke="#14213d" stroke-width="1.2"/><path d="M0 -20L5 -4L20 0L5 4L0 20L-5 4L-20 0L-5 -4Z" fill="#14213d"/><path d="M0 -20L5 -4L-5 -4Z" fill="#9a3b2e"/><text y="-31" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#14213d">N</text></g>` +
       `</svg>` +
-      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${esc(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
+      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" style="--c:${COL[k]}" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${esc(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
   }
   function highlightMap(root, top) {
     root.querySelectorAll("[data-gebied]").forEach((g) => g.classList.remove("top1", "top2"));
