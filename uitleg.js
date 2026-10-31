@@ -1,5 +1,6 @@
 // Extra uitleg per groep: wat kun je ermee, wat heb je nodig
 const VOOROPLEIDING = {
+  mbo: "een vmbo-diploma; voor niveau 4 meestal vmbo-tl/gl of kader. Zonder diploma kan Entree (niveau 1)",
   hbo: "havo, vwo of mbo-4",
   wo: "vwo (of een hbo-propedeuse)",
   ad: "havo, vwo of mbo-4"

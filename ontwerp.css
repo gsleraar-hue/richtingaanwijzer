@@ -609,3 +609,35 @@ main section>h2::before{background:linear-gradient(90deg,#d62828,#9e1b32)}
 .kk-onder ul{list-style:none;padding:0;margin:0;display:grid;gap:3px}
 .kk-url{color:#555;font-size:9pt}
 .kk-leeg{color:#444}
+
+/* Compacte uitslag: twee richtingen naast elkaar */
+.res-jij{font-size:1.1rem;margin:0 0 16px}
+.richtingen{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0 18px}
+.richting{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.r-kop{display:flex;gap:12px;align-items:center}
+.r-kop small{color:var(--accent);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.72rem}
+.r-kop h4{margin:0;font-size:1.35rem;text-transform:none;letter-spacing:0;color:var(--ink)}
+.r-uitleg{margin:0;color:var(--muted)}
+.persona-groot{margin:0;background:var(--tint);border-radius:14px;padding:14px 16px;border-left:4px solid var(--accent)}
+.persona-groot blockquote{margin:0 0 6px;font-size:1.02rem;line-height:1.45}
+.persona-groot figcaption{font-size:.88rem;color:var(--muted)}
+.r-sub{margin:0;font-size:.95rem}
+details.meer{margin-top:8px}
+details.meer summary{cursor:pointer;font-weight:700;color:var(--accent);padding:6px 0}
+details.meer h5{margin:12px 0 4px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+details.meer ul{margin:0;padding-left:20px}
+.res-rij{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:6px 0 10px}
+.res-rij h5{margin:0 0 6px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.res-rij .ook{margin:0;border-left:3px solid var(--accent);padding-left:12px}
+.res-rij .ook p{margin:0}
+@media (max-width:760px){.richtingen,.res-rij{grid-template-columns:1fr}}
+/* Personavraag */
+.pz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:14px}
+.pz{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper);cursor:pointer}
+.pz input{position:absolute;opacity:0;pointer-events:none}
+.pz strong{font-size:1.02rem}
+.pz span{font-size:.9rem;color:var(--muted);line-height:1.4}
+.pz:hover{border-color:var(--accent)}
+.pz:has(input:checked){border-color:var(--accent);background:var(--tint);box-shadow:0 0 0 2px var(--accent) inset}
+.pz:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:2px}
+.pz-geen{border-style:dashed}

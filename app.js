@@ -1,4 +1,14 @@
 (function () {
+  // Mbo-opleidingen (DUO) toevoegen aan de lijst; zelfde naam als hbo/wo = één opleiding met meer niveaus
+  if (typeof OPLEIDINGEN_MBO === "object") {
+    const bestaand = new Map(OPLEIDINGEN.map((o) => [o.n.toLowerCase(), o]));
+    OPLEIDINGEN_MBO.forEach((x) => {
+      const b = bestaand.get(x.n.toLowerCase());
+      if (b) { b.l = [...new Set(b.l.concat("mbo"))]; b.i = [...new Set(b.i.concat(x.i))]; b.mn = x.mn; b.v = [...new Set(b.v.concat(x.v))]; }
+      else OPLEIDINGEN.push(x);
+    });
+    OPLEIDINGEN.sort((p, q) => p.n.localeCompare(q.n, "nl"));
+  }
   const $ = (s, r = document) => r.querySelector(s);
   const el = (tag, attrs = {}, html = "") => {
     const n = document.createElement(tag);
@@ -57,19 +67,26 @@
   const reistijd = (d) => Math.max(10, Math.round((12 + d * 1.15) / 5) * 5);
   const afstandTekst = (d) => `${Math.round(d)} km, ± ${reistijd(d)} min reizen`;
   const woonInput = (id) => `<label class="woon"><span>Waar woon je?</span><input id="${id}" list="woonLijst" placeholder="Bijv. Zwolle" autocomplete="off" value="${thuis ? esc(wpLabel(thuis)) : ""}"></label>`;
-  const plekkenVan = (naam) => (typeof LOC === "object" && LOC[String(naam).toLowerCase()]) || [];
+  function plekkenVan(naam) {
+    const k = String(naam).toLowerCase();
+    const ho = (typeof LOC === "object" && LOC[k]) || [];
+    const mbo = (typeof LOC_MBO === "object" && LOC_MBO[k]) || [];
+    return ho.concat(mbo.map(([ii, pi]) => [MBO_INSTS[ii], MBO_PLEK[pi][0], MBO_PLEK[pi][1], MBO_PLEK[pi][2], MBO_PLEK[pi][3]]));
+  }
   function dichtsteBij(naam) {
     const per = {};
     if (!thuis) return per;
-    plekkenVan(naam).forEach(([inst, pl, lat, lon]) => {
+    plekkenVan(naam).forEach(([inst, pl, lat, lon, adres]) => {
       const d = km(thuis, { lat, lon });
-      if (!per[inst] || d < per[inst].d) per[inst] = { d, pl };
+      if (!per[inst] || d < per[inst].d) per[inst] = { d, pl, adres };
     });
     return per;
   }
   // Hoofdlocatie per school, voor de open dagen
   const instPlek = {};
   if (typeof LOC === "object") Object.values(LOC).forEach((lijst) => lijst.forEach(([inst, pl, lat, lon]) => { if (!instPlek[inst]) instPlek[inst] = { pl, lat, lon }; }));
+  if (typeof LOC_MBO === "object") Object.values(LOC_MBO).forEach((lijst) => lijst.forEach(([ii, pi]) => { const inst = MBO_INSTS[ii]; if (!instPlek[inst]) instPlek[inst] = { pl: MBO_PLEK[pi][0], lat: MBO_PLEK[pi][1], lon: MBO_PLEK[pi][2] }; }));
+  if (typeof OD_MERK === "object") Object.keys(OD_MERK).forEach((inst) => { const merk = OD_MERK[inst]; if (!instPlek[merk] && instPlek[inst]) instPlek[merk] = instPlek[inst]; });
   let huidigeOpl = null;
   function zetThuis(val) {
     const w = wpByLabel.get(String(val).trim().toLowerCase()) || null;
@@ -122,9 +139,9 @@
   }
 
   /* ---------- Alle opleidingen (DUO/RIO), gegroepeerd ---------- */
-  const NIV_LABEL = { hbo: "hbo", wo: "wo", ad: "associate degree" };
-  const EC_JAAR = { hbo: "4 jaar", wo: "3 jaar", ad: "2 jaar" };
-  const VORM = { voltijd: "voltijd", deeltijd: "deeltijd", duaal: "duaal (leren en werken)" };
+  const NIV_LABEL = { mbo: "mbo", hbo: "hbo", wo: "wo", ad: "associate degree" };
+  const EC_JAAR = { mbo: "1 tot 4 jaar, afhankelijk van het niveau", hbo: "4 jaar", wo: "3 jaar", ad: "2 jaar" };
+  const VORM = { voltijd: "voltijd", deeltijd: "deeltijd", duaal: "duaal (leren en werken)", bol: "bol: naar school, met stages", bbl: "bbl: werken en leren, een paar dagen per week werken" };
 
   function renderFamilies() {
     const q = state.zoek.trim().toLowerCase();
@@ -212,12 +229,12 @@
       `<h3>Wat betekent dit?</h3><p>${vt(f.uitleg)} Soortgelijke opleidingen vind je in dezelfde groep.</p>` +
       (X ? `<h3>Wat kun je ermee?</h3><ul>${X.kunJe.map((k) => `<li>${vt(k)}</li>`).join("")}</ul>` : "") +
       (X
-        ? `<h3>Wat heb je ervoor nodig?</h3><ul><li><strong>Vooropleiding:</strong> ${o.l.map((n) => `voor ${NIV_LABEL[n]}: ${VOOROPLEIDING[n]}`).join(". ")}</li><li>${vt(X.profiel)}</li><li><strong>Het helpt als je:</strong> ${X.eigen.map(vt).join(", ")}</li></ul><p class="praat" style="margin-top:8px">Toelatingseisen verschillen per school. Lees ze altijd bij de opleiding zelf.</p>`
+        ? `<h3>Wat heb je ervoor nodig?</h3><ul><li><strong>Vooropleiding:</strong> ${o.l.map((n) => `voor ${NIV_LABEL[n]}: ${VOOROPLEIDING[n] || ""}`).join(". ")}</li><li>${vt(X.profiel)}</li><li><strong>Het helpt als je:</strong> ${X.eigen.map(vt).join(", ")}</li></ul><p class="praat" style="margin-top:8px">Toelatingseisen verschillen per school. Lees ze altijd bij de opleiding zelf.</p>`
         : "") +
       `<h3>Toelatingsexamen, auditie of selectie?</h3><p>${SELECTIE[f.id] ? esc(SELECTIE[f.id]) + " Kijk bij de opleiding zelf wat er precies gevraagd wordt." : "Meestal niet. Heb je de juiste vooropleiding en meld je je op tijd aan, dan mag je in principe beginnen."}</p>` +
       `<h3>Hoe kom je daar?</h3><ol class="stapjes"><li>Zorg voor de juiste vooropleiding en het juiste profiel.</li><li>Ga naar een open dag of meeloopdag.</li><li>Meld je aan via Studielink: uiterlijk 1 mei${SELECTIE[f.id] ? ", bij selectie of loting vaak al vóór 15 januari" : ""}.</li><li>Doe de studiekeuzecheck.</li><li>Regel je geld bij DUO, en eventueel een kamer.</li></ol><p><a href="#route">Bekijk het hele stappenplan →</a></p>` +
       `<h3>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h3>${personaHtml(f.gebied)}` +
-      `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
+      `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}${n === "mbo" && o.mn && o.mn.length ? " niveau " + o.mn.join(", ") : ""}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
       `<h3>Hoe studeer je?</h3><p>${o.v.map((v) => VORM[v] || v).join(", ") || "onbekend"}</p>` +
       `<h3>Waar kan het? (${o.i.length} ${o.i.length === 1 ? "school" : "scholen"})</h3>${reis}<ul class="scholen">${insts.map((i) => schoolRegel(i, o.n, per[i])).join("")}</ul>` +
       (o.i.length > insts.length ? `<p style="color:var(--muted)">en ${o.i.length - insts.length} andere</p>` : "") +
@@ -307,6 +324,27 @@
     kf.appendChild(kg);
     kf.appendChild(el("p", { class: "hint" }, "Wat je vroeger al leuk vond en nu nog steeds, zegt vaak veel over wat bij je past."));
     form.appendChild(kf);
+    const pf = el("fieldset", { class: "q" });
+    pf.dataset.part = "Herken je jezelf?";
+    pf.innerHTML = `<legend>${who === "ouder" ? "Welke student lijkt het meest op je kind?" : "Welke student lijkt het meest op jou?"}</legend>`;
+    const pg = el("div", { class: "pz-grid" });
+    Object.keys(PERSONAS).forEach((k) => {
+      const p = PERSONAS[k][0];
+      const l = el("label", { class: "pz" });
+      const inp = el("input", { type: "radio", name: "pz", value: k });
+      if (kept.pz === k) inp.checked = true;
+      l.appendChild(inp);
+      l.insertAdjacentHTML("beforeend", `<strong>${esc(p.naam)}</strong><span>${esc(p.tekst)}</span>`);
+      pg.appendChild(l);
+    });
+    const geen = el("label", { class: "pz pz-geen" });
+    const gi = el("input", { type: "radio", name: "pz", value: "" });
+    if (kept.pz === "") gi.checked = true;
+    geen.appendChild(gi);
+    geen.insertAdjacentHTML("beforeend", "<strong>Geen van allen</strong><span>Ik herken me in niemand. Ook prima!</span>");
+    pg.appendChild(geen);
+    pf.appendChild(pg);
+    form.appendChild(pf);
     let nr = 0;
     const section = (titel, sub, prefix, items) => {
       form.appendChild(el("h3", { class: "part" }, `${esc(titel)} <small>${esc(sub)}</small>`));
@@ -438,6 +476,8 @@
       score[k] += Math.min(3, (picks[k] || 0) * 1.5);
       max[k] += 3;
     });
+    const pz = form.querySelector('input[name="pz"]:checked');
+    Object.keys(GEBIEDEN).forEach((k) => { max[k] += 3; if (pz && pz.value === k) score[k] += 3; });
     const rank = Object.keys(score).sort((a, b) => score[b] - score[a]);
     return { score, max, profiel, rank };
   }
@@ -488,87 +528,58 @@
     const top = rank.slice(0, 2);
     const ouder = who === "ouder";
     const pct = (k) => Math.round((score[k] / max[k]) * 100);
-    const flat = pct(rank[0]) - pct(rank[5]) < 25;
-
-    let h = `<div class="res-top"><button type="button" class="btn ghost" id="aanpassen">← Antwoorden aanpassen</button><button type="button" class="btn ghost" id="opnieuw">Opnieuw beginnen</button></div>` +
-      `<h3>${ouder ? "Wat opvalt bij je kind" : "Jouw richting"}</h3>`;
-    h += flat
-      ? `<p>Je scores liggen dicht bij elkaar. Dat is heel gewoon: er is nog niets uitgesloten. Kijk vooral naar de bovenste twee en blijf breed verkennen.</p>`
-      : `<p>${ouder ? "Je kind lijkt" : "Je lijkt"} vooral te passen bij <strong>${esc(GEBIEDEN[top[0]].naam)}</strong> en <strong>${esc(GEBIEDEN[top[1]].naam)}</strong>. Dat is een richting, geen vonnis.</p>`;
-
-    h += `<div class="borden" aria-hidden="true"><div class="bord l">${esc(GEBIEDEN[top[0]].naam)}</div><div class="bord r">${esc(GEBIEDEN[top[1]].naam)}</div></div>`;
-    h += `<div class="kaartwrap" id="uitslagKaart" style="margin-top:8px"></div>`;
-    h += '<div class="bars">' +
-      rank.map((k) => `<div class="bar"><span>${esc(GEBIEDEN[k].naam)}</span><span class="track"><span class="fill" style="width:${pct(k)}%;display:block"></span></span><span>${pct(k)}%</span></div>`).join("") +
-      "</div>";
-
     const kw = topLijst(profiel.kwal);
     const dr = topLijst(profiel.drijf);
-    h += `<h4>${ouder ? "Sterke punten van je kind" : "Jouw kwaliteiten"}</h4>` +
-      (kw.length ? `<div class="tags">${kw.map((t) => `<span class="tag2">${esc(t)}</span>`).join("")}</div>` : `<p>Geen uitgesproken sterke punten aangegeven. Dat kan kloppen: veel mensen weten dit pas als ze het in de praktijk proberen.</p>`);
-    h += `<h4>${ouder ? "Wat voor je kind telt" : "Wat voor jou telt"}</h4>` +
-      (dr.length ? `<div class="tags">${dr.map((t) => `<span class="tag2">${esc(t)}</span>`).join("")}</div>` : `<p>Geen uitgesproken waarden aangegeven.</p>`);
-
-    // Jij als student
     const lijstje = (xs) => xs.map((x) => x.toLowerCase()).join(", ").replace(/, ([^,]*)$/, " en $1");
+    const famNaam = (f) => esc((FAMILIES.find((x) => x.id === f) || {}).naam || f);
+    const fams = Object.keys(famScore).filter((f) => famScore[f] >= 3).sort((a, b) => famScore[b] - famScore[a]).slice(0, 3);
     const delen = [];
     if (kw.length) delen.push(`sterk in ${lijstje(kw)}`);
-    if (dr.length) delen.push(`${ouder ? "vindt" : "vindt"} ${lijstje(dr)} belangrijk`);
-    h += `<div class="jij"><h4>${ouder ? "Je kind als student" : "Jij als student"}</h4><p>${ouder ? "Je kind is" : "Jij bent"} ${delen.length ? delen.join(" en ") : "nog volop aan het ontdekken wat bij je past"}. ` +
-      `${ouder ? "Waarschijnlijk voelt je kind zich" : "Waarschijnlijk voel jij je"} thuis tussen studenten in <strong>${esc(GEBIEDEN[top[0]].naam)}</strong> en <strong>${esc(GEBIEDEN[top[1]].naam)}</strong>. Hieronder zie je wie je daar tegenkomt.</p></div>`;
+    if (dr.length) delen.push(`vindt ${lijstje(dr)} belangrijk`);
 
-    // Doorvragen: welke groepen passen het best
-    const fams = Object.keys(famScore).filter((f) => famScore[f] >= 3).sort((a, b) => famScore[b] - famScore[a]).slice(0, 3);
-    if (fams.length) {
-      const famNaam = (f) => esc((FAMILIES.find((x) => x.id === f) || {}).naam || f);
-      h += `<h4>Hier pas je waarschijnlijk het best</h4><div class="mini">${fams.map((f) => `<button type="button" data-fam="${f}">${famNaam(f)}</button>`).join("")}</div>`;
-      const sel = fams.filter((f) => SELECTIE[f]);
-      if (sel.length) {
-        h += `<p class="praat">${toel === 2 ? "Je gaf aan liever geen toelatingsexamen, auditie of portfolio te willen. Let op: " : "Goed om te weten: "}` +
-          sel.map((f) => `<strong>${famNaam(f)}</strong>: ${esc(SELECTIE[f])}`).join(" ") +
-          `${toel === 2 ? " Vaak zijn er vergelijkbare opleidingen zonder selectie; vraag ernaar op de open dag." : ""}</p>`;
-      }
-    }
+    let h = `<div class="res-top"><a class="btn" href="#/plan">Maak mijn stappenplan →</a><button type="button" class="btn ghost" id="aanpassen">← Antwoorden aanpassen</button><button type="button" class="btn ghost" id="opnieuw">Opnieuw beginnen</button></div>`;
+    h += `<h3>${ouder ? "Dit past bij je kind" : "Dit past bij jou"}</h3>`;
+    if (delen.length) h += `<p class="res-jij">${ouder ? "Je kind is" : "Jij bent"} ${delen.join(" en ")}.</p>`;
 
-    top.forEach((k) => {
+    h += `<div class="richtingen">` + top.map((k, i) => {
       const g = GEBIEDEN[k];
-      h += `<h3 style="margin-top:30px;font-size:1.5rem;display:flex;align-items:center;gap:14px"><span class="res-ic">${icon(k, 44)}</span>${esc(g.naam)}</h3><p>${vt(g.uitleg)}</p>`;
-      h += `<h4>Dit hebben deze opleidingen gemeen</h4><ul>${g.gemeen.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
-      h += `<h4>Wat kun je ermee?</h4><ul>${g.kunJe.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
-      h += `<h4>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h4>${personaHtml(k)}`;
-      h += `<p style="margin-top:8px"><strong>Studies om te bekijken:</strong></p><div class="mini">` +
-        STUDIES.filter((s) => s.gebied === k).map((s) => `<button type="button" data-id="${s.id}">${esc(s.naam)} <small style="color:var(--muted)">(${s.niveau.join("/")})</small></button>`).join("") +
-        "</div>";
-      h += `<p style="margin-top:10px"><strong>Alle opleidingen in deze richting:</strong></p><div class="mini">` +
-        FAMILIES.filter((f) => f.gebied === k).map((f) => `<button type="button" data-fam="${f.id}">${esc(f.naam)}</button>`).join("") +
-        "</div>";
-    });
+      const p = (PERSONAS[k] || [])[0];
+      const p2 = (PERSONAS[k] || [])[1];
+      const eigen = fams.filter((f) => (FAMILIES.find((x) => x.id === f) || {}).gebied === k);
+      const knoppen = (eigen.length ? eigen : FAMILIES.filter((f) => f.gebied === k).map((f) => f.id)).slice(0, 3);
+      return `<article class="richting"><div class="r-kop"><span class="res-ic">${icon(k, 40)}</span><div><small>Richting ${i + 1} · ${pct(k)}%</small><h4>${esc(g.naam)}</h4></div></div>` +
+        `<p class="r-uitleg">${vt(g.uitleg)}</p>` +
+        (p ? `<figure class="persona-groot"><blockquote>${vt(p.tekst)}</blockquote><figcaption><strong>${esc(p.naam)}</strong> · ${esc(p.studie)} <small>(voorbeeld)</small></figcaption></figure>` : "") +
+        `<p class="r-sub"><strong>Wat kun je ermee?</strong> ${g.kunJe.slice(0, 2).map(vt).join(" · ")}</p>` +
+        `<div class="mini">${knoppen.map((f) => `<button type="button" data-fam="${f}">${famNaam(f)}</button>`).join("")}</div>` +
+        `<details class="meer"><summary>Meer over ${esc(g.naam)}</summary>` +
+        `<h5>Wat de opleidingen gemeen hebben</h5><ul>${g.gemeen.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>` +
+        (p2 ? `<h5>Nog een student</h5><p><strong>${esc(p2.naam)}</strong>, ${esc(p2.studie)}: ${vt(p2.tekst)}</p>` : "") +
+        `<h5>Studies uitgelegd</h5><div class="mini">${STUDIES.filter((s) => s.gebied === k).map((s) => `<button type="button" data-id="${s.id}">${esc(s.naam)}</button>`).join("")}</div>` +
+        `<h5>Om over te praten</h5><ul>${g.praat.map((t) => `<li>${vt(t)}</li>`).join("")}</ul></details></article>`;
+    }).join("") + `</div>`;
 
-    h += `<div class="ook"><h4>Ook het bekijken waard</h4><p><strong>${esc(GEBIEDEN[rank[2]].naam)}</strong> scoort ook goed. Niets is uitgesloten: <button type="button" class="linkbtn" data-gebied="${rank[2]}">bekijk die opleidingen</button>.</p></div>`;
+    const sel = fams.filter((f) => SELECTIE[f]);
+    if (sel.length && toel === 2) h += `<p class="praat">Je gaf aan liever geen toelatingsexamen, auditie of portfolio te willen. Let op bij ${sel.map((f) => `<strong>${famNaam(f)}</strong>`).join(" en ")}: ${sel.map((f) => esc(SELECTIE[f])).join(" ")}</p>`;
 
-    h += `<h4>Praat hier samen over</h4><ul>` +
-      top.flatMap((k) => GEBIEDEN[k].praat).map((p) => `<li>${vt(p)}</li>`).join("") + "</ul>";
+    h += `<div class="res-rij">` +
+      `<div><h5>${ouder ? "Sterke punten" : "Jouw kwaliteiten"}</h5>${kw.length ? `<div class="tags">${kw.map((t) => `<span class="tag2">${esc(t)}</span>`).join("")}</div>` : `<p class="count">Nog niet uitgesproken; dat ontdek je vaak in de praktijk.</p>`}</div>` +
+      `<div><h5>${ouder ? "Wat voor je kind telt" : "Wat voor jou telt"}</h5>${dr.length ? `<div class="tags">${dr.map((t) => `<span class="tag2">${esc(t)}</span>`).join("")}</div>` : `<p class="count">Nog niet uitgesproken.</p>`}</div>` +
+      `<div class="ook"><h5>Ook het bekijken waard</h5><p><strong>${esc(GEBIEDEN[rank[2]].naam)}</strong>: <button type="button" class="linkbtn" data-gebied="${rank[2]}">bekijk de opleidingen</button></p></div>` +
+      `</div>`;
 
-    h += `<h4>${ouder ? "Voor jou als ouder" : "Voor jou en wie met je meedenkt"}</h4><ul>` +
+    h += `<details class="meer"><summary>Alle scores en jouw route op de campus</summary><div class="bars">` +
+      rank.map((k) => `<div class="bar"><span>${esc(GEBIEDEN[k].naam)}</span><span class="track"><span class="fill" style="width:${pct(k)}%;display:block"></span></span><span>${pct(k)}%</span></div>`).join("") +
+      `</div><div class="kaartwrap" id="uitslagKaart" style="margin-top:8px"></div></details>`;
+    h += `<details class="meer"><summary>${ouder ? "Tips voor jou als ouder" : "Tips voor jou en wie met je meedenkt"}</summary><ul>` +
       (ouder
-        ? [
-            "Laat je kind de test ook zelf maken en vergelijk de uitslagen. De verschillen zijn het interessantste gespreksonderwerp.",
-            "Stel vragen in plaats van adviezen te geven. “Wat spreekt je hieraan aan?” werkt beter dan “Dit past bij jou”.",
-            "Plan samen een meeloopdag of open dag bij één of twee opleidingen uit de lijst."
-          ]
-        : [
-            "Laat iemand die je goed kent (ouder, mentor, oom of tante) de Padvinder ook over jou invullen. Bekijk samen waar het verschilt.",
-            "Kies twee of drie studies uit de lijst en zoek een open dag of meeloopdag op.",
-            "Je hoeft nu niets te beslissen. Dit is een eerste richting."
-          ]
-      ).map((t) => `<li>${vt(t)}</li>`).join("") + "</ul>";
-
-    h += `<div class="actions" style="margin-top:20px"><a class="btn" href="#/opleidingen" style="text-decoration:none">Alle studies bekijken</a></div>`;
-    h += `<p style="color:var(--muted);font-size:.9rem;margin-top:14px">Deze test is een gespreksstarter op basis van interesses, kwaliteiten en waarden, geen wetenschappelijk testresultaat.</p>`;
+        ? ["Laat je kind de Padvinder ook zelf doen en vergelijk de uitslagen.", "Stel vragen in plaats van adviezen te geven. “Wat spreekt je hieraan aan?” werkt beter dan “Dit past bij jou”.", "Plan samen een meeloopdag of open dag."]
+        : ["Laat iemand die je goed kent (ouder, mentor, oom of tante) de Padvinder ook over jou invullen. Bekijk samen waar het verschilt.", "Kies twee of drie opleidingen en zoek een open dag of meeloopdag op.", "Je hoeft nu niets te beslissen. Dit is een eerste richting."]
+      ).map((t) => `<li>${vt(t)}</li>`).join("") + `</ul></details>`;
+    h += `<p class="count" style="margin-top:14px">De Padvinder is een gespreksstarter op basis van interesses, kwaliteiten en waarden, geen wetenschappelijke test.</p>`;
 
     bewaar("padvinder", { top, fams, toel, datum: new Date().toISOString().slice(0, 10) });
     padvinder = lees("padvinder", null);
-    h = h.replace('<div class="res-top">', '<div class="res-top"><a class="btn" href="#/plan">Maak mijn stappenplan →</a>');
     const box = $("#uitslag");
     box.innerHTML = h;
     renderPlan();
@@ -767,17 +778,21 @@
   // Welke soort onderwijs biedt een school aan (uit de opleidingen); ad telt als hbo
   const instNiv = {};
   if (typeof INST_NIV === "object") Object.keys(INST_NIV).forEach((k) => (instNiv[k] = new Set(INST_NIV[k])));
+  if (typeof MBO_INSTS === "object") MBO_INSTS.forEach((k) => (instNiv[k] = instNiv[k] || new Set()).add("mbo"));
+  if (typeof OD_MERK === "object") Object.values(OD_MERK).forEach((k) => (instNiv[k] = instNiv[k] || new Set()).add("mbo"));
   function komend(inst) {
-    const e = OD[inst];
+    const e = OD[inst] || (typeof OD_MERK === "object" && OD[OD_MERK[inst]]);
     return e && Array.isArray(e.dagen) ? e.dagen.filter((d) => d.datum && (d.eind || d.datum) >= vandaag).sort((a, b) => a.datum.localeCompare(b.datum)) : [];
   }
   function schoolRegel(inst, opleiding, afst) {
     const k = komend(inst)[0];
-    const site = veiligeUrl(OD[inst] && OD[inst].site);
+    const odE = OD[inst] || (typeof OD_MERK === "object" && OD[OD_MERK[inst]]);
+    const site = veiligeUrl(odE && odE.site);
     const domein = (typeof DOMEINEN === "object" && DOMEINEN[inst]) || (site ? new URL(site).hostname.replace(/^www[.]/, "") : "");
-    const zoek = "https://duckduckgo.com/?q=" + encodeURIComponent(opleiding ? `${opleiding} ${domein ? "site:" + domein : inst}` : inst);
+    const direct = opleiding && typeof MBO_URL === "object" && veiligeUrl(MBO_URL[`${opleiding}|${inst}`]);
+    const zoek = direct || "https://duckduckgo.com/?q=" + encodeURIComponent(opleiding ? `${opleiding} ${domein ? "site:" + domein : inst}` : inst);
     let r = `<strong>${esc(inst)}</strong>`;
-    if (afst) r += ` <span class="afst">${esc(afst.pl)} · ${afstandTekst(afst.d)}</span>`;
+    if (afst) r += ` <span class="afst">${afst.adres ? esc(afst.adres) + ", " : ""}${esc(afst.pl)} · ${afstandTekst(afst.d)}</span>`;
     if (opleiding) r += ` <a href="${esc(zoek)}" target="_blank" rel="noopener">opleiding bekijken ↗</a>`;
     if (k) r += `<br><span class="od-next">Eerstvolgende ${esc(k.soort || "open dag")}: ${fmt(k.datum, { weekday: "short", day: "numeric", month: "long" })}${k.plaats ? ", " + esc(k.plaats) : ""}</span>`;
     if (site) r += ` · <a href="${esc(site)}" target="_blank" rel="noopener">open dagen ↗</a>`;
