@@ -1710,10 +1710,6 @@ const OPEN_DAGEN = {
 }
 ]
 },
-"Tilburg University": {
-"site": "https://www.tilburguniversity.edu/education/bachelors-programs/open-day",
-"dagen": []
-},
 "Wageningen University": {
 "site": "https://www.wur.nl/en/activity/bachelors-open-day",
 "dagen": [
@@ -2271,5 +2267,2451 @@ const OPEN_DAGEN = {
 "Faculteit Militaire Wetenschappen van de Nederlandse Defensie Academie": {
 "site": "https://www.defensie.nl/onderwerpen/d/defensieacademie/toelating",
 "dagen": []
+},
+"Noorderpoort": {
+"site": "https://noorderpoort.nl/over-noorderpoort/agenda",
+"dagen": [
+{
+"datum": "2026-11-18",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Appingedam",
+"adres": "Pastorielaan 4",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Delfzijl",
+"adres": "Duurswoldlaan 2A",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Bornholmstraat 31, Boumaboulevard 113, Hora Siccamasingel 177, Muntinglaan 3, Verlengde Visserstraat 20, Verzetsstrijderslaan 2, Winschoterdiep 50, Zernikeplein 11",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Stadskanaal",
+"adres": "Sportparklaan 5",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Veendam",
+"adres": "Hertenkampstraat 6",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Winschoten",
+"adres": "P.C. Hooftlaan 1",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2026-11-28",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Delfzijl",
+"adres": "Duurswoldlaan 2A (alleen scheepvaart, AOT en procestechniek)",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/agenda/open-dag-28-november-2026"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Appingedam",
+"adres": "Pastorielaan 4",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Delfzijl",
+"adres": "Duurswoldlaan 2A",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Bornholmstraat 31, Boumaboulevard 113, Hora Siccamasingel 177, Muntinglaan 3, Verlengde Visserstraat 20, Verzetsstrijderslaan 2, Winschoterdiep 50, Zernikeplein 11",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Stadskanaal",
+"adres": "Sportparklaan 5",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Veendam",
+"adres": "Hertenkampstraat 6",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Winschoten",
+"adres": "P.C. Hooftlaan 1",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-03-17",
+"tijd": "17:00-19:00",
+"soort": "open dag",
+"plaats": "Appingedam",
+"adres": "Pastorielaan 4",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-03-17",
+"tijd": "17:00-19:00",
+"soort": "open dag",
+"plaats": "Delfzijl",
+"adres": "Duurswoldlaan 2A",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-03-17",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Bornholmstraat 31, Boumaboulevard 113, Hora Siccamasingel 177, Muntinglaan 3, Verlengde Visserstraat 20, Verzetsstrijderslaan 2, Winschoterdiep 50, Zernikeplein 11",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-03-17",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Stadskanaal",
+"adres": "Sportparklaan 5",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-03-17",
+"tijd": "17:00-19:00",
+"soort": "open dag",
+"plaats": "Veendam",
+"adres": "Hertenkampstraat 6",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-03-17",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Winschoten",
+"adres": "P.C. Hooftlaan 1",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/opendagen"
+},
+{
+"datum": "2027-06-16",
+"tijd": "17:00-19:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Bornholmstraat 31 (Last Minute Event, alle opleidingen aanwezig)",
+"aanmelden": "https://noorderpoort.nl/over-noorderpoort/agenda/last-minute-event-16-juni-2027"
+}
+]
+},
+"Alfa-college": {
+"site": "https://www.alfa-college.nl/studiekeuze/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "meerdere locaties in Groningen (o.a. Boumaboulevard, Admiraal de Ruyterlaan, Kardingerplein)",
+"aanmelden": "https://forms.hippocampus.eu/alfacollege/opendaggroningen/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiJlODEyODFiMy0zN2JmLTRiYTktODI1OS1lNGM2ODMwYjJlYjgifQ"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Hardenberg",
+"adres": "Parkweg 1a1 (LOC)",
+"aanmelden": "https://forms.hippocampus.eu/alfacollege/nnwaocxv4x4tksu7/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiI3OTA5M2FlNy0wMjcwLTQxYzEtOTEwNy0xMDMxMzRlMGUxNGMifQ"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Hoogeveen",
+"adres": "Voltastraat 33 & De Stroom 3 (KARgo!)",
+"aanmelden": "https://forms.hippocampus.eu/alfacollege/t6er43wdozgp8y52/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiI1ZWMwYzYzMC1lYzA2LTRlYzQtYWE1Zi1mODczZGQzYTE1ZDgifQ"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Assen",
+"adres": "Anne de Vriesstraat 70 (Sport- en Beweegcampus, alleen Sport en Bewegen)",
+"aanmelden": "https://studiekeuze.dcterra.nl/agenda/item/44"
+},
+{
+"datum": "2027-01-20",
+"soort": "open dag",
+"adres": "locaties in Groningen, Hoogeveen, Hardenberg en Assen",
+"aanmelden": "https://www.alfa-college.nl/studiekeuze/open-dagen"
+},
+{
+"datum": "2027-03-17",
+"soort": "open dag",
+"adres": "locaties in Groningen, Hoogeveen, Hardenberg en Assen",
+"aanmelden": "https://www.alfa-college.nl/studiekeuze/open-dagen"
+},
+{
+"datum": "2027-06-16",
+"soort": "open dag",
+"adres": "Last Minute Studiekeuze",
+"aanmelden": "https://www.alfa-college.nl/studiekeuze/open-dagen"
+}
+]
+},
+"Drenthe College": {
+"site": "https://mbo.dcterra.nl/agenda/",
+"dagen": [
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Assen",
+"adres": "Anne de Vriesstraat 70; Aziëweg 2; De Haar 17; Vredeveldseweg 55",
+"aanmelden": "https://studiekeuze.dcterra.nl/agenda/item/44"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Emmen",
+"adres": "Anna Paulownalaan 1; Atlantis 2; Huizingsbrinkweg 9; Ubbekingecamp 1; Van Schaikweg 94; Van Schaikweg 98; Veldlaan 2",
+"aanmelden": "https://studiekeuze.dcterra.nl/agenda/item/44"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Hereweg 99",
+"aanmelden": "https://studiekeuze.dcterra.nl/agenda/item/44"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Meppel",
+"adres": "Ambachtsweg 2; Werkhorst 56",
+"aanmelden": "https://studiekeuze.dcterra.nl/agenda/item/44"
+},
+{
+"datum": "2026-11-21",
+"tijd": "12:00-15:00",
+"soort": "open dag",
+"plaats": "Exloo",
+"adres": "Hippisch Centrum Exloo (alleen Paardensport en -houderij)",
+"aanmelden": "https://studiekeuze.dcterra.nl/agenda/item/45"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Assen",
+"adres": "Anne de Vriesstraat 70; Aziëweg 2; De Haar 17; Vredeveldseweg 55",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-januari/"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Emmen",
+"adres": "Anna Paulownalaan 1; Atlantis 2; Huizingsbrinkweg 9; Ubbekingecamp 1; Van Schaikweg 94; Van Schaikweg 98; Veldlaan 2",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-januari/"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Hereweg 99",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-januari/"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Meppel",
+"adres": "Ambachtsweg 2; Werkhorst 56",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-januari/"
+},
+{
+"datum": "2027-01-23",
+"tijd": "12:00-15:00",
+"soort": "open dag",
+"plaats": "Exloo",
+"adres": "Hippisch Centrum Exloo (alleen Paardensport en -houderij)",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-paardensport-en-houderij-januari/"
+},
+{
+"datum": "2027-03-17",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Assen",
+"adres": "Anne de Vriesstraat 70; Aziëweg 2; De Haar 17; Vredeveldseweg 55",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-maart/"
+},
+{
+"datum": "2027-03-17",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Emmen",
+"adres": "Anna Paulownalaan 1; Atlantis 2; Huizingsbrinkweg 9; Ubbekingecamp 1; Van Schaikweg 94; Van Schaikweg 98; Veldlaan 2",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-maart/"
+},
+{
+"datum": "2027-03-17",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Hereweg 99",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-maart/"
+},
+{
+"datum": "2027-03-17",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Meppel",
+"adres": "Ambachtsweg 2; Werkhorst 56",
+"aanmelden": "https://mbo.dcterra.nl/agenda/open-dag-maart/"
+},
+{
+"datum": "2027-06-16",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Assen",
+"adres": "Anne de Vriesstraat 70 (Last Minute Studiekeuze)",
+"aanmelden": "https://mbo.dcterra.nl/agenda/last-minute-studiekeuze/"
+},
+{
+"datum": "2027-06-16",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Emmen",
+"adres": "Van Schaikweg 98 (Last Minute Studiekeuze)",
+"aanmelden": "https://mbo.dcterra.nl/agenda/last-minute-studiekeuze/"
+},
+{
+"datum": "2027-06-16",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Groningen",
+"adres": "Hereweg 99 (Last Minute Studiekeuze)",
+"aanmelden": "https://mbo.dcterra.nl/agenda/last-minute-studiekeuze/"
+},
+{
+"datum": "2027-06-16",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Meppel",
+"adres": "Ambachtsweg 2 (Last Minute Studiekeuze)",
+"aanmelden": "https://mbo.dcterra.nl/agenda/last-minute-studiekeuze/"
+}
+]
+},
+"Firda": {
+"site": "https://www.firda.nl/open-dag",
+"dagen": [
+{
+"datum": "2026-11-19",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "alle Firda-locaties",
+"aanmelden": "https://www.firda.nl/open-dag#aanmelden"
+},
+{
+"datum": "2026-11-21",
+"tijd": "09:30-12:30",
+"soort": "open dag",
+"plaats": "Urk",
+"adres": "Scheepvaart en Visserij",
+"aanmelden": "https://www.firda.nl/agenda/open-dag-scheepvaart-en-visserij-21-november-jongeren#aanmelden"
+},
+{
+"datum": "2027-01-28",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "alle Firda-locaties behalve Urk",
+"aanmelden": "https://www.firda.nl/open-dag"
+},
+{
+"datum": "2027-01-29",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Urk",
+"aanmelden": "https://www.firda.nl/open-dag"
+},
+{
+"datum": "2027-01-30",
+"tijd": "09:30-12:30",
+"soort": "open dag",
+"plaats": "Urk",
+"aanmelden": "https://www.firda.nl/open-dag"
+}
+]
+},
+"Menso Alting": {
+"site": "https://www.mbomensoalting.nl/open-dag/",
+"dagen": [
+{
+"datum": "2026-11-06",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Fuchsiastraat 1",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/C9CTAGF35Z/open-dag-or-vrijdag-6-november-5a3uTg2pB3V/overview"
+},
+{
+"datum": "2027-01-15",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Fuchsiastraat 1"
+},
+{
+"datum": "2027-03-12",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Fuchsiastraat 1"
+},
+{
+"datum": "2027-06-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Fuchsiastraat 1 (Informatiemarkt)"
+}
+]
+},
+"Landstede": {
+"site": "https://www.landstedembo.nl/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-06",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2026-11-06",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Harderwijk",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2026-11-06",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Raalte",
+"adres": "Zwolsestraat 63a",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2026-11-06",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Lelystad",
+"adres": "Het Ravelijn 1",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2026-11-06",
+"tijd": "15:00-18:00",
+"soort": "open dag",
+"plaats": "Dronten",
+"adres": "De Arend 4",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2027-01-15",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2027-01-15",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Harderwijk",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2027-01-15",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Raalte",
+"adres": "Zwolsestraat 63a",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2027-01-15",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Lelystad",
+"adres": "Het Ravelijn 1",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+},
+{
+"datum": "2027-01-15",
+"tijd": "15:00-18:00",
+"soort": "open dag",
+"plaats": "Dronten",
+"adres": "De Arend 4",
+"aanmelden": "https://events.blackthorn.io/nl/24rIcd6/g/cphjvQqB2Z?search=&sortBy=date&category=&date=TODAY&keywords="
+}
+]
+},
+"Deltion College": {
+"site": "https://www.deltion.nl/voor-jongeren/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-13",
+"tijd": "16:00-20:30",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Mozartlaan 15",
+"aanmelden": "https://www.deltion.nl/aanmelding-open-dag-avond?eventId=2441"
+},
+{
+"datum": "2026-11-14",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Mozartlaan 15",
+"aanmelden": "https://www.deltion.nl/aanmelding-open-dag-avond?eventId=2441"
+},
+{
+"datum": "2027-01-15",
+"tijd": "16:00-20:30",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Mozartlaan 15",
+"aanmelden": "https://www.deltion.nl/onze-school/ontdek-deltion/events/2027/januari/opendagenjanuari"
+},
+{
+"datum": "2027-01-16",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"adres": "Mozartlaan 15",
+"aanmelden": "https://www.deltion.nl/onze-school/ontdek-deltion/events/2027/januari/opendagenjanuari"
+},
+{
+"datum": "2027-03-19",
+"tijd": "16:00-20:30",
+"soort": "open avond",
+"plaats": "Zwolle",
+"adres": "Mozartlaan 15",
+"aanmelden": "https://www.deltion.nl/onze-school/ontdek-deltion/events/2027/maart/openavondmaart"
+},
+{
+"datum": "2027-06-04",
+"tijd": "18:00-20:30",
+"soort": "open avond",
+"plaats": "Zwolle",
+"adres": "Mozartlaan 15 (informatieavond)",
+"aanmelden": "https://www.deltion.nl/onze-school/ontdek-deltion/events/2027/juni/openavondjuni"
+}
+]
+},
+"Graafschap College": {
+"site": "https://www.graafschapcollege.nl/open-dagen-en-events",
+"dagen": [
+{
+"datum": "2026-11-06",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Doetinchem",
+"adres": "J.F. Kennedylaan 49; Maria Montessoristraat 3; Sportweg 3",
+"aanmelden": "https://forms.hippocampus.eu/graafschapcollege/opendagen/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiIxZjhmNmI3Ny1mNTJhLTQ3OWYtYmVkNS05NWExNTA2YmNmN2YifQ"
+},
+{
+"datum": "2026-11-06",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Groenlo",
+"adres": "Schralenstein 2",
+"aanmelden": "https://forms.hippocampus.eu/graafschapcollege/opendagen/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiIxZjhmNmI3Ny1mNTJhLTQ3OWYtYmVkNS05NWExNTA2YmNmN2YifQ"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "deelnemende locaties (nog niet gespecificeerd)",
+"aanmelden": "https://www.graafschapcollege.nl/open-dagen-en-events/open-dag-januari-2027"
+}
+]
+},
+"Aventus": {
+"site": "https://www.aventus.nl/agenda",
+"dagen": [
+{
+"datum": "2026-11-27",
+"tijd": "17:00-20:00",
+"soort": "open avond",
+"plaats": "Apeldoorn",
+"adres": "Laan van de Mensenrechten; Musschenbroekstraat; Opleidingsbedrijf Bouwmensen",
+"aanmelden": "https://events.blackthorn.io/b0cjXs6/4a3lP6D7Jp"
+},
+{
+"datum": "2026-11-27",
+"tijd": "17:00-20:00",
+"soort": "open avond",
+"plaats": "Deventer",
+"adres": "Snipperlingsdijk; Middelweg; Technicampus",
+"aanmelden": "https://events.blackthorn.io/b0cjXs6/4a3lP6D7Jp"
+},
+{
+"datum": "2026-11-27",
+"tijd": "17:00-20:00",
+"soort": "open avond",
+"plaats": "Zutphen",
+"adres": "Stationsplein; Schildersvakopleiding",
+"aanmelden": "https://events.blackthorn.io/b0cjXs6/4a3lP6D7Jp"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Apeldoorn",
+"adres": "Laan van de Mensenrechten; Musschenbroekstraat; Opleidingsbedrijf Bouwmensen",
+"aanmelden": "https://www.aventus.nl/agenda/open-dag"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Deventer",
+"adres": "Snipperlingsdijk; Middelweg; Technicampus",
+"aanmelden": "https://www.aventus.nl/agenda/open-dag"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Zutphen",
+"adres": "Stationsplein; Schildersvakopleiding",
+"aanmelden": "https://www.aventus.nl/agenda/open-dag"
+},
+{
+"datum": "2027-03-10",
+"tijd": "17:00-20:00",
+"soort": "open avond",
+"plaats": "Apeldoorn",
+"adres": "Laan van de Mensenrechten; Musschenbroekstraat; Opleidingsbedrijf Bouwmensen",
+"aanmelden": "https://www.aventus.nl/agenda/open-avond-2027"
+},
+{
+"datum": "2027-03-10",
+"tijd": "17:00-20:00",
+"soort": "open avond",
+"plaats": "Deventer",
+"adres": "Snipperlingsdijk; Middelweg; Technicampus",
+"aanmelden": "https://www.aventus.nl/agenda/open-avond-2027"
+},
+{
+"datum": "2027-03-10",
+"tijd": "17:00-20:00",
+"soort": "open avond",
+"plaats": "Zutphen",
+"adres": "Stationsplein; Schildersvakopleiding",
+"aanmelden": "https://www.aventus.nl/agenda/open-avond-2027"
+}
+]
+},
+"Rijn IJssel": {
+"site": "https://www.rijnijssel.nl/opendagen",
+"dagen": [
+{
+"datum": "2026-11-05",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Arnhem",
+"adres": "Apeldoornseweg; Beukenlaan (CIOS); Kazerneplein; Kronenburgsingel; Loods; Middachtensingel; Tech Plaza Tivolilaan; Velperweg; Witte Villa Tivolilaan",
+"aanmelden": "https://assets-eur.mkt.dynamics.com/bd89140f-6c51-40b8-9197-37a1b5d8f9aa/digitalassets/standaloneforms/56dffb7e-09ca-f011-bbd3-000d3a69b5e5?readableEventId=Open_dag_5_november_20263410113788"
+},
+{
+"datum": "2026-11-05",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Huissen",
+"adres": "Nijverheidsstraat",
+"aanmelden": "https://assets-eur.mkt.dynamics.com/bd89140f-6c51-40b8-9197-37a1b5d8f9aa/digitalassets/standaloneforms/56dffb7e-09ca-f011-bbd3-000d3a69b5e5?readableEventId=Open_dag_5_november_20263410113788"
+},
+{
+"datum": "2026-11-05",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Laan van Scheut",
+"aanmelden": "https://assets-eur.mkt.dynamics.com/bd89140f-6c51-40b8-9197-37a1b5d8f9aa/digitalassets/standaloneforms/56dffb7e-09ca-f011-bbd3-000d3a69b5e5?readableEventId=Open_dag_5_november_20263410113788"
+},
+{
+"datum": "2026-11-05",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Wageningen",
+"adres": "Marijkeweg",
+"aanmelden": "https://assets-eur.mkt.dynamics.com/bd89140f-6c51-40b8-9197-37a1b5d8f9aa/digitalassets/standaloneforms/56dffb7e-09ca-f011-bbd3-000d3a69b5e5?readableEventId=Open_dag_5_november_20263410113788"
+},
+{
+"datum": "2026-11-07",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Laan van Scheut (alleen laboratorium-opleidingen)",
+"aanmelden": "https://assets-eur.mkt.dynamics.com/bd89140f-6c51-40b8-9197-37a1b5d8f9aa/digitalassets/standaloneforms/2b9bf5ec-e3a4-f011-bbd3-7ced8d2c38aa?readableEventId=Open_dag_7_november_2026_alleen_voor_Analist_Nijmegen2170577252"
+},
+{
+"datum": "2027-01-13",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Arnhem",
+"adres": "Apeldoornseweg; Beukenlaan (CIOS); Kazerneplein; Kronenburgsingel; Loods; Middachtensingel; Tech Plaza Tivolilaan; Velperweg; Witte Villa Tivolilaan",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-13-januari-2027"
+},
+{
+"datum": "2027-01-13",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Huissen",
+"adres": "Nijverheidsstraat",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-13-januari-2027"
+},
+{
+"datum": "2027-01-13",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Laan van Scheut",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-13-januari-2027"
+},
+{
+"datum": "2027-01-13",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Wageningen",
+"adres": "Marijkeweg",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-13-januari-2027"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Laan van Scheut (alleen laboratorium-opleidingen)",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/open-dag-laboratorium-opleidingen-nijmegen-23-januari-2027"
+},
+{
+"datum": "2027-03-02",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Arnhem",
+"adres": "Alexanderstraat; Apeldoornseweg; Beukenlaan (CIOS); Kazerneplein; Kronenburgsingel; Loods; Middachtensingel; Tech Plaza Tivolilaan; Velperweg; Witte Villa Tivolilaan",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-mbo-vavo-2-maart-2027"
+},
+{
+"datum": "2027-03-02",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Huissen",
+"adres": "Nijverheidsstraat",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-mbo-vavo-2-maart-2027"
+},
+{
+"datum": "2027-03-02",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Laan van Scheut",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-mbo-vavo-2-maart-2027"
+},
+{
+"datum": "2027-03-02",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Wageningen",
+"adres": "Marijkeweg",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/opendag-mbo-vavo-2-maart-2027"
+},
+{
+"datum": "2027-04-03",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Laan van Scheut (alleen laboratorium-opleidingen)",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/open-dag-laboratorium-opleidingen-nijmegen-3-april-2027"
+},
+{
+"datum": "2027-05-24",
+"tijd": "16:00-19:00",
+"soort": "open avond",
+"plaats": "Arnhem",
+"adres": "Apeldoornseweg; Beukenlaan (CIOS); Kazerneplein; Kronenburgsingel; Loods; Middachtensingel; Tech Plaza Tivolilaan; Velperweg; Witte Villa Tivolilaan",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/informatieavond-mbo-24-mei-2027"
+},
+{
+"datum": "2027-05-24",
+"tijd": "16:00-19:00",
+"soort": "open avond",
+"plaats": "Huissen",
+"adres": "Nijverheidsstraat",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/informatieavond-mbo-24-mei-2027"
+},
+{
+"datum": "2027-05-24",
+"tijd": "16:00-19:00",
+"soort": "open avond",
+"plaats": "Nijmegen",
+"adres": "Laan van Scheut",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/informatieavond-mbo-24-mei-2027"
+},
+{
+"datum": "2027-05-24",
+"tijd": "16:00-19:00",
+"soort": "open avond",
+"plaats": "Wageningen",
+"adres": "Marijkeweg",
+"aanmelden": "https://www.rijnijssel.nl/opendagen/informatieavond-mbo-24-mei-2027"
+}
+]
+},
+"ROC Nijmegen": {
+"site": "https://www.roc-nijmegen.nl/mbo-opleidingen/open-dagen",
+"dagen": [
+{
+"datum": "2027-01-29",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Campusbaan 6; Energieweg 25; Heyendaalseweg 98",
+"aanmelden": "https://www.roc-nijmegen.nl/events/open-dagen-mbo/open-dag-mbo-op-29-januari-2027"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Boxmeer",
+"adres": "Begijnenstraat 2",
+"aanmelden": "https://www.roc-nijmegen.nl/events/open-dagen-mbo/open-dag-mbo-op-29-januari-2027"
+},
+{
+"datum": "2027-03-19",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Campusbaan 6; Energieweg 25; Heyendaalseweg 98",
+"aanmelden": "https://www.roc-nijmegen.nl/events/open-dagen-mbo/open-dag-mbo-op-19-maart-2027"
+},
+{
+"datum": "2027-03-19",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Boxmeer",
+"adres": "Begijnenstraat 2",
+"aanmelden": "https://www.roc-nijmegen.nl/events/open-dagen-mbo/open-dag-mbo-op-19-maart-2027"
+},
+{
+"datum": "2027-06-22",
+"tijd": "18:00-20:00",
+"soort": "open avond",
+"plaats": "Nijmegen",
+"adres": "Campusbaan 6; Energieweg 25; Heyendaalseweg 98",
+"aanmelden": "https://www.roc-nijmegen.nl/events/open-dagen-mbo/info-avond-mbo-op-22-juni-2027"
+},
+{
+"datum": "2027-06-22",
+"tijd": "18:00-20:00",
+"soort": "open avond",
+"plaats": "Boxmeer",
+"adres": "Begijnenstraat 2",
+"aanmelden": "https://www.roc-nijmegen.nl/events/open-dagen-mbo/info-avond-mbo-op-22-juni-2027"
+}
+]
+},
+"Hoornbeeck College": {
+"site": "https://www.hoornbeeck.nl/open-avonden/",
+"dagen": [
+{
+"datum": "2026-11-19",
+"tijd": "19:00-21:30",
+"soort": "open avond",
+"plaats": "Rotterdam",
+"adres": "Carnissesingel 210",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-rotterdam/"
+},
+{
+"datum": "2026-11-26",
+"tijd": "19:00-21:30",
+"soort": "open avond",
+"plaats": "Apeldoorn",
+"adres": "Musschenbroekstraat 11",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-apeldoorn/"
+},
+{
+"datum": "2026-12-10",
+"tijd": "19:00-21:30",
+"soort": "open avond",
+"plaats": "Geldermalsen",
+"adres": "Burg. Roozeveld van der Venlaan 7",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-geldermalsen/"
+},
+{
+"datum": "2027-01-12",
+"tijd": "19:30-21:30",
+"soort": "open avond",
+"plaats": "Kampen",
+"adres": "Willem Hendrik Zwartallee 1",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-kampen/"
+},
+{
+"datum": "2027-01-14",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Goes",
+"adres": "Van Dusseldorpstraat 45",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-goes/"
+},
+{
+"datum": "2027-01-16",
+"tijd": "10:00-12:30",
+"soort": "open dag",
+"plaats": "Gorinchem",
+"adres": "Hoefslag 11",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-gorinchem/"
+},
+{
+"datum": "2027-01-28",
+"tijd": "16:00-21:30",
+"soort": "open avond",
+"plaats": "Amersfoort",
+"adres": "Utrechtseweg 230",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-amersfoort/"
+},
+{
+"datum": "2027-01-28",
+"tijd": "19:00-22:00",
+"soort": "open avond",
+"plaats": "Gouda",
+"adres": "Noordelijk Halfrond 10",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-gouda/"
+},
+{
+"datum": "2027-02-11",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Apeldoorn",
+"adres": "Musschenbroekstraat 11",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-apeldoorn/"
+},
+{
+"datum": "2027-02-11",
+"tijd": "19:00-21:30",
+"soort": "open avond",
+"plaats": "Geldermalsen",
+"adres": "Burg. Roozeveld van der Venlaan 7",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-geldermalsen/"
+},
+{
+"datum": "2027-03-04",
+"tijd": "19:00-21:30",
+"soort": "open avond",
+"plaats": "Rotterdam",
+"adres": "Carnissesingel 210",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-rotterdam/"
+},
+{
+"datum": "2027-03-16",
+"tijd": "19:00-21:30",
+"soort": "open avond",
+"plaats": "Amersfoort",
+"adres": "Utrechtseweg 230",
+"aanmelden": "https://www.hoornbeeck.nl/open-avonden/open-avond-amersfoort/"
+}
+]
+},
+"Aeres MBO": {
+"site": "https://www.aeresmbo.nl/agenda",
+"dagen": [
+{
+"datum": "2026-11-10",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Buitenpost",
+"adres": "Aeres MBO Buitenpost",
+"aanmelden": "https://www.aeresmbo.nl/agenda/buitenpost/open-avond---dinsdag-10-november"
+},
+{
+"datum": "2026-11-19",
+"tijd": "12:45-16:00",
+"soort": "open dag",
+"plaats": "Dronten",
+"adres": "Aeres MBO Dronten Warmonderhof",
+"aanmelden": "https://www.aeresmbo.nl/agenda/dronten-warmonderhof/open-dag-bol---donderdag-19-november"
+},
+{
+"datum": "2026-11-19",
+"tijd": "18:00-20:00",
+"soort": "open avond",
+"plaats": "Ede",
+"adres": "Aeres MBO Ede",
+"aanmelden": "https://www.aeresmbo.nl/agenda/ede/open-avond---donderdag-19-november"
+},
+{
+"datum": "2026-11-19",
+"tijd": "14:00-20:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"adres": "Aeres MBO Leeuwarden",
+"aanmelden": "https://www.aeresmbo.nl/agenda/leeuwarden/open-dag---donderdag-19-november"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Barneveld",
+"adres": "Aeres MBO Barneveld",
+"aanmelden": "https://www.aeresmbo.nl/agenda/barneveld/open-dag---zaterdag-21-november"
+},
+{
+"datum": "2026-11-24",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Dronten",
+"adres": "Aeres MBO Dronten",
+"aanmelden": "https://www.aeresmbo.nl/agenda/dronten/open-avond---dinsdag-24-november"
+},
+{
+"datum": "2026-11-24",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Heerenveen",
+"adres": "Aeres MBO Heerenveen",
+"aanmelden": "https://www.aeresmbo.nl/agenda/heerenveen/open-avond---dinsdag-24-november"
+},
+{
+"datum": "2026-11-26",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Emmeloord",
+"adres": "Aeres MBO Emmeloord",
+"aanmelden": "https://www.aeresmbo.nl/agenda/emmeloord/open-avond---donderdag-26-november"
+},
+{
+"datum": "2026-12-08",
+"tijd": "18:30-20:30",
+"soort": "open avond",
+"plaats": "Almere",
+"adres": "Aeres MBO Almere",
+"aanmelden": "https://www.aeresmbo.nl/agenda/almere/open-avond---dinsdag-8-december"
+},
+{
+"datum": "2027-01-22",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Barneveld",
+"adres": "Aeres MBO Barneveld",
+"aanmelden": "https://www.aeresmbo.nl/agenda/barneveld/open-dag---vrijdag-22-januari"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Aeres MBO Ede",
+"aanmelden": "https://www.aeresmbo.nl/agenda/ede/open-dag---zaterdag-23-januari"
+},
+{
+"datum": "2027-01-28",
+"tijd": "14:00-20:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"adres": "Aeres MBO Leeuwarden",
+"aanmelden": "https://www.aeresmbo.nl/agenda/leeuwarden/open-dag---donderdag-28-januari"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"adres": "Aeres MBO Velp",
+"aanmelden": "https://www.aeresmbo.nl/agenda/velp/open-dag---vrijdag-29-januari"
+},
+{
+"datum": "2027-02-04",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Buitenpost",
+"adres": "Aeres MBO Buitenpost",
+"aanmelden": "https://www.aeresmbo.nl/agenda/buitenpost/open-avond---donderdag-4-februari"
+},
+{
+"datum": "2027-02-06",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Almere",
+"adres": "Aeres MBO Almere",
+"aanmelden": "https://www.aeresmbo.nl/agenda/almere/open-dag---zaterdag-6-februari"
+},
+{
+"datum": "2027-02-06",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Dronten",
+"adres": "Aeres MBO Dronten Warmonderhof",
+"aanmelden": "https://www.aeresmbo.nl/agenda/dronten-warmonderhof/open-dag-bol-en-bbl---zaterdag-6-februari"
+},
+{
+"datum": "2027-02-06",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Dronten",
+"adres": "Aeres MBO Dronten",
+"aanmelden": "https://www.aeresmbo.nl/agenda/dronten/open-dag---zaterdag-6-februari"
+},
+{
+"datum": "2027-02-11",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Emmeloord",
+"adres": "Aeres MBO Emmeloord",
+"aanmelden": "https://www.aeresmbo.nl/agenda/emmeloord/open-dag---donderdag-11-februari"
+},
+{
+"datum": "2027-02-16",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Heerenveen",
+"adres": "Aeres MBO Heerenveen",
+"aanmelden": "https://www.aeresmbo.nl/agenda/heerenveen/open-avond---dinsdag-16-februari"
+},
+{
+"datum": "2027-02-17",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Sneek",
+"adres": "Aeres MBO Sneek",
+"aanmelden": "https://www.aeresmbo.nl/agenda/sneek/open-avond---woensdag-17-februari"
+},
+{
+"datum": "2027-03-11",
+"tijd": "18:30-20:30",
+"soort": "open avond",
+"plaats": "Almere",
+"adres": "Aeres MBO Almere",
+"aanmelden": "https://www.aeresmbo.nl/agenda/almere/open-avond---donderdag-11-maart"
+},
+{
+"datum": "2027-03-18",
+"tijd": "12:45-16:00",
+"soort": "open dag",
+"plaats": "Dronten",
+"adres": "Aeres MBO Dronten Warmonderhof",
+"aanmelden": "https://www.aeresmbo.nl/agenda/dronten-warmonderhof/open-dag-bol---donderdag-18-maart"
+},
+{
+"datum": "2027-03-20",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Barneveld",
+"adres": "Aeres MBO Barneveld",
+"aanmelden": "https://www.aeresmbo.nl/agenda/barneveld/open-dag---zaterdag-20-maart"
+},
+{
+"datum": "2027-06-01",
+"tijd": "19:00-21:00",
+"soort": "open avond",
+"plaats": "Dronten",
+"adres": "Aeres MBO Dronten",
+"aanmelden": "https://www.aeresmbo.nl/agenda/dronten/open-avond---dinsdag-1-juni"
+},
+{
+"datum": "2027-06-10",
+"tijd": "12:45-16:00",
+"soort": "open dag",
+"plaats": "Dronten",
+"adres": "Aeres MBO Dronten Warmonderhof",
+"aanmelden": "https://www.aeresmbo.nl/agenda/dronten-warmonderhof/open-dag-bol---donderdag-10-juni"
+}
+]
+},
+"ROC A12": {
+"site": "https://www.a12.nl/kom-kennismaken-met-onze-scholen",
+"dagen": [
+{
+"datum": "2026-11-13",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"adres": "Astrum College, Gruttostraat 10",
+"aanmelden": "https://www.astrumcollege.nl/aanmelden-open-dag-astrum-college"
+},
+{
+"datum": "2026-11-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Dulon College, Reehorsterweg 80 (Sport & Bewegen: Burgemeester Cees van der Knaapweg 10)",
+"aanmelden": "https://www.duloncollege.nl/aanmelden-open-dag-dulon-college"
+},
+{
+"datum": "2026-11-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Technova College, Bovenbuurtweg 7",
+"aanmelden": "https://www.technovacollege.nl/aanmelden-open-dag-technova-college"
+},
+{
+"datum": "2027-01-22",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"adres": "Astrum College, Gruttostraat 10",
+"aanmelden": "https://www.astrumcollege.nl/aanmelden-open-dag-astrum-college"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Dulon College, Reehorsterweg 80 (Sport & Bewegen: Burgemeester Cees van der Knaapweg 10)",
+"aanmelden": "https://www.duloncollege.nl/aanmelden-open-dag-dulon-college"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Technova College, Bovenbuurtweg 7",
+"aanmelden": "https://www.technovacollege.nl/aanmelden-open-dag-technova-college"
+},
+{
+"datum": "2027-03-16",
+"tijd": "17:30-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"adres": "Astrum College, Gruttostraat 10",
+"aanmelden": "https://www.astrumcollege.nl/aanmelden-open-dag-astrum-college"
+},
+{
+"datum": "2027-03-16",
+"tijd": "17:30-20:30",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Dulon College, Reehorsterweg 80 (Sport & Bewegen: Burgemeester Cees van der Knaapweg 10)",
+"aanmelden": "https://www.duloncollege.nl/aanmelden-open-dag-dulon-college"
+},
+{
+"datum": "2027-03-16",
+"tijd": "17:30-20:30",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Technova College, Bovenbuurtweg 7",
+"aanmelden": "https://www.technovacollege.nl/aanmelden-open-dag-technova-college"
+},
+{
+"datum": "2027-06-03",
+"tijd": "18:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"adres": "Astrum College, Gruttostraat 10",
+"aanmelden": "https://www.astrumcollege.nl/aanmelden-open-dag-astrum-college"
+},
+{
+"datum": "2027-06-03",
+"tijd": "18:00-20:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Dulon College, Reehorsterweg 80 (Sport & Bewegen: Burgemeester Cees van der Knaapweg 10)",
+"aanmelden": "https://www.duloncollege.nl/aanmelden-open-dag-dulon-college"
+},
+{
+"datum": "2027-06-03",
+"tijd": "18:00-20:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Technova College, Bovenbuurtweg 7",
+"aanmelden": "https://www.technovacollege.nl/aanmelden-open-dag-technova-college"
+},
+{
+"datum": "2027-07-07",
+"tijd": "15:00-19:00",
+"soort": "open dag",
+"plaats": "Ede",
+"adres": "Dulon College, Reehorsterweg 80 (uitsluitend vavo & entree)",
+"aanmelden": "https://www.duloncollege.nl/aanmelden-open-dag-dulon-college"
+}
+]
+},
+"ROC van Amsterdam": {
+"site": "https://www.rocva.nl/jongeren/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-19",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Amsterdam, Amstelveen, Diemen, Hoofddorp, Bussum & Hilversum",
+"aanmelden": "https://www.rocva.nl/jongeren/open-dagen/19-november-2026"
+},
+{
+"datum": "2027-01-30",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"adres": "Amsterdam, Amstelveen, Diemen, Hoofddorp, Bussum & Hilversum",
+"aanmelden": "https://www.rocva.nl/jongeren/open-dagen/30-januari-2027"
+},
+{
+"datum": "2027-03-20",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"adres": "Hilversum & Bussum",
+"aanmelden": "https://www.rocva.nl/jongeren/open-dagen/20-maart-2027-hsum"
+},
+{
+"datum": "2027-03-23",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"adres": "Amsterdam, Amstelveen, Diemen, Hoofddorp",
+"aanmelden": "https://www.rocva.nl/jongeren/open-dagen/23-maart-2027"
+}
+]
+},
+"Nova College": {
+"site": "https://www.novacollege.nl/actueel/agenda/open-dag-mbo-30-nov/",
+"dagen": [
+{
+"datum": "2026-11-30",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"aanmelden": "https://aanmelden.novacollege.nl/ords/r/wda/f_400/event?p250_event_code=OD2026NOV&org_id_hash=FB1642871542BD6B&clear=250"
+},
+{
+"datum": "2027-02-03",
+"tijd": "18:00-20:00",
+"soort": "open dag"
+},
+{
+"datum": "2027-03-22",
+"tijd": "16:00-18:00",
+"soort": "open dag"
+},
+{
+"datum": "2026-11-20",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Harlingen",
+"adres": "Almenumerweg 1 (Scheepvaart)"
+},
+{
+"datum": "2027-01-20",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Harlingen",
+"adres": "Almenumerweg 1 (Scheepvaart)"
+},
+{
+"datum": "2027-03-24",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Harlingen",
+"adres": "Almenumerweg 1 (Scheepvaart)"
+},
+{
+"datum": "2027-04-14",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Harlingen",
+"adres": "Almenumerweg 1 (Scheepvaart)"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "IJmuiden",
+"adres": "Kanaalstraat 7 (Scheepvaart)"
+}
+]
+},
+"Vonk": {
+"site": "https://www.vonknh.nl/mbo/open-dagen-mbo",
+"dagen": [
+{
+"datum": "2026-11-24",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Alle locaties (Alkmaar, Hoorn, Den Helder en Schagen)",
+"aanmelden": "https://www.vonknh.nl/evenementen/2026-11-24/open-dag-mbo"
+},
+{
+"datum": "2027-02-09",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Alle locaties (Alkmaar, Hoorn, Den Helder en Schagen)",
+"aanmelden": "https://www.vonknh.nl/evenementen/2027-02-09/open-dag-mbo"
+}
+]
+},
+"ROC van Flevoland": {
+"site": "https://www.rocvanflevoland.nl/jongeren/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-26",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"adres": "Almere Buiten, Almere Poort & Lelystad",
+"aanmelden": "https://www.rocvanflevoland.nl/jongeren/open-dagen/26-november-2026"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"adres": "Almere Buiten, Almere Poort & Lelystad",
+"aanmelden": "https://www.rocvanflevoland.nl/jongeren/open-dagen/23-januari-2027"
+},
+{
+"datum": "2027-03-16",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"adres": "Almere Buiten, Almere Poort & Lelystad",
+"aanmelden": "https://www.rocvanflevoland.nl/jongeren/open-dagen/16-maart-2027"
+}
+]
+},
+"MBO Utrecht": {
+"site": "https://mboutrecht.nl/studiekeuze-events/",
+"dagen": [
+{
+"datum": "2026-11-19",
+"tijd": "18:00-20:30",
+"soort": "open dag",
+"plaats": "Utrecht",
+"adres": "Australiëlaan 25 en Sportpark Zuilen",
+"aanmelden": "https://aanmelden.mboutrecht.nl/ords/r/wda/f_400/event?p250_event_code=OD-NOV-26&org_id_hash=7C80DA7018A6AF95&clear=250"
+},
+{
+"datum": "2027-01-16",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Utrecht",
+"adres": "Australiëlaan 25 en Sportpark Zuilen",
+"aanmelden": "https://mboutrecht.nl/studiekeuze-events/open-dag-16-januari/"
+},
+{
+"datum": "2027-01-23",
+"soort": "open dag",
+"plaats": "Utrecht",
+"adres": "Herman Brood Academie, Australiëlaan 25",
+"aanmelden": "https://mboutrecht.nl/studiekeuze-events/open-dag-2027/"
+},
+{
+"datum": "2027-03-16",
+"tijd": "18:00-20:30",
+"soort": "open dag",
+"plaats": "Utrecht",
+"adres": "Australiëlaan 25 en Sportpark Zuilen",
+"aanmelden": "https://mboutrecht.nl/studiekeuze-events/open-dag-16-maart/"
+}
+]
+},
+"ROC Midden Nederland": {
+"site": "https://www.rocmn.nl/agenda/open-dag-9-december",
+"dagen": [
+{
+"datum": "2026-12-09",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"adres": "Amersfoort, Nieuwegein en Utrecht (per college)",
+"aanmelden": "https://www.rocmn.nl/agenda/open-dag-9-december"
+},
+{
+"datum": "2027-01-19",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"adres": "Amersfoort, Nieuwegein en Utrecht (per college)",
+"aanmelden": "https://www.rocmn.nl/agenda/open-dag-19-januari"
+},
+{
+"datum": "2027-03-13",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"adres": "Amersfoort, Nieuwegein en Utrecht (per college)",
+"aanmelden": "https://www.rocmn.nl/agenda/open-dag-13-maart"
+}
+]
+},
+"MBO Amersfoort": {
+"site": "https://www.mboamersfoort.nl/agenda/",
+"dagen": [
+{
+"datum": "2026-11-09",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"adres": "Alle 10 locaties in Amersfoort en Utrecht",
+"aanmelden": "https://www.mboamersfoort.nl/agenda/open-dag-0911/"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"aanmelden": "https://www.mboamersfoort.nl/agenda/open-dag-2301/"
+},
+{
+"datum": "2027-03-17",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"aanmelden": "https://www.mboamersfoort.nl/agenda/open-dag-1703/"
+},
+{
+"datum": "2027-06-14",
+"tijd": "18:00-20:00",
+"soort": "open dag",
+"aanmelden": "https://www.mboamersfoort.nl/agenda/open-dag-1406/"
+}
+]
+},
+"mboRijnland": {
+"site": "https://mborijnland.nl/voorlichtingskalender/",
+"dagen": [
+{
+"datum": "2026-11-09",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Alle locaties (behalve Leiden Zernikedreef)",
+"aanmelden": "https://mborijnland.nl/events/open-dag-9nov26/"
+},
+{
+"datum": "2027-02-04",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Alle locaties",
+"aanmelden": "https://mborijnland.nl/events/opendag-4feb27/"
+},
+{
+"datum": "2027-02-13",
+"soort": "open dag",
+"plaats": "Leiden",
+"adres": "Zernikedreef (Middelbaar Laboratoriumonderwijs)",
+"aanmelden": "https://mborijnland.nl/events/middelbaar-laboratoriumonderwijs-13feb27/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"adres": "Alle locaties",
+"aanmelden": "https://mborijnland.nl/events/opendag-11mrt27/"
+},
+{
+"datum": "2027-04-02",
+"soort": "open dag",
+"plaats": "Leiden",
+"adres": "Zernikedreef (Middelbaar Laboratoriumonderwijs)",
+"aanmelden": "https://mborijnland.nl/events/middelbaar-laboratoriumonderwijs-2apr27/"
+}
+]
+},
+"ROC Mondriaan": {
+"site": "https://www.rocmondriaan.nl/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-03",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "meerdere locaties",
+"aanmelden": "https://aanmelden.rocmondriaan.nl/ords/r/wda/f_400/event?p250_event_code=2627_OD_1&org_id_hash=0FF9F5EB7CF6CCBF&p250_label_id=2523&clear=250"
+}
+]
+},
+"Albeda": {
+"site": "https://www.albeda.nl/opendagen",
+"dagen": [
+{
+"datum": "2026-11-26",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "Diverse Albeda-locaties in Rotterdam e.o. (o.a. Vlaardingen, Poortugaal, Spijkenisse)",
+"aanmelden": "https://forms.hippocampus.eu/albeda/235lg69chkoafxcd/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiI5NjY2MjEyYi0zOWFhLTRiZjctOThlYy1lYWM3ZWMzZmQwZDgifQ"
+},
+{
+"datum": "2027-01-20",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "Diverse Albeda-locaties in Rotterdam e.o. (o.a. Vlaardingen, Poortugaal, Spijkenisse)"
+},
+{
+"datum": "2027-03-18",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "Diverse Albeda-locaties in Rotterdam e.o. (o.a. Vlaardingen, Poortugaal, Spijkenisse)"
+}
+]
+},
+"Zadkine": {
+"site": "https://www.zadkine.nl/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-25",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties behalve Vakschool Schoonhoven"
+},
+{
+"datum": "2027-01-30",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Schoonhoven",
+"adres": "Vakschool Schoonhoven"
+},
+{
+"datum": "2027-03-24",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties"
+}
+]
+},
+"Techniek College Rotterdam": {
+"site": "https://www.techniekcollegerotterdam.nl/studeren-bij-ons/open-dag",
+"dagen": [
+{
+"datum": "2027-01-22",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Rotterdam"
+},
+{
+"datum": "2027-03-19",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"plaats": "Rotterdam"
+}
+]
+},
+"Da Vinci College": {
+"site": "https://www.davinci.nl/studeren-bij-da-vinci/kom-langs/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-27",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Meerdere locaties",
+"aanmelden": "https://forms.hippocampus.eu/davinci/opendagen/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiI0NDkyN2RlMC1lNDhlLTQ4NmUtOGM1ZS0zNjY5YjZhOTI5N2IifQ"
+},
+{
+"datum": "2027-01-27",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Meerdere locaties"
+},
+{
+"datum": "2027-03-10",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "Meerdere locaties"
+}
+]
+},
+"Lentiz": {
+"site": "https://www.lentiz.nl/voorlichting/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-26",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Barendrecht",
+"adres": "Lentiz | MBO Barendrecht"
+},
+{
+"datum": "2026-11-26",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Bleiswijk",
+"adres": "Lentiz | MBO Oostland"
+},
+{
+"datum": "2026-11-26",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Maasland",
+"adres": "Lentiz | MBO Maasland"
+},
+{
+"datum": "2026-11-26",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Middelharnis",
+"adres": "Lentiz | MBO Middelharnis"
+},
+{
+"datum": "2026-11-26",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Naaldwijk",
+"adres": "Lentiz | MBO Westland"
+},
+{
+"datum": "2026-11-26",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Schiedam",
+"adres": "Lentiz | MBO LIFE College"
+},
+{
+"datum": "2026-11-26",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Schipluiden",
+"adres": "Lentiz | Equestrum Hippische campus (MBO Maasland)"
+},
+{
+"datum": "2027-01-19",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Barendrecht",
+"adres": "Lentiz | MBO Barendrecht"
+},
+{
+"datum": "2027-01-19",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Bleiswijk",
+"adres": "Lentiz | MBO Oostland"
+},
+{
+"datum": "2027-01-19",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Maasland",
+"adres": "Lentiz | MBO Maasland"
+},
+{
+"datum": "2027-01-19",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Naaldwijk",
+"adres": "Lentiz | MBO Westland"
+},
+{
+"datum": "2027-01-19",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Schiedam",
+"adres": "Lentiz | MBO LIFE College"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Middelharnis",
+"adres": "Lentiz | MBO Middelharnis"
+},
+{
+"datum": "2027-01-23",
+"tijd": "11:00-14:00",
+"soort": "open dag",
+"plaats": "Schipluiden",
+"adres": "Lentiz | Equestrum Hippische campus (MBO Maasland)"
+},
+{
+"datum": "2027-03-04",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Barendrecht",
+"adres": "Lentiz | MBO Barendrecht"
+},
+{
+"datum": "2027-03-04",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Bleiswijk",
+"adres": "Lentiz | MBO Oostland"
+},
+{
+"datum": "2027-03-04",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Maasland",
+"adres": "Lentiz | MBO Maasland"
+},
+{
+"datum": "2027-03-04",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Naaldwijk",
+"adres": "Lentiz | MBO Westland"
+},
+{
+"datum": "2027-03-04",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Schiedam",
+"adres": "Lentiz | MBO LIFE College"
+},
+{
+"datum": "2027-03-04",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Schipluiden",
+"adres": "Lentiz | Equestrum Hippische campus (MBO Maasland)"
+},
+{
+"datum": "2027-03-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Middelharnis",
+"adres": "Lentiz | MBO Middelharnis"
+}
+]
+},
+"Yuverta": {
+"site": "https://www.yuverta.nl/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-20",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "'s-Hertogenbosch",
+"adres": "Yuverta mbo Den Bosch, Vlijmenseweg 1a",
+"aanmelden": "https://www.yuverta.nl/mbo-den-bosch/open-dag-mbo-den-bosch-20-november-2026/"
+},
+{
+"datum": "2026-11-20",
+"tijd": "15:00-19:00",
+"soort": "open dag",
+"plaats": "Houten",
+"adres": "Yuverta mbo Houten, Randhoeve 2",
+"aanmelden": "https://www.yuverta.nl/mbo-houten/open-dag-mbo-houten-20-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "09:00-12:00",
+"soort": "open dag",
+"plaats": "'s-Hertogenbosch",
+"adres": "Yuverta mbo Den Bosch, Vlijmenseweg 1a",
+"aanmelden": "https://www.yuverta.nl/mbo-den-bosch/open-dag-mbo-den-bosch-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Aalsmeer",
+"adres": "Yuverta mbo Aalsmeer, Linnaeuslaan 2",
+"aanmelden": "https://www.yuverta.nl/mbo-aalsmeer/open-dag-mbo-aalsmeer-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Amsterdam",
+"adres": "Yuverta mbo Amsterdam, Leslocatie in Artis - Plantage kerklaan 38-40",
+"aanmelden": "https://www.yuverta.nl/mbo-amsterdam/open-dag-mbo-amsterdam-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "11:00-15:00",
+"soort": "open dag",
+"plaats": "Boxtel",
+"adres": "Yuverta mbo Boxtel, Schouwrooij 2",
+"aanmelden": "https://www.yuverta.nl/mbo-boxtel/open-dag-mbo-boxtel-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "09:00-14:00",
+"soort": "open dag",
+"plaats": "Dordrecht",
+"adres": "Yuverta mbo Dordrecht, Groenezoom 398",
+"aanmelden": "https://www.yuverta.nl/mbo-dordrecht/open-dag-mbo-dordrecht-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Heerlen",
+"adres": "Yuverta mbo Heerlen, Heldevierlaan 12",
+"aanmelden": "https://www.yuverta.nl/mbo-heerlen/open-dag-mbo-heerlen-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "09:00-13:00",
+"soort": "open dag",
+"plaats": "Helmond",
+"adres": "Yuverta mbo Helmond, Scheepsboulevard 1",
+"aanmelden": "https://www.yuverta.nl/mbo-helmond/open-dag-mbo-helmond-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "11:00-14:00",
+"soort": "open dag",
+"plaats": "Horst",
+"adres": "Yuverta mbo Horst, Spoorweg 8",
+"aanmelden": "https://www.yuverta.nl/mbo-horst-spoorweg/open-dag-mbo-horst-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Houten",
+"adres": "Yuverta mbo Houten, Randhoeve 2",
+"aanmelden": "https://www.yuverta.nl/mbo-houten/open-dag-mbo-houten-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Yuverta mbo Nijmegen, Energieweg 19",
+"aanmelden": "https://www.yuverta.nl/mbo-nijmegen/open-dag-mbo-nijmegen-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Rijswijk",
+"adres": "Yuverta mbo Rijswijk, Huis te Landelaan 2",
+"aanmelden": "https://www.yuverta.nl/mbo-rijswijk/open-dag-mbo-rijswijk-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "09:00-12:00",
+"soort": "open dag",
+"plaats": "Roermond",
+"adres": "Yuverta mbo Roermond, Jagerstraat 6",
+"aanmelden": "https://www.yuverta.nl/mbo-roermond/open-dag-mbo-roermond-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Rotterdam",
+"adres": "Yuverta mbo Rotterdam, Laanslootseweg 1",
+"aanmelden": "https://www.yuverta.nl/mbo-rotterdam/open-dag-mbo-rotterdam-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-12:00",
+"soort": "open dag",
+"plaats": "Tilburg",
+"adres": "Yuverta mbo Tilburg, Spoorlaan 21",
+"aanmelden": "https://www.yuverta.nl/mbo-tilburg/open-dag-mbo-tilburg-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "09:00-13:00",
+"soort": "open dag",
+"plaats": "Velp",
+"adres": "Yuverta mbo Velp, Larensteinselaan 26",
+"aanmelden": "https://www.yuverta.nl/mbo-velp/open-dag-mbo-velp-21-november-2026/"
+},
+{
+"datum": "2026-11-25",
+"tijd": "19:00-20:30",
+"soort": "open dag",
+"plaats": "Boskoop",
+"adres": "Yuverta mbo Aalsmeer, locatie Boskoop",
+"aanmelden": "https://www.yuverta.nl/mbo-aalsmeer/open-dag-mbo-aalsmeer-boskoop-25-november-2026/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "15:00-19:00",
+"soort": "open dag",
+"plaats": "'s-Hertogenbosch",
+"adres": "Yuverta mbo Den Bosch, Vlijmenseweg 1a",
+"aanmelden": "https://www.yuverta.nl/mbo-den-bosch/open-dag-mbo-den-bosch-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Aalsmeer",
+"adres": "Yuverta mbo Aalsmeer, Linnaeuslaan 2",
+"aanmelden": "https://www.yuverta.nl/mbo-aalsmeer/open-dag-mbo-aalsmeer-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Amsterdam",
+"adres": "Yuverta mbo Amsterdam, Leslocatie in Artis - Plantage kerklaan 38-40",
+"aanmelden": "https://www.yuverta.nl/mbo-amsterdam/open-dag-mbo-amsterdam-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Boxtel",
+"adres": "Yuverta mbo Boxtel, Schouwrooij 2",
+"aanmelden": "https://www.yuverta.nl/mbo-boxtel/open-dag-mbo-boxtel-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "15:00-19:00",
+"soort": "open dag",
+"plaats": "Dordrecht",
+"adres": "Yuverta mbo Dordrecht, Groenezoom 398",
+"aanmelden": "https://www.yuverta.nl/mbo-dordrecht/open-dag-mbo-dordrecht-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Helmond",
+"adres": "Yuverta mbo Helmond, Scheepsboulevard 1",
+"aanmelden": "https://www.yuverta.nl/mbo-helmond/open-dag-mbo-helmond-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Horst",
+"adres": "Yuverta mbo Horst, Spoorweg 8",
+"aanmelden": "https://www.yuverta.nl/mbo-horst-spoorweg/open-dag-mbo-horst-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "15:00-19:00",
+"soort": "open dag",
+"plaats": "Houten",
+"adres": "Yuverta mbo Houten, Randhoeve 2",
+"aanmelden": "https://www.yuverta.nl/mbo-houten/open-dag-mbo-houten-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-19:30",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Yuverta mbo Nijmegen, Energieweg 19",
+"aanmelden": "https://www.yuverta.nl/mbo-nijmegen/open-dag-mbo-nijmegen-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "15:30-19:30",
+"soort": "open dag",
+"plaats": "Rijswijk",
+"adres": "Yuverta mbo Rijswijk, Huis te Landelaan 2",
+"aanmelden": "https://www.yuverta.nl/mbo-rijswijk/open-dag-mbo-rijswijk-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"plaats": "Roermond",
+"adres": "Yuverta mbo Roermond, Jagerstraat 6",
+"aanmelden": "https://www.yuverta.nl/mbo-roermond/open-dag-mbo-roermond-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "15:30-19:30",
+"soort": "open dag",
+"plaats": "Rotterdam",
+"adres": "Yuverta mbo Rotterdam, Laanslootseweg 1",
+"aanmelden": "https://www.yuverta.nl/mbo-rotterdam/open-dag-mbo-rotterdam-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Tilburg",
+"adres": "Yuverta mbo Tilburg, Spoorlaan 21",
+"aanmelden": "https://www.yuverta.nl/mbo-tilburg/open-dag-mbo-tilburg-29-januari-2027/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "18:00-21:00",
+"soort": "open avond",
+"plaats": "Velp",
+"adres": "Yuverta mbo Velp, Larensteinselaan 26",
+"aanmelden": "https://www.yuverta.nl/mbo-velp/open-avond-mbo-velp-29-januari-2027/"
+},
+{
+"datum": "2027-02-03",
+"tijd": "19:00-20:30",
+"soort": "open dag",
+"plaats": "Boskoop",
+"adres": "Yuverta mbo Aalsmeer, locatie Boskoop",
+"aanmelden": "https://www.yuverta.nl/mbo-aalsmeer/open-dag-mbo-aalsmeer-boskoop-3-februari-2026/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "'s-Hertogenbosch",
+"adres": "Yuverta mbo Den Bosch, Vlijmenseweg 1a",
+"aanmelden": "https://www.yuverta.nl/mbo-den-bosch/open-dag-mbo-den-bosch-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Aalsmeer",
+"adres": "Yuverta mbo Aalsmeer, Linnaeuslaan 2",
+"aanmelden": "https://www.yuverta.nl/mbo-aalsmeer/open-dag-mbo-aalsmeer-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Amsterdam",
+"adres": "Yuverta mbo Amsterdam, Leslocatie in Artis - Plantage kerklaan 38-40",
+"aanmelden": "https://www.yuverta.nl/mbo-amsterdam/open-dag-mbo-amsterdam-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"plaats": "Boxtel",
+"adres": "Yuverta mbo Boxtel, Schouwrooij 2",
+"aanmelden": "https://www.yuverta.nl/mbo-boxtel/open-dag-mbo-boxtel-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "14:00-18:00",
+"soort": "open dag",
+"plaats": "Dordrecht",
+"adres": "Yuverta mbo Dordrecht, Groenezoom 398",
+"aanmelden": "https://www.yuverta.nl/mbo-dordrecht/open-dag-mbo-dordrecht-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "16:00-19:00",
+"soort": "open dag",
+"plaats": "Helmond",
+"adres": "Yuverta mbo Helmond, Scheepsboulevard 1",
+"aanmelden": "https://www.yuverta.nl/mbo-helmond/open-dag-mbo-helmond-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "15:00-19:00",
+"soort": "open dag",
+"plaats": "Houten",
+"adres": "Yuverta mbo Houten, Randhoeve 2",
+"aanmelden": "https://www.yuverta.nl/mbo-houten/open-dag-mbo-houten-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "16:00-19:30",
+"soort": "open dag",
+"plaats": "Nijmegen",
+"adres": "Yuverta mbo Nijmegen, Energieweg 19",
+"aanmelden": "https://www.yuverta.nl/mbo-nijmegen/open-dag-mbo-nijmegen-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "15:00-18:00",
+"soort": "open dag",
+"plaats": "Rijswijk",
+"adres": "Yuverta mbo Rijswijk, Huis te Landelaan 2",
+"aanmelden": "https://www.yuverta.nl/mbo-rijswijk/open-dag-mbo-rijswijk-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "18:00-20:00",
+"soort": "open dag",
+"plaats": "Roermond",
+"adres": "Yuverta mbo Roermond, Jagerstraat 6",
+"aanmelden": "https://www.yuverta.nl/mbo-roermond/open-dag-mbo-roermond-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "15:00-18:00",
+"soort": "open dag",
+"plaats": "Rotterdam",
+"adres": "Yuverta mbo Rotterdam, Laanslootseweg 1",
+"aanmelden": "https://www.yuverta.nl/mbo-rotterdam/open-dag-mbo-rotterdam-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "16:00-18:00",
+"soort": "open dag",
+"plaats": "Tilburg",
+"adres": "Yuverta mbo Tilburg, Spoorlaan 21",
+"aanmelden": "https://www.yuverta.nl/mbo-tilburg/open-dag-mbo-tilburg-11-maart-2027/"
+},
+{
+"datum": "2027-03-11",
+"tijd": "18:00-21:00",
+"soort": "open avond",
+"plaats": "Velp",
+"adres": "Yuverta mbo Velp, Larensteinselaan 26",
+"aanmelden": "https://www.yuverta.nl/mbo-velp/open-avond-mbo-velp-11-maart-2027/"
+},
+{
+"datum": "2027-03-17",
+"tijd": "19:00-20:30",
+"soort": "open dag",
+"plaats": "Boskoop",
+"adres": "Yuverta mbo Aalsmeer, locatie Boskoop",
+"aanmelden": "https://www.yuverta.nl/mbo-aalsmeer/open-dag-mbo-aalsmeer-boskoop-17-maart-2027/"
+},
+{
+"datum": "2027-06-11",
+"tijd": "15:30-18:00",
+"soort": "open dag",
+"plaats": "Boskoop",
+"adres": "Yuverta mbo Aalsmeer, locatie Boskoop",
+"aanmelden": "https://www.yuverta.nl/mbo-aalsmeer/open-dag-mbo-aalsmeer-boskoop-11-juni-2027/"
+}
+]
+},
+"Curio": {
+"site": "https://www.curio.nl/mbo/studiekeuze/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-19",
+"tijd": "15:30-20:30",
+"soort": "open dag",
+"adres": "mbo-locaties van Curio (Breda, Bergen op Zoom, Roosendaal, Hoogerheide); per datum niet gespecificeerd",
+"aanmelden": "https://www.curio.nl/evenementen/mbo-open-dag-19-november-2026"
+},
+{
+"datum": "2027-01-21",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "mbo-locaties van Curio (Breda, Bergen op Zoom, Roosendaal, Hoogerheide); per datum niet gespecificeerd"
+},
+{
+"datum": "2027-03-18",
+"tijd": "17:00-20:00",
+"soort": "open dag",
+"adres": "mbo-locaties van Curio (Breda, Bergen op Zoom, Roosendaal, Hoogerheide); per datum niet gespecificeerd"
+}
+]
+},
+"Summa College": {
+"site": "https://summa-onderwijs.nl/open-dagen",
+"dagen": [
+{
+"datum": "2026-10-31",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"adres": "alle locaties ('onze locaties'; geen adres vermeld)"
+},
+{
+"datum": "2026-12-10",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties ('onze locaties'; geen adres vermeld)"
+},
+{
+"datum": "2027-01-15",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties ('onze locaties'; geen adres vermeld)"
+},
+{
+"datum": "2027-02-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties ('onze locaties'; geen adres vermeld)"
+},
+{
+"datum": "2027-03-19",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties ('onze locaties'; geen adres vermeld)"
+}
+]
+},
+"Koning Willem I College": {
+"site": "https://www.kw1c.nl/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-20",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties behalve Beversestraat Cuijk (info daarover op Jan van Cuijkstraat, Cuijk)",
+"aanmelden": "https://www.kw1c.nl/open-dagen/twintig-november/"
+},
+{
+"datum": "2027-01-29",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties behalve Beversestraat Cuijk (info daarover op Jan van Cuijkstraat, Cuijk)"
+},
+{
+"datum": "2027-03-17",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"adres": "alle locaties behalve Beversestraat Cuijk (info daarover op Jan van Cuijkstraat, Cuijk)"
+}
+]
+},
+"Gilde Opleidingen": {
+"site": "https://www.gildeopleidingen.nl/jongeren/studiekeuze/open-dag",
+"dagen": [
+{
+"datum": "2027-01-24",
+"tijd": "09:30-14:00",
+"soort": "open dag",
+"adres": "alle vakscholen van Gilde Opleidingen (geen adres per locatie vermeld)",
+"aanmelden": "https://www.gildeopleidingen.nl/events/open-dag-2027"
+}
+]
+},
+"VISTA college": {
+"site": "https://vistacollege.nl/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-08",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"adres": "alle 8 locaties: Beek (Stationsstraat 100), Heerlen (Valkenburgerweg 148; Henri Dunantstraat 2; Schandelermolenweg 21), Maastricht (Sibemaweg 20), Maastricht-Airport (Horsterweg 13), Sittard (Arendstraat 12; Milaanstraat 125)",
+"aanmelden": "https://forms.hippocampus.eu/vista/opendag/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiJiNTJiZDlmOC0xMzU5LTQ2NzgtODFmNy1hNzhhZjkxMTQ4MzkifQ"
+}
+]
+},
+"Scalda": {
+"site": "https://www.scalda.nl/mbo-onderwijs/eerste-hulp-bij-studiekeuze/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-13",
+"tijd": "15:30-19:30",
+"soort": "open dag",
+"adres": "Goes, Middelburg, Terneuzen, Tholen en Vlissingen (Scalda, CIOS Zuidwest-NL en MLC De Ruyter); locatie kiezen via scalda.nl/kies-je-open-dag-locatie",
+"aanmelden": "https://www.scalda.nl/agenda/open-dag-13-november-2026"
+},
+{
+"datum": "2027-01-08",
+"tijd": "15:30-19:30",
+"soort": "open dag",
+"adres": "Goes, Middelburg, Terneuzen, Tholen en Vlissingen (Scalda en CIOS Zuidwest-NL)",
+"aanmelden": "https://www.scalda.nl/agenda/open-dag-8-januari-2027"
+},
+{
+"datum": "2027-03-18",
+"tijd": "18:00-20:00",
+"soort": "open avond"
+}
+]
+},
+"Talland College": {
+"site": "https://www.talland.nl/mbo/open-dagen",
+"dagen": [
+{
+"datum": "2026-12-09",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"aanmelden": "https://www.talland.nl/agenda/open-dag-9-december-2026"
+},
+{
+"datum": "2027-02-11",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"aanmelden": "https://www.talland.nl/agenda/open-dag-11-februari-2027"
+}
+]
+},
+"Zone.college": {
+"site": "https://zonecollege.nl/jongeren/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-13",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "Almelo, Deventer, Doetinchem, Zwolle (geen adressen vermeld)",
+"aanmelden": "https://forms.hippocampus.eu/zonecollege/37ikdjfqt2ajt3sn/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiJmNTk1ZjMzMy1jNzhhLTQyMzMtYTkxOC0xYjdkY2FlYzZkY2EifQ"
+},
+{
+"datum": "2026-11-18",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Hardenberg",
+"aanmelden": "https://forms.hippocampus.eu/zonecollege/opendaghb/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiJiYTU1OTUxOS0yOWRmLTRhMjktODFiOS02NGYzYzIwYjViZmUifQ"
+},
+{
+"datum": "2027-01-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Hardenberg",
+"aanmelden": "https://zonecollege.nl/agenda/open-dag-20-jan-mbo-hardenberg"
+},
+{
+"datum": "2027-01-22",
+"tijd": "15:00-20:00",
+"soort": "open dag",
+"adres": "Almelo, Deventer, Doetinchem, Zwolle (geen adressen vermeld)",
+"aanmelden": "https://zonecollege.nl/agenda/open-dag-22-jan-mbo"
+},
+{
+"datum": "2027-03-11",
+"tijd": "18:00-20:00",
+"soort": "open avond",
+"adres": "Almelo, Deventer, Doetinchem, Zwolle (geen adressen vermeld)",
+"aanmelden": "https://zonecollege.nl/agenda/open-dag-11-mrt-mbo"
+},
+{
+"datum": "2027-03-17",
+"tijd": "18:00-20:00",
+"soort": "open avond",
+"plaats": "Hardenberg",
+"aanmelden": "https://zonecollege.nl/agenda/open-dag-17-mrt-mbo"
+}
+]
+},
+"Yonder": {
+"site": "https://www.yonder.nl/voor-studenten/agenda",
+"dagen": [
+{
+"datum": "2026-10-31",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Tilburg",
+"adres": "Mindlabs, Locomotiefboulevard 101 (alleen creatieve opleidingen)"
+},
+{
+"datum": "2026-11-22",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Tilburg",
+"adres": "de campus (geen adres vermeld)",
+"aanmelden": "https://aanmelden.yonder.nl/ords/r/wda/f_400/event?p250_event_code=OD_NOV2026&org_id_hash=6C57197EB4CFD31B&p250_label_id=901&clear=250"
+},
+{
+"datum": "2027-02-18",
+"tijd": "18:00-21:00",
+"soort": "open avond",
+"plaats": "Tilburg",
+"adres": "de campus (geen adres vermeld)"
+}
+]
 }
 };
+// Mbo: DUO-naam van een college of locatie -> merk met open dagen
+const OD_MERK = {"Vonk Hoorn mbo":"Vonk","Vonk Schagen mbo":"Vonk","Vonk Alkmaar mbo":"Vonk","Nova College Campus Beverwijk":"Nova College","Nova College Campus Haarlem":"Nova College","Nova College Campus Haarlemmermeer":"Nova College","Nova College CIOS Haarlem":"Nova College","Nova College MyTalent":"Nova College","Nova College Maritiem College":"Nova College","MBO Terra":"Drenthe College","Summa Wonen en Design":"Summa College","Summa Artiest":"Summa College","Summa Bouw":"Summa College","Summa Engineering":"Summa College","Summa Luchtvaartdienstverlening":"Summa College","Summa Procestechnologie":"Summa College","Summa Sport":"Summa College","Summa Techniek":"Summa College","Summa Transport en Logistiek":"Summa College","Summa Vrije tijd":"Summa College","Summa college":"Summa College","Summa Beauty and Lifestyle":"Summa College","Summa Automotive":"Summa College","Summa Laboratorium":"Summa College","Summa Elektro- en Installatietechniek":"Summa College","Summa Brood en Banket":"Summa College","Summa Horeca":"Summa College","Summa Fashion":"Summa College","Summa ICT":"Summa College","Summa Plus":"Summa College","Summa Facilitair":"Summa College","Summa Zorg":"Summa College","Summa Veiligheid":"Summa College","ROC Mondriaan Lifestyle, Sport & Bewegen":"ROC Mondriaan","ROC Mondriaan International Hotel & Management":"ROC Mondriaan","ROC Mondriaan Technologie & Engineering":"ROC Mondriaan","ROC Mondriaan Entreeopleidingen":"ROC Mondriaan","ROC Mondriaan Autotechniek & Mobiliteit":"ROC Mondriaan","ROC Mondriaan Bouw & Infra":"ROC Mondriaan","ROC Mondriaan Metaal-, Elektro-installatietechniek":"ROC Mondriaan","ROC Mondriaan Orde & Veiligheid":"ROC Mondriaan","ROC Mondriaan Horeca & Facilitaire dienstverlening":"ROC Mondriaan","ROC Mondriaan Toerisme & Recreatie en evenementen":"ROC Mondriaan","ROC Mondriaan Zorg & Welzijn Den Haag":"ROC Mondriaan","ROC Mondriaan Pedagogische en Sociale beroep":"ROC Mondriaan","ROC Mondriaan Maatschappelijke zorg & verzorgende":"ROC Mondriaan","ROC Mondriaan Gezondheidszorg Den Haag":"ROC Mondriaan","ROC Mondriaan Zorg & Welzijn Delft":"ROC Mondriaan","ROC Mondriaan Zorg & Welzijn Leiden":"ROC Mondriaan","ROC Mondriaan Zorg & Welzijn Westland":"ROC Mondriaan","VISTA college":"VISTA college","ROC van Amsterdam - MBO College Zuid":"ROC van Amsterdam","ROC van Amsterdam - MBO College Noord":"ROC van Amsterdam","ROC van Amsterdam - MBO College Zuidoost":"ROC van Amsterdam","ROC van Amsterdam - MBO College Amstelland":"ROC van Amsterdam","Deltion College - Welzijn & Gezondheid":"Deltion College","ROC van Flevoland - MBO College Almere":"ROC van Flevoland","ROC van Flevoland - MBO College Poort":"ROC van Flevoland","ROC van Flevoland - MBO College Lelystad":"ROC van Flevoland","ROC van Amsterdam - MBO College Westpoort":"ROC van Amsterdam","ROC van Amsterdam - MBO College Hilversum":"ROC van Amsterdam","ROC van Amsterdam - MBO College Centrum":"ROC van Amsterdam","ROC van Amsterdam - MBO College West":"ROC van Amsterdam","ROC van Amsterdam - MBO College Airport":"ROC van Amsterdam","MBO Amersfoort School voor Economie en Ondernemen":"MBO Amersfoort","MBO Amersfoort School voor Toerisme en Management":"MBO Amersfoort","Kappersschool Amersfoort (MBO Amersfoort)":"MBO Amersfoort","MBO Amersfoort School voor Schoonheidsspecialisten":"MBO Amersfoort","Zadkine Brood & Banket College":"Zadkine","Hoornbeeck College":"Hoornbeeck College","Zadkine Vakschool Schoonhoven":"Zadkine","Deltion College - Techniek & Gebouwde Omgeving":"Deltion College","Deltion College - Sport, Opvoeding & Maatschappij":"Deltion College","Deltion College - Mobiliteit, Logistiek & Veiligheid":"Deltion College","Deltion College - Horeca, Reizen & Dienstverlening":"Deltion College","Deltion College - Economie & Ondernemen":"Deltion College","Deltion College - Design, Media & ICT":"Deltion College","Scalda - Dienstverlening, Veiligheid en Gastvrijheid":"Scalda","Scalda - Maritiem, ICT en Techniek":"Scalda","Scalda - Zorg, Welzijn en Uiterlijke Verzorging":"Scalda","Scalda - Educatie":"Scalda","Scalda - Groen":"Scalda","Scalda - Sport":"Scalda","Zadkine Veiligheidsacademie & Sport":"Zadkine","Zadkine Startcollege":"Zadkine","Zadkine Optiek College":"Zadkine","Zadkine Beauty & Fashion College":"Zadkine","Zadkine Logistiek College":"Zadkine","Zadkine Gezondheid & Welzijn College":"Zadkine","Zadkine Business College":"Zadkine","Zadkine Hospitality College":"Zadkine","Graafschap College, Techniek & Informatica":"Graafschap College","Graafschap College, Zorg, Welzijn & Sport":"Graafschap College","Graafschap College, Educatie & Participatie":"Graafschap College","Dutch HealthTec Academy (MBO Amersfoort)":"MBO Amersfoort","MBO Amersfoort School voor Welzijn":"MBO Amersfoort","MBO Amersfoort School voor Techniek":"MBO Amersfoort","MBO Amersfoort School voor Gezondheidszorg":"MBO Amersfoort","Hotelschool Amersfoort (MBO Amersfoort)":"MBO Amersfoort","Entree Opleidingen (MBO Amersfoort)":"MBO Amersfoort","Yonder Entree, Vavo, Educatie en Inburgering":"Yonder","Yonder Business, ICT en Logistiek":"Yonder","Yonder Techniek":"Yonder","Yonder Lifestyle en Creatieve Industrie":"Yonder","Yonder Onderwijs, Kinderopvang, Sport en Veiligheid":"Yonder","Yonder Zorg en Welzijn":"Yonder","ROC Nijmegen directie Zorg en Welzijn":"ROC Nijmegen","ROC Nijmegen directie Techniek":"ROC Nijmegen","ROC Nijmegen directie Economie":"ROC Nijmegen","Aventus sector Creatieve Industrie":"Aventus","Aventus sector Economie & Handel":"Aventus","Aventus sector Techniek & Mobiel":"Aventus","Landstede MBO":"Landstede","mbo Menso Alting Zwolle":"Menso Alting","Drenthe College":"Drenthe College","Koning Willem I College":"Koning Willem I College","ROC Midden Nederland - Beauty College":"ROC Midden Nederland","ROC Midden Nederland - Bouw & Interieur College (Amersfoort)":"ROC Midden Nederland","ROC Midden Nederland - Business & Administration College (Amersfoort)":"ROC Midden Nederland","ROC Midden Nederland - Business & Administration College (Utrecht)":"ROC Midden Nederland","ROC Midden Nederland - Creative College (Utrecht)":"ROC Midden Nederland","ROC Midden Nederland - Gezondheidszorg College (Amersfoort)":"ROC Midden Nederland","ROC Midden Nederland - Gezondheidszorg College (Utrecht)":"ROC Midden Nederland","ROC Midden Nederland - Horeca & Toerisme College":"ROC Midden Nederland","ROC Midden Nederland Amersfoort":"ROC Midden Nederland","ROC Midden Nederland - Sport College (Amersfoort)":"ROC Midden Nederland","ROC Midden Nederland - Sport College (Utrecht)":"ROC Midden Nederland","ROC Midden Nederland - Tech College (Amersfoort)":"ROC Midden Nederland","ROC Midden Nederland - Veiligheid & Defensie College":"ROC Midden Nederland","ROC Midden Nederland - Welzijn College (Amersfoort)":"ROC Midden Nederland","ROC Midden Nederland - Welzijn College (Utrecht)":"ROC Midden Nederland","DA VINCI COLLEGE":"Da Vinci College","ROC A12":"ROC A12","Graafschap College, Economie & Dienstverlening":"Graafschap College","Yuverta mbo Rotterdam":"Yuverta","Yuverta mbo Aalsmeer":"Yuverta","Yuverta mbo Rijswijk":"Yuverta","Yuverta mbo Houten":"Yuverta","Yuverta mbo Amsterdam":"Yuverta","Yuverta mbo Dordrecht":"Yuverta","Aeres MBO Barneveld":"Aeres MBO","Aeres MBO Almere":"Aeres MBO","Aeres MBO Ede":"Aeres MBO","Aeres MBO Emmeloord":"Aeres MBO","mboRijnland Mbo-college Techniek & ICT":"mboRijnland","mboRijnland Mbo-college Start-Up":"mboRijnland","mboRijnland Mbo-college Welzijn en Zorg":"mboRijnland","ROC Gilde Opleidingen":"Gilde Opleidingen","Sportacademie Amersfoort (MBO Amersfoort)":"MBO Amersfoort","MBO Amersfoort School voor Economie en Ondernemen niveau 2":"MBO Amersfoort","MBO Amersfoort School voor Veiligheid":"MBO Amersfoort","Zone.college mbo":"Zone.college","ROC Menso Alting":"Menso Alting","Aeres MBO Velp":"Aeres MBO","Aeres MBO Dronten Warmonderhof":"Aeres MBO","Lentiz | MBO Westland":"Lentiz","Lentiz | MBO Oostland":"Lentiz","Lentiz | MBO Middelharnis":"Lentiz","Lentiz | MBO Maasland":"Lentiz","Lentiz | MBO LIFE College":"Lentiz","Lentiz | MBO Barendrecht":"Lentiz","Alfa-college voor Sport en Bewegen & Veiligheid Groningen":"Alfa-college","Alfa-college voor Business, Design & IT Groningen":"Alfa-college","Alfa-college voor Techniek, Bouw & Interieur Groningen":"Alfa-college","Alfa-college voor Beroepsopleidingen Hoogeveen":"Alfa-college","Alfa-college voor Beroepsopleidingen Hardenberg":"Alfa-college","Alfa-college voor Zorg, Welzijn & Dienstverlening Groningen":"Alfa-college","MBO Utrecht":"MBO Utrecht","Albeda MBO Theaterschool":"Albeda","Albeda Facilitair & Veiligheidscollege":"Albeda","Albeda Horecacollege":"Albeda","Albeda Travel & Leisure College":"Albeda","Albeda Rotterdam The Hague Airport College":"Albeda","Albeda Beauty & Fashioncollege":"Albeda","Albeda Sportcollege":"Albeda","Albeda Danscollege":"Albeda","Albeda College Muzikant Producer":"Albeda","Albeda College Sociaal & Pedagogisch Werk":"Albeda","Albeda Zorgcollege":"Albeda","Albeda Startcollege":"Albeda","Albeda College Economie & Ondernemen":"Albeda","ROC Mondriaan Beauty, Hair & Fashion":"ROC Mondriaan","Curio economie en ondernemen":"Curio","Curio techniek en technologie":"Curio","Curio voedsel, groen en gastvrijheid":"Curio","Curio zorg en welzijn":"Curio","Curio startcollege":"Curio","ROC Mondriaan Business & Retail":"ROC Mondriaan","Yuverta mbo Tilburg":"Yuverta","Yuverta mbo Nijmegen":"Yuverta","Yuverta mbo Velp":"Yuverta","Yuverta mbo Geldermalsen":"Yuverta","Yuverta mbo Helmond":"Yuverta","Yuverta mbo Den Bosch":"Yuverta","Yuverta mbo Boxtel":"Yuverta","Yuverta mbo Horst-Spoorweg":"Yuverta","Yuverta mbo Heerlen":"Yuverta","Yuverta mbo Roermond":"Yuverta","Yuverta llo":"Yuverta","Aeres MBO Sneek":"Aeres MBO","Aeres MBO Leeuwarden":"Aeres MBO","Aeres MBO Heerenveen":"Aeres MBO","Aeres MBO Buitenpost":"Aeres MBO","Summa College Duale trajecten":"Summa College","Techniek College Rotterdam - Bouwen & Wonen":"Techniek College Rotterdam","Aeres MBO Dronten":"Aeres MBO","Techniek College Rotterdam - IT & Online":"Techniek College Rotterdam","Techniek College Rotterdam - Proces & Maintenance":"Techniek College Rotterdam","Techniek College Rotterdam - Mobiliteit":"Techniek College Rotterdam","Techniek College Rotterdam - Maakindustrie & Onderhoud":"Techniek College Rotterdam","Techniek College Rotterdam - Lab & Research":"Techniek College Rotterdam","Hoornbeeck Connect":"Hoornbeeck College","Vonk Bouw":"Vonk","Vonk Middenkader techniek":"Vonk","Vonk Welzijn":"Vonk","Vonk Veiligheid en vakmanschap-maritiem":"Vonk","Vonk Veiligheid en vakmanschap-grondoptreden":"Vonk","Vonk veiligheid en vakmanschap-mechatronica":"Vonk","Vonk Toezicht en veiligheid":"Vonk","Vonk Sport en bewegen":"Vonk","Vonk Mobiele werktuigen":"Vonk","Vonk Mechatronica":"Vonk","Vonk Maritiem":"Vonk","Vonk Logistiek":"Vonk","Vonk Leisure & hospitality":"Vonk","Vonk Kappen":"Vonk","Vonk ICT":"Vonk","Vonk Horeca":"Vonk","Vonk Handel en Commercie":"Vonk","Vonk Gezondheidszorg":"Vonk","Vonk Financieel en juridisch":"Vonk","Vonk Entree":"Vonk","Vonk Autotechniek":"Vonk","Aventus MBO Basis & Lyceum":"Aventus","ROC Midden Nederland - Tech Campus":"ROC Midden Nederland","ROC Mondriaan Business & Logistics":"ROC Mondriaan","ROC Mondriaan Business & Law":"ROC Mondriaan","mboRijnland Mbo-college Business en Hospitality":"mboRijnland","Firda Heerenveen":"Firda","Firda Leeuwarden Zuid":"Firda","Firda Drachten":"Firda","Firda Sneek":"Firda","Firda Emmeloord":"Firda","Firda Leeuwarden/Dokkum Noord":"Firda","ROC Midden Nederland - ICT College (Amersfoort)":"ROC Midden Nederland","ROC Midden Nederland - Creative College (Amersfoort)":"ROC Midden Nederland","Rijn IJssel Zorg & Welzijn":"Rijn IJssel","ROC Mondriaan Smart Technology":"ROC Mondriaan","Talland College - Start":"Talland College","Talland College - Business & IT":"Talland College","Talland College - Hospitality, Events & Security":"Talland College","Talland College - Techniek":"Talland College","Talland College - Gezondheidszorg":"Talland College","ROC Mondriaan Techniek en Gebouwde Omgeving":"ROC Mondriaan","Summa Economie en ondernemen":"Summa College","Curio C":"Curio","Curio I":"Curio","Curio O":"Curio","Curio R":"Curio","Curio U":"Curio","Talland College - Welzijn en Sport":"Talland College","MBO Amersfoort":"MBO Amersfoort"};
