@@ -541,6 +541,7 @@ h4 small,h3 small{font-weight:500;text-transform:none;letter-spacing:0;color:var
 .hero .kicker{color:#ffe1dc}
 .parents{background:linear-gradient(120deg,#d62828 0%,#b81d2e 55%,#8e1426 100%)}
 .parents .sub{color:#ffe4e1}
+.parents a:not(.btn){color:#fff}
 .gk p{color:#ffeceb}
 .gk strong{color:#ffd7d1}
 footer{background:#f3eceb;color:#4a4242}

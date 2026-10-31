@@ -895,6 +895,7 @@
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
   const TEGELS = {
     test: ["#/test", "Welke kant op?", "Doe de Padvinder, in 5 minuten"],
+    weetal: ["#/weetal", "Wat een onzin!", "Ik weet allang wat ik wil"],
     samen: ["#/samen", "Samen vergelijken", "Jouw Padvinder naast die van je ouder"],
     sterren: ["#/sterren", "Sterrenkaart", "Verken vrij, van wat je leuk vindt tot opleidingen"],
     metro: ["#/metro", "Metrokaart", "Alle routes van school naar werk"],
@@ -919,14 +920,14 @@
   };
   const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
   const VERDER = {
-    test: ["samen", "sterren", "droom", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
+    test: ["samen", "sterren", "droom", "plan"], weetal: ["opleidingen", "toelating", "samen", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
     opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["eerlijk", "plan", "ouders", "geld"], plan: ["profiel", "planb", "metro", "geld"], profiel: ["plan", "opleidingen", "vakken", "metro"],
     uitleg: ["metro", "plan", "test", "ouders"], ouders: ["samen", "metro", "plan", "test"], samen: ["ouders", "plan", "sterren", "opendagen"],
     sterren: ["test", "droom", "metro", "opleidingen"], metro: ["planb", "plan", "toelating", "sterren"],
   };
   const UITLEG = ["route", "toelating", "planb", "geld", "opties", "eerlijk", "niveaus", "leerwerk", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], profiel: ["profiel"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "eerlijk", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { weetal: ["weetal"], samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], profiel: ["profiel"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "eerlijk", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
