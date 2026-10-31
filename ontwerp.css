@@ -968,3 +968,30 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .woord strong a{color:inherit;text-decoration:none}
 .woord strong a:hover{color:var(--accent);text-decoration:underline}
 .deel-link{font-size:.88rem;margin-left:10px}
+
+/* Metrokaart rustiger: gekozen route rood, de rest lichtgrijs zonder namen */
+.m-routes .chip{margin:0}
+.m-route{fill:none;stroke:var(--accent);stroke-width:12;stroke-linecap:round;stroke-linejoin:round;opacity:1}
+.heeft-route .m-lijn{stroke:var(--line)!important;opacity:1}
+.heeft-route .m-over{stroke:var(--line);opacity:.8}
+.heeft-route .m-later,.heeft-route .m-tekst{display:none}
+.heeft-route .m-st{opacity:1}
+.heeft-route .m-st:not(.op-route):not(.m-eind) text{display:none}
+.heeft-route .m-st:not(.op-route):not(.m-eind) circle{stroke:var(--line);stroke-width:3}
+.heeft-route .m-eind:not(.l-vwo):not(.l-havo):not(.l-vmbo) rect{fill:var(--line)}
+.heeft-route .m-st.op-route circle{fill:var(--paper);stroke:var(--accent);stroke-width:5}
+.heeft-route .m-st.op-route text{font-weight:800;fill:var(--ink)}
+.heeft-route .m-st.m-werk circle{fill:var(--accent)}
+.heeft-route .m-eind{opacity:.35}
+.heeft-route .m-eind.op-route{opacity:1}
+.m-volgorde{font-weight:600}
+
+/* Sterrenkaart: tekst erboven, kaart over de volle breedte */
+.sterkaart{display:flex;flex-direction:column;gap:12px}
+.sterkaart .st-info{order:-1;padding:12px 18px;min-height:58px}
+.sterkaart .st-info h3{display:inline;margin:0 8px 0 0;font-size:1.05rem}
+.sterkaart .st-info .st-soort{display:inline;margin:0 8px 0 0!important}
+.sterkaart .st-info p{margin:4px 0}
+.sterkaart .st-info h4{display:inline;margin:0 8px 0 0;font-size:.85rem}
+.sterkaart .st-info .mini,.sterkaart .st-info .btn{margin-top:6px}
+.sterkaart .st-veld{height:min(72vh,680px)}

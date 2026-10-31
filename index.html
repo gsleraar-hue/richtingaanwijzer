@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://gsleraar-hue.github.io/watstudeerje/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Wat studeer je eigenlijk?","url":"https://gsleraar-hue.github.io/watstudeerje/","inLanguage":"nl","description":"Onafhankelijke hulp bij studiekeuze in gewone taal: ruim 1.100 mbo-, hbo- en wo-opleidingen uitgelegd, Engelse studienamen vertaald, een persoonlijk stappenplan en uitleg van begrippen als LOB, BSA en numerus fixus."}</script>
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=64">
+<link rel="stylesheet" href="ontwerp.css?v=67">
 </head>
 <body>
 
@@ -69,6 +69,7 @@
       <a class="tegel" href="#vakken"><strong>Mijn lievelingsvak</strong><span>Wat zegt het over jou, wat kun je ermee?</span></a>
       <a class="tegel" href="#vertaal"><strong>Business wát?</strong><span>Engelse studienamen vertaald</span></a>
       <a class="tegel" href="#/opleidingen"><strong>Alle opleidingen</strong><span>Mbo, hbo en wo in gewone taal</span></a>
+      <a class="tegel" href="#leerwerk"><strong>Leren of werken?</strong><span>Bol of bbl: wat past bij jou?</span></a>
       <a class="tegel" href="#planb"><strong>Plan B</strong><span>Wat als je niet wordt aangenomen?</span></a>
       <a class="tegel" href="#/opendagen"><strong>Open dagen</strong><span>En een dag meelopen</span></a>
       <a class="tegel" href="#/plan"><strong>Mijn stappenplan</strong><span>Van nu tot je eerste studiedag</span></a>
@@ -237,6 +238,38 @@
     </div>
   </section>
 
+  <section id="leerwerk">
+    <h2>Vooral leren, of vooral werken?</h2>
+    <p class="sub">Op het mbo kies je niet alleen een opleiding, maar ook hoe je hem volgt. Veel opleidingen kun je op twee manieren doen, en je krijgt hetzelfde diploma.</p>
+    <div class="lw-twee">
+      <div class="lw-kaart">
+        <p class="st-soort">Bol</p><h3>Vooral leren</h3>
+        <ul>
+          <li><strong>Je week:</strong> 4 à 5 dagen naar school. Je loopt stages bij bedrijven.</li>
+          <li><strong>Geld:</strong> vanaf je 18e studiefinanciering, en je betaalt lesgeld. Bij een stage krijg je soms een stagevergoeding.</li>
+          <li><strong>Past bij je als</strong> je eerst rustig het vak wilt leren en verschillende bedrijven wilt zien.</li>
+        </ul>
+        <button type="button" class="btn ghost" data-vorm="bol">Bekijk bol-opleidingen</button>
+      </div>
+      <div class="lw-kaart">
+        <p class="st-soort">Bbl</p><h3>Vooral werken, en daarnaast leren</h3>
+        <ul>
+          <li><strong>Je week:</strong> 3 à 4 dagen werken bij een leerbedrijf, 1 dag naar school.</li>
+          <li><strong>Geld:</strong> je krijgt salaris. Je betaalt cursusgeld; soms betaalt je werkgever dat. Studiefinanciering krijg je niet.</li>
+          <li><strong>Je hebt nodig:</strong> een leerbaan bij een erkend leerbedrijf. De school helpt je zoeken, en je vindt ze ook op <a href="https://www.stagemarkt.nl" target="_blank" rel="noopener">stagemarkt.nl</a>.</li>
+          <li><strong>Past bij je als</strong> je liever doet dan uit boeken leert, en nu al wilt verdienen.</li>
+        </ul>
+        <button type="button" class="btn ghost" data-vorm="bbl">Bekijk bbl-opleidingen</button>
+      </div>
+    </div>
+    <div class="lw-check">
+      <h3>Wat past bij jou? <small>Klik aan wat klopt.</small></h3>
+      <div class="lw-stellingen" id="lwStellingen"></div>
+      <p class="lw-uitslag" id="lwUitslag" aria-live="polite">Klik een paar zinnen aan.</p>
+    </div>
+    <p class="lw-hbo">Op het hbo kan werken en leren ook: in <strong>deeltijd</strong> studeer je naast je baan, bij <strong>duaal</strong> wissel je werk en school af. <button type="button" class="linkbtn" data-vorm="werk">Bekijk deze hbo-opleidingen</button></p>
+  </section>
+
   <section id="vakken">
     <h2>Je lievelingsvak: wat kun je ermee?</h2>
     <p class="sub">Welk vak vind jij leuk? Kies het hieronder. Je ziet wat je er waarschijnlijk écht leuk aan vindt, welke beroepen erbij passen en in welke opleidingen het terugkomt.</p>
@@ -276,6 +309,7 @@
     <div class="filters" role="group" aria-label="Filters">
       <div class="chips" id="niveauChips" aria-label="Route (mbo, hbo of wo)"></div>
       <div class="chips" id="gebiedChips" aria-label="Interessegebied"></div>
+      <div class="chips" id="vormChips" aria-label="Hoe wil je leren?"></div>
     </div>
 
     <p id="aantal" class="count" aria-live="polite"></p>
@@ -393,12 +427,12 @@
   </div>
 </footer>
 
-<script src="data.js?v=64"></script>
-<script src="opleidingen.js?v=64"></script>
-<script src="uitleg.js?v=64"></script>
-<script src="mbo.js?v=64"></script>
-<script src="locaties.js?v=64"></script>
-<script src="opendagen.js?v=64"></script>
-<script src="app.js?v=64"></script>
+<script src="data.js?v=67"></script>
+<script src="opleidingen.js?v=67"></script>
+<script src="uitleg.js?v=67"></script>
+<script src="mbo.js?v=67"></script>
+<script src="locaties.js?v=67"></script>
+<script src="opendagen.js?v=67"></script>
+<script src="app.js?v=67"></script>
 </body>
 </html>

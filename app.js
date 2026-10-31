@@ -103,7 +103,7 @@
   }
 
   /* ---------- Gids ---------- */
-  const state = { zoek: "", niveau: "", gebied: "" };
+  const state = { zoek: "", niveau: "", gebied: "", vorm: "" };
   const NIVEAUS = ["mbo", "hbo", "wo"];
 
   function chip(container, label, key, value) {
@@ -143,6 +143,8 @@
   }
 
   /* ---------- Alle opleidingen (DUO/RIO), gegroepeerd ---------- */
+  const VORM_KORT = { bol: "Vooral leren (bol)", bbl: "Werken en leren (bbl)", werk: "Hbo naast je werk" };
+  const VORM_LANG = { bol: "bol (vooral leren, met stages)", bbl: "bbl (werken en één dag naar school)", voltijd: "voltijd", deeltijd: "deeltijd (naast je werk)", duaal: "duaal (werk en studie afwisselen)" };
   const NIV_LABEL = { mbo: "mbo", hbo: "hbo", wo: "wo", ad: "associate degree" };
   const EC_JAAR = { mbo: "1 tot 4 jaar, afhankelijk van het niveau", hbo: "4 jaar", wo: "3 jaar", ad: "2 jaar" };
   const VORM = { voltijd: "voltijd", deeltijd: "deeltijd", duaal: "duaal (leren en werken)", bol: "bol: naar school, met stages", bbl: "bbl: werken en leren, een paar dagen per week werken" };
@@ -159,6 +161,7 @@
         if (o.f !== f.id) return false;
         if (state.niveau && !o.l.includes(state.niveau)) return false;
         if (state.gebied && f.gebied !== state.gebied) return false;
+        if (state.vorm && !(state.vorm === "werk" ? (o.v || []).some((v) => v === "deeltijd" || v === "duaal") : (o.v || []).includes(state.vorm))) return false;
         const h = (o.n + " " + o.e + " " + f.naam + " " + f.uitleg).toLowerCase();
         return words.every((w) => h.includes(w));
       });
@@ -194,6 +197,7 @@
     };
     if (state.gebied) addChip("Faculteit: " + GEBIEDEN[state.gebied].naam, () => (state.gebied = ""));
     if (state.niveau) addChip("Route: " + state.niveau, () => (state.niveau = ""));
+    if (state.vorm) addChip("Leervorm: " + VORM_KORT[state.vorm], () => (state.vorm = ""));
     if (state.zoek) addChip("Zoekterm: " + state.zoek, () => { state.zoek = ""; $("#zoek").value = ""; });
     $("#alleLeeg").hidden = total > 0;
     $("#alleAantal").textContent = OPLEIDINGEN.length;
@@ -245,6 +249,7 @@
       `<h3>Hoe kom je daar?</h3><ol class="stapjes"><li>Zorg voor de juiste vooropleiding en het juiste profiel.</li><li>Ga naar een open dag of meeloopdag.</li><li>Meld je aan via Studielink: uiterlijk 1 mei${SELECTIE[f.id] ? ", bij selectie of loting vaak al vóór 15 januari" : ""}.</li><li>Doe de studiekeuzecheck.</li><li>Regel je geld bij DUO, en eventueel een kamer.</li></ol><p><a href="#route">Bekijk het hele stappenplan →</a></p>` +
       `<h3>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h3>${personaHtml(f.gebied)}` +
       `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}${n === "mbo" && o.mn && o.mn.length ? " niveau " + o.mn.join(", ") : ""}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
+      ((o.v || []).length ? `<h3>Hoe kun je hem volgen?</h3><p>${o.v.map((v) => VORM_LANG[v] || v).join(", ")}.${o.v.some((v) => v === "bol" || v === "bbl") ? ` <a href="#leerwerk">Bol of bbl: wat past bij jou? →</a>` : ""}</p>` : "") +
       `<h3>Hoe studeer je?</h3><p>${o.v.map((v) => VORM[v] || v).join(", ") || "onbekend"}</p>` +
       `<h3>Waar kan het? (${o.i.length} ${o.i.length === 1 ? "school" : "scholen"})</h3>${reis}<ul class="scholen">${insts.map((i) => schoolRegel(i, o.n, per[i])).join("")}</ul>` +
       (o.i.length > insts.length ? `<p style="color:var(--muted)">en ${o.i.length - insts.length} andere</p>` : "") +
@@ -259,6 +264,7 @@
     $("#zoek").value = "";
     state.niveau = "";
     state.gebied = "";
+    state.vorm = "";
     renderChips();
     renderList();
     const d = document.getElementById("fam-" + id);
@@ -833,6 +839,7 @@
     ouders: ["#/ouders", "Voor ouders", "Zo voer je het gesprek"],
     route: ["#route", "Hoe kom je daar?", "Aanmelden, toelating, inschrijven"],
     toelating: ["#toelating", "Toelating", "Loting, selectie, portfolio"],
+    leerwerk: ["#leerwerk", "Leren of werken?", "Bol of bbl: wat past bij jou?"],
     planb: ["#planb", "Plan B", "Wat als je niet wordt aangenomen?"],
     geld: ["#geld", "Wie betaalt wat?", "Collegegeld, DUO, een kamer"],
     opties: ["#opties", "Buitenland of tussenjaar?", "En later nog switchen"],
@@ -848,9 +855,9 @@
     uitleg: ["metro", "plan", "test", "ouders"], ouders: ["samen", "metro", "plan", "test"], samen: ["ouders", "plan", "sterren", "opendagen"],
     sterren: ["test", "droom", "metro", "opleidingen"], metro: ["planb", "plan", "toelating", "sterren"],
   };
-  const UITLEG = ["route", "toelating", "planb", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"];
+  const UITLEG = ["route", "toelating", "planb", "geld", "opties", "niveaus", "leerwerk", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { samen: ["samen"], start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { samen: ["samen"], start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -1067,6 +1074,7 @@
     st.push({ id: "meeloop", wanneer: "Vóór je je aanmeldt", titel: "Loop een dag mee", tekst: "Een open dag laat de mooie kant zien. Op een meeloopdag zit je een dag echt in de lessen en praat je met studenten. Doe het bij je top 2 of 3, liefst samen met iemand, zodat je achteraf kunt napraten. Vraag je mentor om vrij: dat mag bijna altijd." + (fav.length ? `<br>${fav.slice(0, 3).map((o) => `<a href="${esc("https://duckduckgo.com/?q=" + encodeURIComponent("meeloopdag " + o.n))}" target="_blank" rel="noopener">Meeloopdag ${esc(o.n)} ↗</a>`).join(" · ")}` : "") + ` <a href="#/opendagen">Zo regel je het →</a>` });
     if (selectie.length && !mboRoute) st.push({ id: "fixus", wanneer: `Vóór 15 januari ${sj}`, titel: "Aanmelden voor opleidingen met selectie of loting", tekst: selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>: ${esc(SELECTIE[f])}`).join("<br>") + "<br>Check bij de opleiding de precieze datum en wat je moet inleveren.", datum: new Date(sj, 0, 15) });
     st.push({ id: "digid", wanneer: "Ruim op tijd", titel: "Vraag een DigiD aan", tekst: mboRoute ? "Die heb je nodig voor DUO, bijvoorbeeld voor je studentenreisproduct. Aanvragen kost een paar dagen, want je krijgt een brief met een code." : "Die heb je nodig voor Studielink en DUO. Aanvragen kost een paar dagen, want je krijgt een brief met een code." });
+    if (mboRoute) st.push({ id: "leerwerk", wanneer: "Vóór je je aanmeldt", titel: "Kies: vooral leren (bol) of vooral werken (bbl)?", tekst: "Veel mbo-opleidingen kun je op twee manieren volgen, met hetzelfde diploma. Bij bol ga je vooral naar school, bij bbl werk je bij een leerbedrijf en ga je één dag naar school. Kies je bbl? Zoek dan op tijd een leerbedrijf: de school helpt, en kijk op <a href='https://www.stagemarkt.nl' target='_blank' rel='noopener'>stagemarkt.nl</a>. <a href='#leerwerk'>Wat past bij jou? →</a>" });
     if (mboRoute) st.push({ id: "aanmelden", wanneer: `Vóór 1 april ${sj}`, titel: "Aanmelding: bij de mbo-school", tekst: "Je meldt je aan via de website van de mbo-school zelf. Doe je dat vóór 1 april, dan heb je toelatingsrecht: de school moet je dan toelaten als je aan de vooropleidingseisen voldoet. Je mag je bij meer opleidingen aanmelden.", datum: new Date(sj, 3, 1) });
     else st.push({ id: "aanmelden", wanneer: `Vóór 1 mei ${sj}`, titel: "Aanmelding: via Studielink", tekst: "Dan heb je recht op een studiekeuzecheck en word je in principe toegelaten als je aan de eisen voldoet. Je mag je voor meer opleidingen aanmelden.", datum: new Date(sj, 4, 1) });
     if (!mboRoute) st.push({ id: "toelating", wanneer: `Voorjaar ${sj}`, titel: "Toelating: word je toegelaten?", tekst: (selectie.length ? `Voor je lijst geldt: ${selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>: ${esc(SELECTIE[f])}`).join(" ")}<br>` : "Voor de opleidingen op je lijst geldt meestal: juiste vooropleiding en op tijd aangemeld, dan mag je beginnen.<br>") + `Andere vormen: loting, portfolio, auditie, aanvullende eisen. <a href="#toelating">Lees wat die betekenen →</a>` });
@@ -1295,6 +1303,40 @@
     $("#odAantal").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
+  /* ---------- Leren of werken: korte check ---------- */
+  const LW = [
+    ["Ik wil nu al geld verdienen.", "bbl"],
+    ["Ik leer het best door het gewoon te doen.", "bbl"],
+    ["Ik wil graag een vaste werkplek en collega's.", "bbl"],
+    ["Ik wil eerst rustig het vak leren voordat ik ga werken.", "bol"],
+    ["Ik wil via stages verschillende bedrijven leren kennen.", "bol"],
+    ["Ik weet nog niet precies welk beroep ik wil.", "bol"],
+  ];
+  $("#lwStellingen").innerHTML = LW.map((x, i) => `<button type="button" class="lw-zin" data-lw="${i}" aria-pressed="false">${esc(x[0])}</button>`).join("");
+  $("#lwStellingen").addEventListener("click", (e) => {
+    const k = e.target.closest("[data-lw]");
+    if (!k) return;
+    k.setAttribute("aria-pressed", String(k.getAttribute("aria-pressed") !== "true"));
+    const aan = [...document.querySelectorAll("#lwStellingen [aria-pressed=true]")].map((x) => LW[Number(x.dataset.lw)][1]);
+    const bbl = aan.filter((x) => x === "bbl").length, bol = aan.length - bbl;
+    $("#lwUitslag").innerHTML = !aan.length ? "Klik een paar zinnen aan."
+      : bbl > bol ? `<strong>Bbl lijkt goed bij je te passen:</strong> vooral werken, en daarnaast leren. <button type="button" class="linkbtn" data-vorm="bbl">Bekijk bbl-opleidingen →</button>`
+      : bol > bbl ? `<strong>Bol lijkt goed bij je te passen:</strong> vooral leren, met stages. <button type="button" class="linkbtn" data-vorm="bol">Bekijk bol-opleidingen →</button>`
+      : "<strong>Allebei kan.</strong> Vraag op een open dag hoe een week eruitziet bij bol en bij bbl.";
+  });
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-vorm]");
+    if (!b) return;
+    state.zoek = "";
+    $("#zoek").value = "";
+    state.gebied = "";
+    state.niveau = b.dataset.vorm === "werk" ? "hbo" : "mbo";
+    state.vorm = b.dataset.vorm;
+    renderChips();
+    renderList();
+    go("opleidingen", "alle");
+  });
+
   /* ---------- Printen: elk scherm en elke kaart ---------- */
   function printMet(klasse) {
     const dicht = [...document.querySelectorAll("main details:not([open])")];
@@ -1403,7 +1445,7 @@
     const spread = ((2 * Math.PI) / GEB.length) * 0.78;
     fs.forEach((f, j) => (famHoek[f.id] = gebHoek[k] + (fs.length > 1 ? -spread / 2 + (spread * j) / (fs.length - 1) : 0)));
   });
-  const STER_START = [-470, -400, 940, 800];
+  const STER_START = [-640, -400, 1280, 800];
   const ster = { open: null, vb: STER_START.slice(), sleep: null, bewogen: false };
   const stofHtml = (() => {
     let s = 7, h = "";
@@ -1470,7 +1512,7 @@
   }
   const sterKader = (cx, cy, w) => { const h = w * (ster.vb[3] / ster.vb[2]); return [cx - w / 2, cy - h / 2, w, h]; };
   function sterInfo(html) { $("#sterInfo").innerHTML = html; }
-  const STER_UITLEG = `<h3>Zo werkt het</h3><p>Sleep om te bewegen en zoom met je muiswiel of de knoppen. Klik op een ster om hem open te klappen.</p><p>In het midden sta jij. Daaromheen liggen de zes gebieden, dan de groepen opleidingen en helemaal buiten de opleidingen zelf.</p>`;
+  const STER_UITLEG = `<p><strong>Zo werkt het:</strong> in het midden sta jij, daaromheen de zes gebieden en de groepen opleidingen. Klik op een ster om hem open te klappen. Slepen en zoomen kan ook.</p>`;
   function sterKlik(code) {
     const [soort, id] = code.split(":");
     if (soort === "jij") {
@@ -1583,28 +1625,29 @@
   // Routes per startlijn: [naam, stations, uitleg]
   const ROUTES = {
     vmbo: [
-      ["Een vak leren en gaan werken", ["vmbo", "vmbod", "mbo2", "mbo3", "werk"], "Op mbo 2 of 3 leer je in 1 tot 3 jaar een vak, zoals kok, monteur of verzorgende. Daarna ga je aan het werk."],
-      ["Mbo 4 en dan werken", ["vmbo", "vmbod", "mbo4", "werk"], "Mbo 4 is het hoogste mbo-niveau: 3 tot 4 jaar. Je wordt specialist of leidinggevende."],
-      ["Via mbo 4 naar het hbo", ["vmbo", "vmbod", "mbo4", "hbop", "hbob", "werk"], "Met een mbo 4-diploma kun je naar het hbo. Veel hbo-studenten komen van het mbo."],
-      ["Via de havo", ["vmbo", "vmbod", "havo4", "havod", "hbop", "hbob", "werk"], "Met een diploma van de gemengde of theoretische leerweg kun je naar havo 4. Daarna kun je naar het hbo."],
+      ["Een vak leren en gaan werken", "Vak leren en werken", ["vmbo", "vmbod", "mbo2", "mbo3", "werk"], "Op mbo 2 of 3 leer je in 1 tot 3 jaar een vak, zoals kok, monteur of verzorgende. Daarna ga je aan het werk."],
+      ["Mbo 4 en dan werken", "Mbo 4 en werken", ["vmbo", "vmbod", "mbo4", "werk"], "Mbo 4 is het hoogste mbo-niveau: 3 tot 4 jaar. Je wordt specialist of leidinggevende."],
+      ["Via mbo 4 naar het hbo", "Via mbo 4 naar hbo", ["vmbo", "vmbod", "mbo4", "hbop", "hbob", "werk"], "Met een mbo 4-diploma kun je naar het hbo. Veel hbo-studenten komen van het mbo."],
+      ["Via de havo", "Via de havo", ["vmbo", "vmbod", "havo4", "havod", "hbop", "hbob", "werk"], "Met een diploma van de gemengde of theoretische leerweg kun je naar havo 4. Daarna kun je naar het hbo."],
     ],
     havo: [
-      ["Hbo en dan werken", ["havo", "havod", "hbop", "hbob", "werk"], "De meest gekozen route: 4 jaar hbo, praktijkgericht en met stages."],
-      ["Hbo en daarna een wo-master", ["havo", "havod", "hbop", "hbob", "wom", "werk"], "Na je hbo-bachelor kun je via een schakeljaar een master aan de universiteit doen."],
-      ["Met je propedeuse naar de universiteit", ["havo", "havod", "hbop", "wob", "wom", "werk"], "Haal je het eerste hbo-jaar, dan kun je vaak doorstromen naar een universiteit."],
-      ["Eerst nog vwo", ["havo", "havod", "vwo5", "vwod", "wob", "wom", "werk"], "Met je havodiploma kun je naar vwo 5. Daarna kun je direct naar de universiteit."],
+      ["Hbo en dan werken", "Hbo", ["havo", "havod", "hbop", "hbob", "werk"], "De meest gekozen route: 4 jaar hbo, praktijkgericht en met stages."],
+      ["Hbo en daarna een wo-master", "Hbo, dan wo-master", ["havo", "havod", "hbop", "hbob", "wom", "werk"], "Na je hbo-bachelor kun je via een schakeljaar een master aan de universiteit doen."],
+      ["Met je propedeuse naar de universiteit", "Via propedeuse naar wo", ["havo", "havod", "hbop", "wob", "wom", "werk"], "Haal je het eerste hbo-jaar, dan kun je vaak doorstromen naar een universiteit."],
+      ["Eerst nog vwo", "Eerst vwo", ["havo", "havod", "vwo5", "vwod", "wob", "wom", "werk"], "Met je havodiploma kun je naar vwo 5. Daarna kun je direct naar de universiteit."],
     ],
     vwo: [
-      ["Universiteit: bachelor en master", ["vwo", "vwod", "wob", "wom", "werk"], "3 jaar bachelor en 1 tot 2 jaar master. De meeste studenten aan de universiteit doen allebei."],
-      ["Alleen een bachelor, dan werken", ["vwo", "vwod", "wob", "werk"], "Na je bachelor mag je ook gaan werken, en later eventueel nog een master doen."],
+      ["Universiteit: bachelor en master", "Bachelor en master", ["vwo", "vwod", "wob", "wom", "werk"], "3 jaar bachelor en 1 tot 2 jaar master. De meeste studenten aan de universiteit doen allebei."],
+      ["Alleen een bachelor, dan werken", "Alleen bachelor", ["vwo", "vwod", "wob", "werk"], "Na je bachelor mag je ook gaan werken, en later eventueel nog een master doen."],
     ],
   };
   let metroRoute = null;
   // pad door de stations van een route, met de bochten naar "werk"
   function routePad(ids) {
     const p = [];
-    ids.forEach((id) => {
-      const [, x, y] = STATIONS[id];
+    ids.forEach((id, i) => {
+      const [, x0, y] = STATIONS[id];
+      const x = i === 0 && ["vmbo", "havo", "vwo"].includes(id) ? x0 + 50 : x0; // begin naast het lijnbordje
       if (id === "werk" && p.length) {
         const [, py] = p[p.length - 1];
         if (py === 410) p.push([770, 410], [880, 300]);
@@ -1616,13 +1659,13 @@
   }
   function toonRoutes() {
     const lijst = ROUTES[metroLijn] || [];
-    $("#metroRoutes").innerHTML = lijst.length ? `<span class="m-kies-label">Jouw routes</span>` + lijst.map((r, i) => `<button type="button" class="m-route-knop" data-route="${i}" aria-pressed="${metroRoute === i}"><strong>${r[0]}</strong><span>${r[1].filter((id) => !["vmbo", "havo", "vwo"].includes(id)).map((id) => STATIONS[id][0]).join(" → ")}</span></button>`).join("") : "";
+    $("#metroRoutes").innerHTML = lijst.length ? `<span class="m-kies-label">Jouw routes</span>` + lijst.map((r, i) => `<button type="button" class="chip" data-route="${i}" aria-pressed="${metroRoute === i}">${r[1]}</button>`).join("") : "";
   }
   function kiesRoute(i) {
     metroRoute = i;
     const r = ROUTES[metroLijn][i];
     tekenMetro();
-    $("#metroInfo").innerHTML = `<p class="st-soort">Route</p><h3>${r[0]}</h3><p>${vt(r[2])}</p><ol class="m-stappen">${r[1].map((id) => `<li>${STATIONS[id][0]}</li>`).join("")}</ol><p class="count">Klik op een station op de kaart voor meer uitleg.</p>`;
+    $("#metroInfo").innerHTML = `<p class="st-soort">Route</p><h3>${r[0]}</h3><p>${vt(r[3])}</p><p class="m-volgorde">${r[2].filter((id) => !["vmbo", "havo", "vwo"].includes(id)).map((id) => STATIONS[id][0]).join(" → ")}</p><p class="count">Klik op een station op de kaart voor meer uitleg.</p>`;
   }
   let metroLijn = "alle";
   function tekenMetro() {
@@ -1631,17 +1674,16 @@
     Object.entries(LIJNEN).forEach(([k, [, d]]) => (h += `<path class="m-lijn l-${k}" d="${d}"/>`));
     const route = metroLijn !== "alle" && metroRoute != null ? ROUTES[metroLijn][metroRoute] : null;
     if (route) {
-      const d = routePad(route[1]);
+      const d = routePad(route[2]);
       h += `<path class="m-route" d="${d}"/>`;
-      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) h += `<circle class="m-trein" r="9"><animateMotion dur="${route[1].length * 1.1}s" repeatCount="indefinite" path="${d}"/></circle>`;
     }
     Object.entries(STATIONS).forEach(([id, [naam, x, y, lijn]]) => {
       if (id === "later") { h += `<g class="m-st m-tekst" data-metro="${id}" tabindex="0" role="button"><text x="${x}" y="${y - 10}" text-anchor="middle">Later nog leren ↺</text></g>`; return; }
       const eind = ["vmbo", "havo", "vwo"].includes(id);
-      if (eind) { h += `<g class="m-st m-eind l-${lijn}" data-metro="${id}" tabindex="0" role="button"><rect x="${x - 50}" y="${y - 20}" width="100" height="40" rx="20"/><text x="${x}" y="${y + 7}" text-anchor="middle">${naam}</text></g>`; return; }
+      if (eind) { h += `<g class="m-st m-eind l-${lijn}${route && route[2].includes(id) ? " op-route" : ""}" data-metro="${id}" tabindex="0" role="button"><rect x="${x - 50}" y="${y - 20}" width="100" height="40" rx="20"/><text x="${x}" y="${y + 7}" text-anchor="middle">${naam}</text></g>`; return; }
       const r = id === "werk" ? 17 : overstapIds.has(id) ? 10 : 8;
       const tx = id === "werk" ? x + 26 : x + 13, ty = id === "werk" ? y + 7 : y - 16;
-      h += `<g class="m-st l-${lijn}${overstapIds.has(id) ? " m-ov" : ""}${id === "werk" ? " m-werk" : ""}${route && route[1].includes(id) ? " op-route" : ""}" data-metro="${id}" tabindex="0" role="button"><circle cx="${x}" cy="${y}" r="${r}"/><text x="${tx}" y="${ty}">${naam}</text></g>`;
+      h += `<g class="m-st l-${lijn}${overstapIds.has(id) ? " m-ov" : ""}${id === "werk" ? " m-werk" : ""}${route && route[2].includes(id) ? " op-route" : ""}" data-metro="${id}" tabindex="0" role="button"><circle cx="${x}" cy="${y}" r="${r}"/><text x="${tx}" y="${ty}">${naam}</text></g>`;
     });
     const svg = $("#metroSvg");
     svg.innerHTML = h;
@@ -1824,6 +1866,8 @@
   /* ---------- Init ---------- */
   const nc = $("#niveauChips");
   NIVEAUS.forEach((n) => chip(nc, n, "niveau", n));
+  const vc = $("#vormChips");
+  Object.keys(VORM_KORT).forEach((k) => chip(vc, VORM_KORT[k], "vorm", k));
   const gc = $("#gebiedChips");
   Object.keys(GEBIEDEN).forEach((k) => chip(gc, GEBIEDEN[k].naam, "gebied", k));
   $("#zoek").addEventListener("input", (e) => {

@@ -17,6 +17,7 @@ import build_begrippen as bb
 SITE, BASE, NAAM = bb.SITE, bb.BASE, bb.NAAM
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 NIV = {"mbo": "mbo", "hbo": "hbo", "wo": "wo (universiteit)", "ad": "associate degree"}
+VORM = {"bol": "bol (vooral leren, met stages)", "bbl": "bbl (werken en één dag naar school)", "voltijd": "voltijd", "deeltijd": "deeltijd (naast je werk)", "duaal": "duaal (werk en studie afwisselen)"}
 DUUR = {"mbo": "1 tot 4 jaar, afhankelijk van het niveau", "hbo": "4 jaar", "wo": "3 jaar voor de bachelor, daarna vaak nog een master", "ad": "2 jaar"}
 
 CSS_EXTRA = """
@@ -109,7 +110,8 @@ def main():
             + "</ul>"
             + f"<h2>Selectie of toelatingsexamen?</h2><p>{html.escape(f['selectie']) + ' Kijk bij de opleiding zelf wat er precies gevraagd wordt.' if f['selectie'] else 'Meestal niet. Heb je de juiste vooropleiding en meld je je op tijd aan, dan mag je in principe beginnen.'}</p>"
             + f"<h2>Hoe lang duurt het?</h2><p>{' · '.join(f'{NIV[x]}: {DUUR[x]}' for x in o['l'])}"
-            + (f". Je kunt het volgen als {lijst(vormen)}." if vormen else ".") + "</p>"
+            + (f". Je kunt het volgen als {lijst(VORM.get(v, v) for v in vormen)}." if vormen else ".") + "</p>"
+            + ("<p>Bij bol ga je vooral naar school en loop je stage. Bij bbl werk je bij een leerbedrijf en ga je één dag per week naar school; je verdient dan al salaris. Het diploma is hetzelfde. <a href='../../begrippen/bol-en-bbl/'>Meer over bol en bbl</a></p>" if {"bol", "bbl"} & set(vormen) else "")
             + (f"<h2>Waar kun je {n} studeren?</h2><p>Bij {len(scholen)} {'school' if len(scholen) == 1 else 'scholen'}"
                + (f", onder andere in {html.escape(lijst(plaatsen[:12]))}" if plaatsen else "") + ":</p>"
                f"<ul class=\"scholen\">{''.join(f'<li>{html.escape(x)}</li>' for x in scholen[:40])}</ul>" if scholen else "")
