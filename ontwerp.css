@@ -1008,3 +1008,7 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .planb-sit{margin:6px 0 0}
 @media (max-width:760px){.planb-altijd ol{grid-template-columns:1fr}}
 :root[data-theme="dark"] .planb-altijd,:root:not([data-theme="light"]) .planb-altijd{color:#fff}
+/* lijnbordjes: altijd leesbare tekst, ook op je route */
+.heeft-route .m-eind.op-route text,.m-eind text{fill:#fff;font-weight:800}
+.heeft-route .m-eind.l-vwo.op-route text,.m-eind.l-vwo text{fill:var(--paper)}
+.heeft-route .m-eind{opacity:.55}
