@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gespreksgids studiekeuze · Wat studeer je eigenlijk?</title>
+<style>
+  @page { size: A4 portrait; margin: 11mm 13mm 10mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 9.6pt/1.38 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; color: #1b1b1f; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .pagina { max-width: 184mm; margin: 0 auto; padding: 8mm 0; }
+  header { border-bottom: 3px solid #d62828; padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  h1 { font-size: 19pt; line-height: 1.1; margin: 0; color: #b81d2e; letter-spacing: -.01em; }
+  .merk { font-weight: 800; color: #d62828; white-space: nowrap; font-size: 10pt; }
+  .intro { font-size: 10pt; margin: 0 0 8px; color: #333; }
+  h2 { font-size: 12pt; color: #b81d2e; margin: 12px 0 6px; }
+  .stappen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stap { border: 1.5px solid #e9b3b3; border-radius: 10px; padding: 8px 11px; break-inside: avoid; }
+  .stap h3 { margin: 0 0 4px; font-size: 11.5pt; color: #1b1b1f; }
+  .stap p { margin: 0 0 4px; color: #444; font-size: 9.2pt; }
+  .label { display: block; font-size: 7.5pt; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #b81d2e; margin-top: 6px; }
+  ul { margin: 2px 0 0; padding-left: 16px; }
+  li { margin: 1px 0; }
+  ul.niet li { color: #666; text-decoration: line-through; text-decoration-color: #c99; }
+  .lastig { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .lastig div { background: #fbeceb; border-radius: 10px; padding: 10px 12px; break-inside: avoid; }
+  .lastig h3 { margin: 0 0 4px; font-size: 10.5pt; }
+  .lastig p { margin: 0; font-size: 8.8pt; color: #333; }
+  .tips { columns: 2; column-gap: 18px; padding-left: 16px; }
+  .tips li { break-inside: avoid; margin-bottom: 4px; }
+  footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid #ddd; font-size: 8.5pt; color: #666; display: flex; justify-content: space-between; gap: 12px; }
+  .knop { display: inline-block; margin: 0 0 14px; padding: 8px 16px; border-radius: 99px; background: #d62828; color: #fff; text-decoration: none; font-weight: 700; border: 0; font: inherit; cursor: pointer; }
+  @media print { .knop { display: none; } .pagina { padding: 0; } }
+</style>
+</head>
+<body>
+<div class="pagina">
+  <button class="knop" onclick="window.print()">Print deze gids</button>
+  <header>
+    <h1>Gespreksgids studiekeuze<br><span style="font-size:13pt;color:#1b1b1f;font-weight:600">voor ouders en iedereen die meedenkt</span></h1>
+    <div class="merk">Wat studeer je eigenlijk?</div>
+  </header>
+  <p class="intro">Je hoeft geen antwoord te hebben op de vraag welke studie bij je kind past. Goede vragen zijn meer waard. Deze gids helpt je het gesprek te voeren, in vier stappen.</p>
+
+  <h2>Het gesprek in vier stappen</h2>
+  <div class="stappen" id="stappen"></div>
+
+  <h2>Als het lastig wordt</h2>
+  <div class="lastig" id="lastig"></div>
+
+  <h2>Vijf tips</h2>
+  <ul class="tips">
+    <li><strong>Vraag door op de naam.</strong> “Wat doe je dan op een gewone dinsdag?” zegt meer dan “Is dat een goede studie?”</li>
+    <li><strong>Kijk naar wat je kind nu leuk vindt</strong>, niet naar wat een studie belooft.</li>
+    <li><strong>Laat het proefstuderen.</strong> Eén meeloopdag zegt meer dan tien websites.</li>
+    <li><strong>Een verkeerde keuze is niet erg.</strong> Overstappen of doorstromen kan vaak.</li>
+    <li><strong>Praat over werk, niet alleen over de studie.</strong> Wie in jullie omgeving doet iets wat leuk lijkt?</li>
+  </ul>
+
+  <footer>
+    <span>Doe samen de Padvinder en maak een persoonlijk stappenplan op de site.</span>
+    <span id="url"></span>
+  </footer>
+</div>
+<script src="uitleg.js"></script>
+<script>
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  document.getElementById("stappen").innerHTML = GESPREK.map((g) =>
+    `<div class="stap"><h3>${esc(g[0])}</h3><p>${esc(g[1])}</p><span class="label">Vraag bijvoorbeeld</span><ul>${g[2].map((v) => `<li>${esc(v)}</li>`).join("")}</ul><span class="label">Liever niet</span><ul class="niet">${g[3].map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div>`).join("");
+  document.getElementById("lastig").innerHTML = GESPREK_LASTIG.map((g) => `<div><h3>${esc(g[0])}</h3><p>${esc(g[1])}</p></div>`).join("");
+  document.getElementById("url").textContent = "gsleraar-hue.github.io/watstudeerje";
+</script>
+</body>
+</html>
