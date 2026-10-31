@@ -857,7 +857,7 @@
   };
   const UITLEG = ["route", "toelating", "planb", "geld", "opties", "niveaus", "leerwerk", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { samen: ["samen"], start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
