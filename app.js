@@ -479,7 +479,7 @@
   }
   function tree(x, y, i) {
     const r = 11 + (i % 3) * 3;
-    return `<circle cx="${x}" cy="${y}" r="${r}" fill="#5f8a5a" fill-opacity=".8" stroke="#2f5a3a" stroke-width="1.3"/><circle cx="${x - 2}" cy="${y - 3}" r="${r * 0.45}" fill="#7aa571" fill-opacity=".9"/>`;
+    return `<circle cx="${x}" cy="${y}" r="${r}" fill="#cdd8ee" fill-opacity=".9" stroke="#9fb0d4" stroke-width="1.3"/><circle cx="${x - 2}" cy="${y - 3}" r="${r * 0.45}" fill="#dde5f5" fill-opacity=".95"/>`;
   }
   function buildMap() {
     const TREES = [[30, 40], [64, 66], [330, 60], [360, 36], [540, 70], [570, 44], [870, 50], [846, 78], [34, 215], [66, 238], [880, 200], [868, 470], [840, 500], [880, 540], [60, 420], [100, 450], [330, 560], [364, 584], [560, 590], [250, 580], [420, 120], [900, 330]];
@@ -488,17 +488,17 @@
     [[200, 70, 30], [200, 70, 60], [200, 70, 95], [720, 560, 50], [720, 560, 95], [720, 560, 140], [880, 300, 40], [880, 300, 80]].forEach(([cx, cy, r]) => {
       contours += `<ellipse cx="${cx}" cy="${cy}" rx="${r * 1.6}" ry="${r}"/>`;
     });
-    let roads = DECOR.map((d) => `<path d="${d}" fill="none" stroke="#2f5a3a" stroke-opacity=".45" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8"/>`).join(""), regs = "";
+    let roads = DECOR.map((d) => `<path d="${d}" fill="none" stroke="#3157d5" stroke-opacity=".35" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8"/>`).join(""), regs = "";
     Object.keys(REG).forEach((k) => { roads += `<path class="roadedge" d="${PATHS[k]}"/>`; });
     Object.keys(REG).forEach((k) => {
       roads += `<path class="road" data-g="${k}" d="${PATHS[k]}"/>`;
       regs += building(k);
     });
-    const pond = `<path d="M40 586C30 566 70 556 112 562S176 580 150 598S52 606 40 586Z" fill="#bfd9dc" stroke="#4f7f8a" stroke-width="1.3"/><path d="M62 580H128M72 588H118" stroke="#4f7f8a" stroke-opacity=".6" stroke-width=".9"/>`;
+    const pond = `<path d="M40 586C30 566 70 556 112 562S176 580 150 598S52 606 40 586Z" fill="#d3e2f8" stroke="#8aa6d8" stroke-width="1.3"/><path d="M62 580H128M72 588H118" stroke="#8aa6d8" stroke-opacity=".6" stroke-width=".9"/>`;
     return `<svg viewBox="0 0 900 616" role="group" aria-label="Plattegrond van de campus met zes faculteiten">` +
-      `<defs><linearGradient id="gras" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#cbdab2"/><stop offset="1" stop-color="#b3c99a"/></linearGradient></defs><rect width="900" height="616" fill="url(#gras)"/>` +
-      `<g fill="#a9c18f" opacity=".55"><ellipse cx="320" cy="60" rx="190" ry="36"/><ellipse cx="760" cy="470" rx="170" ry="40"/><ellipse cx="90" cy="250" rx="110" ry="34"/><ellipse cx="520" cy="590" rx="160" ry="22"/></g>` +
-      `<g fill="none" stroke="#2f5a3a" stroke-opacity=".16" stroke-width="1">${contours}</g>` +
+      `<defs><linearGradient id="gras" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#f0f4fc"/><stop offset="1" stop-color="#e2e9f6"/></linearGradient></defs><rect width="900" height="616" fill="url(#gras)"/>` +
+      `<g fill="#dbe3f3" opacity=".55"><ellipse cx="320" cy="60" rx="190" ry="36"/><ellipse cx="760" cy="470" rx="170" ry="40"/><ellipse cx="90" cy="250" rx="110" ry="34"/><ellipse cx="520" cy="590" rx="160" ry="22"/></g>` +
+      `<g fill="none" stroke="#3157d5" stroke-opacity=".10" stroke-width="1">${contours}</g>` +
       pond + trees + roads + regs +
       `<g class="hier" transform="translate(${START[0]} ${START[1]})"><rect x="-70" y="-16" width="140" height="32" rx="4" fill="#14213d"/><text y="5" text-anchor="middle" fill="#f4f1ea">HOOFDINGANG</text></g>` +
       `<g transform="translate(850 52)"><circle r="24" fill="none" stroke="#14213d" stroke-width="1.2"/><path d="M0 -20L5 -4L20 0L5 4L0 20L-5 4L-20 0L-5 -4Z" fill="#14213d"/><path d="M0 -20L5 -4L-5 -4Z" fill="#e8337a"/><text y="-31" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="13" fill="#14213d">N</text></g>` +

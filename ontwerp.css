@@ -364,3 +364,11 @@ main{min-height:70vh}
 @media (max-width:1100px) and (min-width:901px){.tabs a{padding:8px 10px;font-size:.88rem}.topbar-in{gap:14px}}
 @media (max-width:900px){.topbar .searchbox{flex:1 1 auto}.tabs{justify-content:space-between}.tabs a{padding:7px 10px;font-size:.86rem}}
 @media (max-width:520px){.tabs{gap:2px;overflow:visible}.tabs a{padding:6px 7px;font-size:.78rem}.brand{font-size:.95rem}}
+
+/* Plattegrond in de kleuren van de site, zonder groen */
+.kaartwrap{background:#e9eef9}
+.kaartwrap .reg .nm{stroke:#edf1fa}
+/* Geen geel: accentbalk en regeltje in mint, voortgangsbalk blauw-mint */
+.hero .bar{background:#55d3c0}
+.hero .kicker{color:#bff2ea}
+.sbar span{background:linear-gradient(90deg,#3157d5,#0e9aa7)}
