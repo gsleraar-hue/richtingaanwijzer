@@ -8,6 +8,21 @@
   };
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+  // Engelse termen in uitleg: vertaling tussen haakjes (eerste keer per tekst)
+  const termRe = new RegExp("(?<![\\p{L}\\d'-])(" + TERMEN.map((t) => t[0]).sort((x, y) => y.length - x.length)
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/ /g, "[ -]?")).join("|") + ")(?![\\p{L}\\d-])", "giu");
+  const termMap = new Map(TERMEN.map((t) => [t[0].toLowerCase().replace(/[ -]/g, ""), t[1]]));
+  const vt = (s) => {
+    const seen = new Set();
+    return esc(s).replace(termRe, (m) => {
+      const key = m.toLowerCase().replace(/[ -]/g, "");
+      const nl = termMap.get(key);
+      if (!nl || seen.has(key)) return m;
+      seen.add(key);
+      return `${m} <span class="nlv">(${nl})</span>`;
+    });
+  };
+
   /* ---------- Gids ---------- */
   const state = { zoek: "", niveau: "", gebied: "" };
   const NIVEAUS = ["mbo", "hbo", "wo"];
@@ -75,7 +90,7 @@
       if (open.has(f.id) || words.length || state.gebied) d.open = true;
       d.innerHTML =
         `<summary><span class="femoji">${FAM_EXTRA[f.id].e}</span><span class="fname">${esc(f.naam)}</span><span class="fcount">${items.length}</span><span class="fgebied">${esc(GEBIEDEN[f.gebied].naam)}</span></summary>` +
-        `<p class="fuitleg">${esc(f.uitleg)}</p>`;
+        `<p class="fuitleg">${vt(f.uitleg)}</p>`;
       const ul = el("div", { class: "opl" });
       items.forEach((o) => {
         const b = el(
@@ -110,12 +125,12 @@
     const insts = o.i.slice(0, 40);
     $("#detailInhoud").innerHTML =
       `<div class="badges">${o.l.map((n) => `<span class="badge ${n}">${NIV_LABEL[n]}</span>`).join("")}<span class="badge gebied">${esc(f.naam)}</span></div>` +
-      `<h2 id="dTitel">${esc(o.n)}</h2>` +
+      `<h2 id="dTitel">${vt(o.n)}</h2>` +
       (o.e ? `<p style="color:var(--muted)">Internationale naam: ${esc(o.e)}</p>` : "") +
-      `<h3>Wat betekent dit?</h3><p>${esc(f.uitleg)} Soortgelijke opleidingen vind je in dezelfde groep.</p>` +
-      (X ? `<h3>Wat kun je ermee?</h3><ul>${X.kunJe.map((k) => `<li>${esc(k)}</li>`).join("")}</ul>` : "") +
+      `<h3>Wat betekent dit?</h3><p>${vt(f.uitleg)} Soortgelijke opleidingen vind je in dezelfde groep.</p>` +
+      (X ? `<h3>Wat kun je ermee?</h3><ul>${X.kunJe.map((k) => `<li>${vt(k)}</li>`).join("")}</ul>` : "") +
       (X
-        ? `<h3>Wat heb je ervoor nodig?</h3><ul><li><strong>Vooropleiding:</strong> ${o.l.map((n) => `voor ${NIV_LABEL[n]}: ${VOOROPLEIDING[n]}`).join(". ")}</li><li>${esc(X.profiel)}</li><li><strong>Het helpt als je:</strong> ${X.eigen.map(esc).join(", ")}</li></ul><p class="praat" style="margin-top:8px">Toelatingseisen verschillen per school. Lees ze altijd bij de opleiding zelf.</p>`
+        ? `<h3>Wat heb je ervoor nodig?</h3><ul><li><strong>Vooropleiding:</strong> ${o.l.map((n) => `voor ${NIV_LABEL[n]}: ${VOOROPLEIDING[n]}`).join(". ")}</li><li>${vt(X.profiel)}</li><li><strong>Het helpt als je:</strong> ${X.eigen.map(vt).join(", ")}</li></ul><p class="praat" style="margin-top:8px">Toelatingseisen verschillen per school. Lees ze altijd bij de opleiding zelf.</p>`
         : "") +
       `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
       `<h3>Hoe studeer je?</h3><p>${o.v.map((v) => VORM[v] || v).join(", ") || "onbekend"}</p>` +
@@ -151,7 +166,7 @@
       "button",
       { type: "button", class: "card" },
       badges(s) +
-        `<h3>${esc(s.naam)}</h3><p class="eng">Ook bekend als: ${esc(s.engels)}</p><p class="kort">${esc(s.kort)}</p><span class="more">Lees de uitleg →</span>`
+        `<h3>${vt(s.naam)}</h3><p class="eng">Ook bekend als: ${esc(s.engels)}</p><p class="kort">${vt(s.kort)}</p><span class="more">Lees de uitleg →</span>`
     );
     b.addEventListener("click", () => openDetail(s.id));
     return b;
@@ -162,13 +177,13 @@
     if (!s) return;
     $("#detailInhoud").innerHTML =
       badges(s) +
-      `<h2 id="dTitel">${esc(s.naam)}</h2><p class="eng" style="color:var(--muted)">Ook bekend als: ${esc(s.engels)}</p>` +
-      `<h3>In gewone woorden</h3><p>${esc(s.kort)}</p>` +
-      `<h3>Wat doe je er?</h3><p>${esc(s.doe)}</p>` +
-      `<h3>Wat kun je ermee?</h3><ul>${s.kanJe.map((k) => `<li>${esc(k)}</li>`).join("")}</ul>` +
-      `<h3>Wat heb je ervoor nodig?</h3><p>${esc(STUDIE_NODIG[s.id] || "")}</p>` +
-      `<h3>Let op</h3><p>${esc(s.let)}</p>` +
-      `<h3>Praat erover</h3><p class="praat">${esc(s.praat)}</p>`;
+      `<h2 id="dTitel">${vt(s.naam)}</h2><p class="eng" style="color:var(--muted)">Ook bekend als: ${esc(s.engels)}</p>` +
+      `<h3>In gewone woorden</h3><p>${vt(s.kort)}</p>` +
+      `<h3>Wat doe je er?</h3><p>${vt(s.doe)}</p>` +
+      `<h3>Wat kun je ermee?</h3><ul>${s.kanJe.map((k) => `<li>${vt(k)}</li>`).join("")}</ul>` +
+      `<h3>Wat heb je ervoor nodig?</h3><p>${vt(STUDIE_NODIG[s.id] || "")}</p>` +
+      `<h3>Let op</h3><p>${vt(s.let)}</p>` +
+      `<h3>Praat erover</h3><p class="praat">${vt(s.praat)}</p>`;
     const d = $("#detail");
     if (d.showModal) d.showModal();
     else d.setAttribute("open", "");
@@ -212,7 +227,7 @@
         nr++;
         const fs = el("fieldset", { class: "q" });
         fs.dataset.part = titel;
-        fs.innerHTML = `<legend><span class="nr">${nr}.</span>${esc(txt)}</legend>`;
+        fs.innerHTML = `<legend><span class="nr">${nr}.</span>${vt(txt)}</legend>`;
         const sc = el("div", { class: "scale" });
         ANTW.forEach((a, n) => {
           const l = el("label");
@@ -351,11 +366,11 @@
 
     top.forEach((k) => {
       const g = GEBIEDEN[k];
-      h += `<h3 style="margin-top:30px;font-size:1.5rem;display:flex;align-items:center;gap:14px"><span class="res-ic">${icon(k, 44)}</span>${esc(g.naam)}</h3><p>${esc(g.uitleg)}</p>`;
-      h += `<h4>Dit hebben deze opleidingen gemeen</h4><ul>${g.gemeen.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
-      h += `<h4>Wat kun je ermee?</h4><ul>${g.kunJe.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
+      h += `<h3 style="margin-top:30px;font-size:1.5rem;display:flex;align-items:center;gap:14px"><span class="res-ic">${icon(k, 44)}</span>${esc(g.naam)}</h3><p>${vt(g.uitleg)}</p>`;
+      h += `<h4>Dit hebben deze opleidingen gemeen</h4><ul>${g.gemeen.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
+      h += `<h4>Wat kun je ermee?</h4><ul>${g.kunJe.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
       h += `<p style="margin-top:8px"><strong>Studies om te bekijken:</strong></p><div class="mini">` +
-        STUDIES.filter((s) => s.gebied === k).map((s) => `<button type="button" data-id="${s.id}">${esc(s.naam)} <small style="color:var(--muted)">(${s.niveau.join("/")})</small></button>`).join("") +
+        STUDIES.filter((s) => s.gebied === k).map((s) => `<button type="button" data-id="${s.id}">${vt(s.naam)} <small style="color:var(--muted)">(${s.niveau.join("/")})</small></button>`).join("") +
         "</div>";
       h += `<p style="margin-top:10px"><strong>Alle opleidingen in deze richting:</strong></p><div class="mini">` +
         FAMILIES.filter((f) => f.gebied === k).map((f) => `<button type="button" data-fam="${f.id}">${esc(f.naam)}</button>`).join("") +
@@ -363,7 +378,7 @@
     });
 
     h += `<h4>Praat hier samen over</h4><ul>` +
-      top.flatMap((k) => GEBIEDEN[k].praat).map((p) => `<li>${esc(p)}</li>`).join("") + "</ul>";
+      top.flatMap((k) => GEBIEDEN[k].praat).map((p) => `<li>${vt(p)}</li>`).join("") + "</ul>";
 
     h += `<h4>${ouder ? "Voor jou als ouder" : "Voor jou en je ouders"}</h4><ul>` +
       (ouder
@@ -377,7 +392,7 @@
             "Kies twee of drie studies uit de lijst en zoek een open dag of meeloopdag op.",
             "Je hoeft nu niets te beslissen. Dit is een eerste richting."
           ]
-      ).map((t) => `<li>${esc(t)}</li>`).join("") + "</ul>";
+      ).map((t) => `<li>${vt(t)}</li>`).join("") + "</ul>";
 
     h += `<div class="actions" style="margin-top:20px"><a class="btn" href="#/opleidingen" style="text-decoration:none">Alle studies bekijken</a><button class="btn ghost" type="button" id="opnieuw">Test opnieuw doen</button></div>`;
     h += `<p style="color:var(--muted);font-size:.9rem;margin-top:14px">Deze test is een gespreksstarter op basis van interesses, kwaliteiten en waarden, geen wetenschappelijk testresultaat.</p>`;
@@ -410,9 +425,9 @@
     const d = el("details", { class: "fam" });
     d.innerHTML =
       `<summary><span class="fname">${esc(v[0])}</span></summary>` +
-      `<div class="vakbody"><h4>Wat je er waarschijnlijk écht leuk aan vindt</h4><p>${esc(v[1])}</p>` +
-      `<h4>Waar dat terugkomt</h4><p>${esc(v[2])}</p>` +
-      `<h4>Let op</h4><p>${esc(v[3])}</p>` +
+      `<div class="vakbody"><h4>Wat je er waarschijnlijk écht leuk aan vindt</h4><p>${vt(v[1])}</p>` +
+      `<h4>Waar dat terugkomt</h4><p>${vt(v[2])}</p>` +
+      `<h4>Let op</h4><p>${vt(v[3])}</p>` +
       `<p><button type="button" class="chip" data-fams="${esc(v[4])}">Bekijk die opleidingen</button></p></div>`;
     $("#vakkenLijst").appendChild(d);
   });
@@ -422,19 +437,19 @@
     openFamily(b.dataset.fams.split(",")[0].trim());
   });
   NIEUW.forEach((n) => {
-    $("#nieuwLijst").appendChild(el("div", { class: "nw" }, `<strong>${esc(n[0])}</strong><span>${esc(n[1])}</span>`));
+    $("#nieuwLijst").appendChild(el("div", { class: "nw" }, `<strong>${vt(n[0])}</strong><span>${vt(n[1])}</span>`));
   });
 
   /* ---------- Vertaler en woordenlijst ---------- */
   VERTAAL.forEach((v) => {
     const b = el("button", { type: "button", class: "flip", "aria-pressed": "false", "aria-label": `${v[0]}: draai om voor de vertaling` },
       `<span class="flip-in"><span class="front"><small>Engelse naam</small><strong lang="en">${esc(v[0])}</strong><em>Klik om om te draaien ↻</em></span>` +
-      `<span class="back"><small>Letterlijk</small><span class="letterlijk">${esc(v[1])}</span><small>Wat het echt is</small><strong>${esc(v[2])}</strong><span class="uitleg">${esc(v[3])}</span></span></span>`);
+      `<span class="back"><small>Letterlijk</small><span class="letterlijk">${esc(v[1])}</span><small>Wat het echt is</small><strong>${esc(v[2])}</strong><span class="uitleg">${vt(v[3])}</span></span></span>`);
     b.addEventListener("click", () => b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")));
     $("#vertaalLijst").appendChild(b);
   });
   WOORDEN.forEach((w) => {
-    $("#woordenLijst").appendChild(el("div", { class: "woord" }, `<span class="wemoji">${w[0]}</span><div><strong>${esc(w[1])}</strong><p>${esc(w[2])}</p></div>`));
+    $("#woordenLijst").appendChild(el("div", { class: "woord" }, `<span class="wemoji">${w[0]}</span><div><strong>${esc(w[1])}</strong><p>${vt(w[2])}</p></div>`));
   });
 
   /* ---------- Landkaart ---------- */
@@ -503,7 +518,7 @@
       `<g class="hier" transform="translate(${START[0]} ${START[1]})"><rect x="-70" y="-16" width="140" height="32" rx="4" fill="#14213d"/><text y="5" text-anchor="middle" fill="#f4f1ea">HOOFDINGANG</text></g>` +
       `<g transform="translate(850 52)"><circle r="24" fill="none" stroke="#14213d" stroke-width="1.2"/><path d="M0 -20L5 -4L20 0L5 4L0 20L-5 4L-20 0L-5 -4Z" fill="#14213d"/><path d="M0 -20L5 -4L-5 -4Z" fill="#e8337a"/><text y="-31" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="13" fill="#14213d">N</text></g>` +
       `</svg>` +
-      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" style="--c:${COL[k]}" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${esc(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
+      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" style="--c:${COL[k]}" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${vt(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
   }
   function highlightMap(root, top) {
     root.querySelectorAll("[data-gebied]").forEach((g) => g.classList.remove("top1", "top2"));

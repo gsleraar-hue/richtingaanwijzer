@@ -410,3 +410,5 @@ main{min-height:70vh}
 /* Geen zichtbare scrollbalk (scrollen blijft gewoon werken) */
 html{scrollbar-width:none;color-scheme:light dark}
 html::-webkit-scrollbar,body::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}
+.nlv{color:var(--muted);font-weight:500;font-style:normal;font-size:.92em}
+.card h3 .nlv,#detailInhoud h2 .nlv{display:block;font-size:.55em;font-weight:600;margin-top:2px}
