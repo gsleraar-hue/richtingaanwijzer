@@ -198,3 +198,25 @@ section.parents{border-top:3px solid var(--ink)}
 .card:hover h3{animation:wiebel .4s}
 @keyframes wiebel{25%{transform:rotate(-1.5deg)}75%{transform:rotate(1.5deg)}}
 @media (prefers-reduced-motion:reduce){.card:hover h3{animation:none}.flip:hover{transform:none}}
+
+/* Landkaart */
+.kaartwrap{background:#e9f1e4;border:3px solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;color:#101a33}
+.kaartwrap svg{display:block;width:100%;height:auto}
+.kaartwrap .reg{cursor:pointer;outline:none}
+.kaartwrap .reg rect{stroke:#101a33;stroke-width:3;transition:transform .15s}
+.kaartwrap .reg:hover rect,.kaartwrap .reg:focus-visible rect{stroke:#ff5d4a;stroke-width:5}
+.kaartwrap .reg text{font-family:"Segoe UI",system-ui,sans-serif;font-weight:800;pointer-events:none}
+.kaartwrap .road{fill:none;stroke:#b7a98a;stroke-width:10;stroke-linecap:round}
+.kaartwrap .roadmid{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:8 8;stroke-linecap:round}
+.kaartwrap .hot{stroke:#ff5d4a;stroke-width:14}
+.kaartwrap .hotmid{stroke:#ffc531;stroke-width:3;animation:marsj 1s linear infinite}
+@keyframes marsj{to{stroke-dashoffset:-16}}
+.kaartwrap .reg.top1 rect,.kaartwrap .reg.top2 rect{stroke:#ff5d4a;stroke-width:6}
+.kaartwrap .badge-top{font-size:13px;fill:#fff}
+.kaartwrap .hier text{font-family:"Segoe UI",system-ui,sans-serif;font-weight:800}
+.kaartwrap .pulse{animation:puls 1.6s ease-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes puls{from{opacity:.7;transform:scale(.6)}to{opacity:0;transform:scale(1.8)}}
+.kaartleg{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;font-weight:600;margin:8px 4px 2px}
+.actief{margin:0 0 12px}
+.actief .chip{margin-right:6px}
+@media (prefers-reduced-motion:reduce){.kaartwrap .hotmid,.kaartwrap .pulse{animation:none}}

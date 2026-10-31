@@ -72,7 +72,7 @@
       total += items.length;
       const d = el("details", { class: "fam", id: "fam-" + f.id });
       d.dataset.fam = f.id;
-      if (open.has(f.id) || words.length) d.open = true;
+      if (open.has(f.id) || words.length || state.gebied) d.open = true;
       d.innerHTML =
         `<summary><span class="femoji">${FAM_EXTRA[f.id].e}</span><span class="fname">${esc(f.naam)}</span><span class="fcount">${items.length}</span><span class="fgebied">${esc(GEBIEDEN[f.gebied].naam)}</span></summary>` +
         `<p class="fuitleg">${esc(f.uitleg)}</p>`;
@@ -91,6 +91,16 @@
       d.appendChild(ul);
       wrap.appendChild(d);
     });
+    const act = $("#actief");
+    act.innerHTML = "";
+    const addChip = (txt, reset) => {
+      const b = el("button", { type: "button", class: "chip" }, esc(txt) + " ✕");
+      b.addEventListener("click", () => { reset(); renderChips(); renderList(); });
+      act.appendChild(b);
+    };
+    if (state.gebied) addChip("Gebied: " + GEBIEDEN[state.gebied].naam, () => (state.gebied = ""));
+    if (state.niveau) addChip("Route: " + state.niveau, () => (state.niveau = ""));
+    if (state.zoek) addChip("Zoekterm: " + state.zoek, () => { state.zoek = ""; $("#zoek").value = ""; });
     $("#alleLeeg").hidden = total > 0;
     $("#alleAantal").textContent = OPLEIDINGEN.length;
   }
@@ -294,6 +304,7 @@
       : `<p>${ouder ? "Je kind lijkt" : "Je lijkt"} vooral te passen bij <strong>${esc(GEBIEDEN[top[0]].naam)}</strong> en <strong>${esc(GEBIEDEN[top[1]].naam)}</strong>. Dat is een richting, geen vonnis.</p>`;
 
     h += `<div class="borden" aria-hidden="true"><div class="bord l">${esc(GEBIEDEN[top[0]].naam)}</div><div class="bord r">${esc(GEBIEDEN[top[1]].naam)}</div></div>`;
+    h += `<div class="kaartwrap" id="uitslagKaart" style="margin-top:8px"></div>`;
     h += '<div class="bars">' +
       rank.map((k) => `<div class="bar"><span>${esc(GEBIEDEN[k].naam)}</span><span class="track"><span class="fill" style="width:${pct(k)}%;display:block"></span></span><span>${pct(k)}%</span></div>`).join("") +
       "</div>";
@@ -341,6 +352,10 @@
     const box = $("#uitslag");
     box.innerHTML = h;
     box.hidden = false;
+    const uk = $("#uitslagKaart");
+    uk.innerHTML = buildMap() + `<div class="kaartleg"><span>🔴 Jouw route: rode wegen</span><span>👆 Klik op een gebied voor de opleidingen</span></div>`;
+    highlightMap(uk, top);
+    highlightMap($("#kaartKaart"), top);
     box.querySelectorAll(".mini button").forEach((b) =>
       b.addEventListener("click", () => (b.dataset.fam ? openFamily(b.dataset.fam) : openDetail(b.dataset.id)))
     );
@@ -384,6 +399,66 @@
   });
   WOORDEN.forEach((w) => {
     $("#woordenLijst").appendChild(el("div", { class: "woord" }, `<span class="wemoji">${w[0]}</span><div><strong>${esc(w[1])}</strong><p>${esc(w[2])}</p></div>`));
+  });
+
+  /* ---------- Landkaart ---------- */
+  const REG = {
+    zorg: [170, 125, "🩺", "#ffc9c2"], weten: [450, 125, "🔬", "#cfe8c4"], tech: [730, 125, "💻", "#c3d7ff"],
+    mens: [170, 305, "🤝", "#e1d2ff"], creatief: [450, 305, "🎨", "#ffe39b"], bedrijf: [730, 305, "💼", "#b8ecd9"]
+  };
+  const START = [450, 480];
+  function buildMap() {
+    let roads = "", regs = "";
+    Object.keys(REG).forEach((k) => {
+      const [cx, cy] = REG[k];
+      const d = `M${START[0]} ${START[1] - 18} C ${START[0]} ${cy + 140}, ${cx} ${cy + 150}, ${cx} ${cy + 62}`;
+      roads += `<path class="road" data-g="${k}" d="${d}"/><path class="roadmid" data-g="${k}" d="${d}"/>`;
+    });
+    Object.keys(REG).forEach((k) => {
+      const [cx, cy, em, fill] = REG[k];
+      regs += `<g class="reg" data-gebied="${k}" tabindex="0" role="button" aria-label="${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
+        `<rect x="${cx - 105}" y="${cy - 60}" width="210" height="120" rx="46" fill="${fill}" transform="rotate(${k.length % 2 ? -2 : 2} ${cx} ${cy})"/>` +
+        `<text x="${cx}" y="${cy - 6}" font-size="38" text-anchor="middle">${em}</text>` +
+        `<text x="${cx}" y="${cy + 30}" font-size="16" text-anchor="middle" fill="#101a33">${esc(GEBIEDEN[k].naam)}</text></g>`;
+    });
+    const grid = Array.from({ length: 9 }, (_, i) => `<line x1="${i * 112}" y1="0" x2="${i * 112}" y2="520" />`).join("") +
+      Array.from({ length: 5 }, (_, i) => `<line x1="0" y1="${i * 112}" x2="900" y2="${i * 112}" />`).join("");
+    return `<svg viewBox="0 0 900 520" role="group" aria-label="Kaart met zes gebieden van studies">` +
+      `<g stroke="#101a33" stroke-opacity=".08">${grid}</g>` +
+      `<path d="M0 520 C 120 470 230 505 330 480 S 560 495 900 450 L900 520Z" fill="#9fc6e8" opacity=".6"/>` +
+      roads + regs +
+      `<g class="hier" transform="translate(${START[0]} ${START[1]})"><circle class="pulse" r="22" fill="#ff5d4a"/><circle r="12" fill="#ff5d4a" stroke="#101a33" stroke-width="3"/>` +
+      `<rect x="-62" y="16" width="124" height="26" rx="13" fill="#101a33"/><text y="34" text-anchor="middle" font-size="13" fill="#fff">JIJ BENT HIER</text></g>` +
+      `<g transform="translate(850 55)"><circle r="34" fill="none" stroke="#101a33" stroke-width="2"/><polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#101a33"/><polygon points="0,-32 6,-6 -6,-6" fill="#ff5d4a"/><text y="-40" text-anchor="middle" font-size="14" font-weight="800" fill="#101a33">N</text></g>` +
+      `</svg>`;
+  }
+  function highlightMap(root, top) {
+    root.querySelectorAll(".reg").forEach((g) => g.classList.remove("top1", "top2"));
+    root.querySelectorAll(".road,.roadmid").forEach((p) => p.classList.remove("hot", "hotmid"));
+    top.forEach((k, i) => {
+      root.querySelector(`.reg[data-gebied="${k}"]`)?.classList.add("top" + (i + 1));
+      root.querySelectorAll(`.road[data-g="${k}"]`).forEach((p) => p.classList.add("hot"));
+      root.querySelectorAll(`.roadmid[data-g="${k}"]`).forEach((p) => p.classList.add("hotmid"));
+    });
+  }
+  function openRegion(k) {
+    state.gebied = k;
+    state.zoek = "";
+    $("#zoek").value = "";
+    renderChips();
+    renderList();
+    $("#alle").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  $("#kaartKaart").innerHTML = buildMap() +
+    `<div class="kaartleg"><span>🔴 Jouw route (na de test)</span><span>🟫 Weg naar een gebied: via mbo, hbo of wo</span><span>👆 Klik op een gebied</span></div>`;
+  document.addEventListener("click", (e) => {
+    const g = e.target.closest("[data-gebied]");
+    if (g) openRegion(g.dataset.gebied);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const g = e.target.closest && e.target.closest("[data-gebied]");
+    if (g) { e.preventDefault(); openRegion(g.dataset.gebied); }
   });
 
   /* ---------- Init ---------- */

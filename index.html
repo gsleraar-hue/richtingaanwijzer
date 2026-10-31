@@ -42,18 +42,25 @@
 <main class="wrap">
 
   <nav class="steps" aria-label="Onderdelen">
-    <a href="#niveaus">1. Welke route?</a>
-    <a href="#vakken">2. Schoolvak ≠ studie</a>
-    <a href="#test">3. Doe de test</a>
-    <a href="#vertaal">4. Engelse namen</a>
-    <a href="#gids">5. Studies uitgelegd</a>
-    <a href="#alle">6. Alle opleidingen</a>
-    <a href="#woorden">7. Woordenlijst</a>
-    <a href="#ouders">8. Voor ouders</a>
+    <a href="#kaart">De kaart</a>
+    <a href="#niveaus">Drie wegen</a>
+    <a href="#vakken">Schoolvak ≠ studie</a>
+    <a href="#test">Kompastest</a>
+    <a href="#vertaal">Engelse namen</a>
+    <a href="#gids">Studies uitgelegd</a>
+    <a href="#alle">Alle opleidingen</a>
+    <a href="#woorden">Woordenlijst</a>
+    <a href="#ouders">Voor ouders</a>
   </nav>
 
+  <section id="kaart">
+    <h2>De kaart: waar wil jij heen?</h2>
+    <p class="sub">Jij staat onderaan de kaart. Voor je liggen zes gebieden: zes soorten werk. Welke weg je ook neemt (mbo, hbo of wo), je kunt in elk gebied terechtkomen. <strong>Klik op een gebied</strong> om de opleidingen te zien, of doe de kompastest: dan licht jouw route op.</p>
+    <div id="kaartKaart" class="kaartwrap"></div>
+  </section>
+
   <section id="niveaus">
-    <h2>Eerst: welke route naar je beroep?</h2>
+    <h2>Drie wegen naar je beroep</h2>
     <p class="sub">Er zijn drie hoofdwegen. Welke je kunt nemen hangt af van je school nu, maar geen enkele weg is een doodlopende weg. Je kunt vaak overstappen op een andere route.</p>
     <div class="levels">
       <article class="level mbo">
@@ -84,7 +91,7 @@
   </section>
 
   <section id="test">
-    <h2>De Richtingtest</h2>
+    <h2>De kompastest: welke kant op?</h2>
     <p class="sub">Drie delen: waar word je blij van (interesses), waar ben je goed in (kwaliteiten) en wat voor jou telt in je werk (je waarden). 26 korte stellingen, ongeveer 5 minuten. Geen goede of foute antwoorden en het is geen vonnis. Je krijgt een richting, geen beslissing. Ouders kunnen de test ook zelf invullen, over hun kind.</p>
     <div class="who" role="group" aria-label="Wie doet de test?">
       <button type="button" class="chip" data-who="leerling" aria-pressed="true">Ik ben leerling</button>
@@ -117,6 +124,7 @@
   <section id="alle">
     <h2>Alle opleidingen, gegroepeerd</h2>
     <p class="sub">Alle <span id="alleAantal">500+</span> erkende hbo- en wo-bachelors en associate degrees in Nederland, gesorteerd op soortgelijke opleidingen. Zo zie je dat “Business Administration”, “Bedrijfskunde” en “Management” vaak hetzelfde werkveld zijn. Het zoekveld bovenaan en de filters (mbo, hbo, wo) werken hier ook.</p>
+    <div id="actief" class="actief"></div>
     <div id="families"></div>
     <p id="alleLeeg" class="empty" hidden>Niets gevonden in de volledige lijst.</p>
     <p class="source">Bron: <a href="https://onderwijsdata.duo.nl/datasets/overzicht-erkenningen-ho" target="_blank" rel="noopener">DUO, Overzicht Erkenningen ho (RIO)</a>, open data, licentie CC BY. Peildatum 31-10-2026. De mbo-opleidingen volgen nog.</p>
