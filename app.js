@@ -123,6 +123,49 @@
     });
   }
 
+  /* ---------- Zoeken: beroepen, samenstellingen en relevantie ---------- */
+  const norm = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  // Beroep of spreektaal -> woorden die in de naam van de opleiding staan
+  const BEROEP_ZOEK = {
+    dokter: ["geneeskunde"], arts: ["geneeskunde"], huisarts: ["geneeskunde"], chirurg: ["geneeskunde"], specialist: ["geneeskunde"],
+    tandarts: ["tandheelkunde"], mondhygienist: ["mondzorg"], dierenarts: ["diergeneeskunde"], apotheker: ["farmacie"],
+    verpleger: ["verpleeg"], verpleegster: ["verpleeg"], zuster: ["verpleeg"], fysio: ["fysiotherapie"], psycholoog: ["psychologie"],
+    advocaat: ["rechten", "fiscaal recht"], rechter: ["rechten"], jurist: ["rechten", "fiscaal recht"], notaris: ["notarieel"], officier: ["rechten"],
+    piloot: ["luchtvaart", "aviation"], vlieger: ["luchtvaart"], stewardess: ["luchtvaartdienstverlener"], steward: ["luchtvaartdienstverlener"],
+    politie: ["politie", "veiligheid"], agent: ["politie", "veiligheid"], rechercheur: ["politie", "criminologie"], boa: ["handhaving", "toezichthouder"],
+    journalist: ["journalistiek"], verslaggever: ["journalistiek"], programmeur: ["software", "informatica"], developer: ["software"], softwareontwikkelaar: ["software"],
+    architect: ["architectuur", "bouwkunde"], accountant: ["accountancy"], boer: ["landbouw", "veehouderij"], dierverzorger: ["dierverzorging"],
+    juf: ["leraar basisonderwijs", "pedagogisch"], meester: ["leraar basisonderwijs", "pedagogisch"], onderwijzer: ["leraar basisonderwijs"],
+    gymleraar: ["lichamelijke opvoeding", "sport"], gymdocent: ["lichamelijke opvoeding"], kinderopvang: ["pedagogisch"],
+  };
+  const VAK_ALIAS = { gym: "lichamelijke opvoeding", wiskunde: "wiskunde", economie: "economie", nederlands: "nederlands", engels: "engels" };
+  // Eén zoekvraag wordt een paar varianten: de vraag zelf, beroepen en samenstellingen als "geschiedenisleraar"
+  function zoekVarianten(q) {
+    const v = norm(q).trim();
+    if (!v) return [];
+    const uit = [{ w: v.split(/\s+/), straf: 0 }];
+    const voeg = (t, straf = 2) => uit.push({ w: norm(t).split(/\s+/), straf });
+    (BEROEP_ZOEK[v] || []).forEach((t) => voeg(t));
+    v.split(/\s+/).forEach((w) => (BEROEP_ZOEK[w] || []).forEach((t) => voeg(v.replace(w, t))));
+    const m = v.replace(/\s+/g, "").match(/^(.{3,}?)(leraar|lerares|docent|leerkracht)$/) || v.match(/^(?:leraar|lerares|docent|leerkracht) (.{3,})$/);
+    if (m) { const vak = VAK_ALIAS[m[1]] || m[1]; voeg("leraar " + vak, 0); voeg("docent " + vak, 0); }
+    return uit;
+  }
+  // 100 = naam is precies de vraag, 80/60 = alle woorden in de naam, 40 = in de Engelse naam, 5 = alleen in de groep
+  function zoekScore(o, f, varianten) {
+    const n = norm(o.n), ne = n + " " + norm(o.e), alles = ne + " " + norm(f.naam + " " + f.uitleg);
+    let best = 0;
+    varianten.forEach(({ w, straf }) => {
+      let sc = 0;
+      if (n === w.join(" ")) sc = 100;
+      else if (w.every((x) => n.includes(x))) sc = n.startsWith(w[0]) || n.includes(" " + w[0]) ? 80 : 60;
+      else if (w.every((x) => ne.includes(x))) sc = 40;
+      else if (w.every((x) => alles.includes(x))) sc = 5;
+      if (sc) best = Math.max(best, sc - straf);
+    });
+    return best;
+  }
+
   function haystack(s) {
     return [s.naam, s.engels, s.kort, s.doe, GEBIEDEN[s.gebied].naam, s.kanJe.join(" ")].join(" ").toLowerCase();
   }
@@ -132,7 +175,7 @@
       (s) =>
         (!state.niveau || s.niveau.includes(state.niveau)) &&
         (!state.gebied || s.gebied === state.gebied) &&
-        (!q || q.split(/\s+/).every((w) => haystack(s).includes(w)))
+        (!q || zoekVarianten(q).some(({ w }) => w.every((x) => norm(haystack(s)).includes(x))))
     );
     const list = $("#lijst");
     list.innerHTML = "";
@@ -150,21 +193,35 @@
   const VORM = { voltijd: "voltijd", deeltijd: "deeltijd", duaal: "duaal (leren en werken)", bol: "bol: naar school, met stages", bbl: "bbl: werken en leren, een paar dagen per week werken" };
 
   function renderFamilies() {
-    const q = state.zoek.trim().toLowerCase();
-    const words = q ? q.split(/\s+/) : [];
+    const varianten = zoekVarianten(state.zoek);
+    const words = varianten.length ? varianten[0].w : [];
     const wrap = $("#families");
     const open = new Set([...wrap.querySelectorAll("details[open]")].map((d) => d.dataset.fam));
     wrap.innerHTML = "";
     let total = 0;
-    FAMILIES.forEach((f) => {
+    const score = new Map();
+    const perFam = FAMILIES.map((f) => {
       const items = OPLEIDINGEN.filter((o) => {
         if (o.f !== f.id) return false;
         if (state.niveau && !o.l.includes(state.niveau)) return false;
         if (state.gebied && f.gebied !== state.gebied) return false;
         if (state.vorm && !(state.vorm === "werk" ? (o.v || []).some((v) => v === "deeltijd" || v === "duaal") : (o.v || []).includes(state.vorm))) return false;
-        const h = (o.n + " " + o.e + " " + f.naam + " " + f.uitleg).toLowerCase();
-        return words.every((w) => h.includes(w));
+        if (!varianten.length) return true;
+        const sc = zoekScore(o, f, varianten);
+        score.set(o, sc);
+        return sc > 0;
       });
+      return { f, items };
+    });
+    // Staat de vraag in de naam van een opleiding, laat dan niet de hele groep zien
+    const drempel = [...score.values()].some((x) => x >= 38) ? 38 : 1;
+    const rangorde = varianten.length
+      ? perFam.map(({ f, items }) => {
+          const goed = items.filter((o) => score.get(o) >= drempel).sort((a, b) => score.get(b) - score.get(a) || a.n.localeCompare(b.n, "nl"));
+          return { f, items: goed, top: goed.length ? score.get(goed[0]) : 0 };
+        }).sort((a, b) => b.top - a.top)
+      : perFam;
+    rangorde.forEach(({ f, items }) => {
       if (!items.length) return;
       total += items.length;
       const d = el("details", { class: "fam", id: "fam-" + f.id });
