@@ -353,7 +353,7 @@
     box.innerHTML = h;
     box.hidden = false;
     const uk = $("#uitslagKaart");
-    uk.innerHTML = buildMap() + `<div class="kaartleg"><span>🔴 Jouw route: de rode paadjes</span><span>👆 Klik op een faculteit voor de opleidingen</span></div>`;
+    uk.innerHTML = buildMap() + `<div class="kaartleg"><span>Jouw route: de rode paadjes</span><span>Klik op een faculteit voor de opleidingen</span></div>`;
     highlightMap(uk, top);
     highlightMap($("#kaartKaart"), top);
     box.querySelectorAll(".mini button").forEach((b) =>
@@ -403,41 +403,88 @@
 
   /* ---------- Landkaart ---------- */
   const REG = {
-    zorg: [170, 125, "🩺", "#ffc9c2"], weten: [450, 125, "🔬", "#cfe8c4"], tech: [730, 125, "💻", "#c3d7ff"],
-    mens: [170, 305, "🤝", "#e1d2ff"], creatief: [450, 305, "🎨", "#ffe39b"], bedrijf: [730, 305, "💼", "#b8ecd9"]
+    zorg: [130, 135, "#e7b9ad", "#c99688", "gable"],
+    weten: [450, 135, "#b9d3b0", "#94b58a", "dome"],
+    tech: [770, 135, "#a9c2d6", "#86a3bc", "flat"],
+    mens: [130, 365, "#cdbbe0", "#aa97c2", "clock"],
+    creatief: [450, 365, "#f0cf8e", "#d3ad66", "wave"],
+    bedrijf: [770, 365, "#a8d4c4", "#86b5a3", "tower"]
   };
-  const START = [450, 480];
+  const START = [450, 548];
+  const ROOF = "#46564f";
+  const PATHS = {
+    mens: "M450 530 C330 530 160 525 130 485",
+    creatief: "M450 530 C450 515 450 500 450 485",
+    bedrijf: "M450 530 C570 530 740 525 770 485",
+    weten: "M450 530 C340 515 292 400 294 280 C296 256 390 256 450 253",
+    zorg: "M450 530 C340 515 292 400 294 280 C296 252 190 256 130 253",
+    tech: "M450 530 C560 515 608 400 606 280 C604 252 710 256 770 253"
+  };
+  function roofSVG(type, x, y, w, cx, fill) {
+    switch (type) {
+      case "gable":
+        return `<path d="M${x - 10} ${y + 3} Q${x + 22} ${y - 5} ${cx} ${y - 40} Q${x + w - 22} ${y - 5} ${x + w + 10} ${y + 3}Z" fill="${ROOF}"/>`;
+      case "dome":
+        return `<rect x="${x - 8}" y="${y - 6}" width="${w + 16}" height="14" rx="7" fill="#3a4842"/><path d="M${cx - 52} ${y - 4} A52 52 0 0 1 ${cx + 52} ${y - 4}Z" fill="${ROOF}"/><circle cx="${cx}" cy="${y - 58}" r="5" fill="#d6a243"/>`;
+      case "flat":
+        return `<rect x="${x - 8}" y="${y - 8}" width="${w + 16}" height="16" rx="8" fill="${ROOF}"/><path d="M${cx + 44} ${y - 8}V${y - 36}" stroke="${ROOF}" stroke-width="3" stroke-linecap="round"/><circle cx="${cx + 44}" cy="${y - 38}" r="5" fill="#d6a243"/>`;
+      case "clock":
+        return `<path d="M${x - 10} ${y + 3} Q${x + 22} ${y - 5} ${cx} ${y - 36} Q${x + w - 22} ${y - 5} ${x + w + 10} ${y + 3}Z" fill="${ROOF}"/><circle cx="${cx}" cy="${y - 8}" r="13" fill="#fffdf8" stroke="#3a4842" stroke-width="3"/><path d="M${cx} ${y - 8}V${y - 16}M${cx} ${y - 8}L${cx + 6} ${y - 5}" stroke="#3a4842" stroke-width="2" stroke-linecap="round" fill="none"/>`;
+      case "wave":
+        return `<path d="M${x - 10} ${y + 6} C${x + 30} ${y - 36} ${cx - 25} ${y + 20} ${cx} ${y - 12} S${x + w - 30} ${y - 36} ${x + w + 10} ${y + 6}Z" fill="${ROOF}"/>`;
+      default:
+        return `<rect x="${cx - 34}" y="${y - 48}" width="68" height="50" rx="16" fill="${fill}"/><circle cx="${cx}" cy="${y - 28}" r="9" fill="rgba(255,255,255,.8)"/><rect x="${x - 8}" y="${y - 8}" width="${w + 16}" height="16" rx="8" fill="${ROOF}"/><path d="M${cx - 40} ${y - 46} Q${cx} ${y - 78} ${cx + 40} ${y - 46}Z" fill="${ROOF}"/>`;
+    }
+  }
+  function building(k) {
+    const [cx, cy, fill, side, type] = REG[k];
+    const w = 170, h = 96, x = cx - w / 2, y = cy - 38;
+    const win = [0, 1, 2, 3].map((i) => {
+      const x0 = x + 18 + i * 38;
+      return `<path d="M${x0} ${y + 60}V${y + 38}a11 11 0 0 1 22 0V${y + 60}Z" fill="rgba(255,253,248,.8)" stroke="rgba(29,43,40,.25)"/>`;
+    }).join("");
+    return `<g class="reg" data-gebied="${k}" tabindex="0" role="button" aria-label="Faculteit ${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
+      `<g class="shape"><ellipse cx="${cx + 12}" cy="${y + h + 4}" rx="${w * 0.62}" ry="9" fill="rgba(20,40,30,.18)"/>` +
+      `<path d="M${x + w} ${y + 10}Q${x + w + 14} ${y + 4} ${x + w + 26} ${y + 8}V${y + h - 8}Q${x + w + 14} ${y + h - 2} ${x + w} ${y + h}Z" fill="${side}"/>` +
+      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${fill}"/>${win}` +
+      `<path d="M${cx - 13} ${y + h}V${y + h - 26}a13 13 0 0 1 26 0V${y + h}Z" fill="#35504a"/>` +
+      roofSVG(type, x, y, w, cx, fill) + `</g>` +
+      `<rect class="pill" x="${cx - 92}" y="${y + h + 12}" width="184" height="44" rx="22"/>` +
+      `<text class="pl" x="${cx}" y="${y + h + 29}" text-anchor="middle">FACULTEIT</text>` +
+      `<text class="pn" x="${cx}" y="${y + h + 47}" text-anchor="middle">${esc(GEBIEDEN[k].naam)}</text>` +
+      `<g class="flag" transform="translate(${x + w + 6} ${y - 30})"><path d="M0 46V0" stroke="#46564f" stroke-width="3" stroke-linecap="round"/><path d="M0 2C14 -4 24 8 40 2V24C24 30 14 18 0 24Z" fill="#c4573f"/><text class="n1" x="18" y="19">1</text><text class="n2" x="18" y="19">2</text></g></g>`;
+  }
+  function tree(x, y, i) {
+    const r = i % 3 ? 17 : 22;
+    return `<g transform="translate(${x} ${y})"><ellipse cx="6" cy="${r + 2}" rx="${r}" ry="6" fill="rgba(20,40,30,.14)"/><rect x="-3" y="2" width="6" height="${r}" fill="#8a6a3d"/>` +
+      `<circle cx="-6" cy="-2" r="${r - 4}" fill="#5f9f63"/><circle cx="8" cy="-4" r="${r - 5}" fill="#6db371"/><circle cy="-10" r="${r - 4}" fill="${i % 2 ? "#5aa05e" : "#76bb78"}"/></g>`;
+  }
   function buildMap() {
+    const TREES = [[28, 40], [300, 36], [600, 36], [872, 40], [34, 255], [866, 255], [24, 470], [878, 470], [240, 360], [662, 360], [358, 112], [542, 112], [820, 575], [590, 570], [330, 585]];
+    const trees = TREES.map(([x, y], i) => tree(x, y, i)).join("");
     let roads = "", regs = "";
     Object.keys(REG).forEach((k) => {
-      const [cx, cy] = REG[k];
-      const d = `M${START[0]} ${START[1] - 18} C ${START[0]} ${cy + 140}, ${cx} ${cy + 150}, ${cx} ${cy + 62}`;
-      roads += `<path class="road" data-g="${k}" d="${d}"/><path class="roadmid" data-g="${k}" d="${d}"/>`;
+      roads += `<path class="roadedge" d="${PATHS[k]}"/>`;
     });
     Object.keys(REG).forEach((k) => {
-      const [cx, cy, em, fill] = REG[k];
-      regs += `<g class="reg" data-gebied="${k}" tabindex="0" role="button" aria-label="Faculteit ${esc(GEBIEDEN[k].naam)}: bekijk opleidingen">` +
-        `<rect x="${cx - 105}" y="${cy - 52}" width="210" height="108" rx="8" fill="${fill}"/>` +
-        `<rect class="roof" x="${cx - 114}" y="${cy - 72}" width="228" height="26" rx="6" fill="#101a33"/>` +
-        `<text x="${cx}" y="${cy - 54}" font-size="12" text-anchor="middle" fill="#fff" letter-spacing="3">FACULTEIT</text>` +
-        `<text x="${cx}" y="${cy - 8}" font-size="34" text-anchor="middle">${em}</text>` +
-        `<text x="${cx}" y="${cy + 24}" font-size="15" text-anchor="middle" fill="#101a33">${esc(GEBIEDEN[k].naam)}</text>` +
-        `<rect x="${cx - 10}" y="${cy + 34}" width="20" height="22" rx="3" fill="#101a33"/></g>`;
+      roads += `<path class="road" data-g="${k}" d="${PATHS[k]}"/><path class="roadmid" data-g="${k}" d="${PATHS[k]}"/>`;
+      regs += building(k);
     });
-    const TREES = [[40, 45], [310, 40], [600, 50], [870, 45], [40, 215], [610, 215], [870, 215], [40, 420], [300, 420], [610, 420], [870, 440], [120, 495], [780, 495], [250, 275], [660, 255], [345, 175], [575, 175]];
-    const trees = TREES.map(([x, y], i) => `<g transform="translate(${x} ${y})"><rect x="-3" y="4" width="6" height="14" fill="#8a6a3d"/><circle cy="-5" r="${i % 3 ? 17 : 21}" fill="${i % 2 ? "#5aa05a" : "#6bb36b"}" stroke="#2f6b3a" stroke-width="2"/></g>`).join("");
-    return `<svg viewBox="0 0 900 520" role="group" aria-label="Campuskaart met zes faculteiten">` +
-      `<rect width="900" height="520" fill="#cfe3b5"/>` +
-      `<g stroke="#bcd7a0" stroke-width="2" fill="none"><path d="M0 60 C200 20 380 80 560 40 S800 20 900 50"/><path d="M0 220 C150 190 330 250 520 215 S800 190 900 230"/><path d="M0 410 C170 380 330 430 520 400 S780 380 900 410"/></g>` +
-      `<ellipse cx="300" cy="212" rx="62" ry="30" fill="#8ec5ea" stroke="#4f8fba" stroke-width="3"/><ellipse cx="292" cy="208" rx="22" ry="7" fill="#fff" opacity=".45"/>` +
-      trees +
-      roads + regs +
-      `<g class="hier" transform="translate(${START[0]} ${START[1]})"><circle class="pulse" r="22" fill="#ff5d4a"/>` +
-      `<rect x="-52" y="-46" width="10" height="34" fill="#8a6a3d" stroke="#101a33" stroke-width="2"/><rect x="42" y="-46" width="10" height="34" fill="#8a6a3d" stroke="#101a33" stroke-width="2"/><rect x="-66" y="-58" width="132" height="20" rx="10" fill="#ff5d4a" stroke="#101a33" stroke-width="2"/><text y="-44" text-anchor="middle" font-size="11" fill="#fff" letter-spacing="2">HOOFDINGANG</text>` +
-      `<circle r="9" fill="#ffc531" stroke="#101a33" stroke-width="3"/>` +
-      `<rect x="-62" y="16" width="124" height="26" rx="13" fill="#101a33"/><text y="34" text-anchor="middle" font-size="13" fill="#fff">JIJ BENT HIER</text></g>` +
-      `<g transform="translate(850 55)"><circle r="34" fill="none" stroke="#101a33" stroke-width="2"/><polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#101a33"/><polygon points="0,-32 6,-6 -6,-6" fill="#ff5d4a"/><text y="-40" text-anchor="middle" font-size="14" font-weight="800" fill="#101a33">N</text></g>` +
-      `</svg>`;
+    return `<svg viewBox="0 0 900 616" role="group" aria-label="Campuskaart met zes faculteiten">` +
+      `<defs><linearGradient id="gras" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d6e7c3"/><stop offset="1" stop-color="#bfd9a4"/></linearGradient>` +
+      `<linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a7d2ea"/><stop offset="1" stop-color="#6fa9cc"/></linearGradient></defs>` +
+      `<rect width="900" height="616" fill="url(#gras)"/>` +
+      `<g fill="#b7d29b" opacity=".7"><ellipse cx="300" cy="60" rx="160" ry="34"/><ellipse cx="700" cy="270" rx="150" ry="30"/><ellipse cx="170" cy="260" rx="120" ry="26"/><ellipse cx="560" cy="590" rx="140" ry="22"/></g>` +
+      `<ellipse cx="108" cy="578" rx="66" ry="20" fill="url(#water)" stroke="#5f93b5" stroke-width="2"/><ellipse cx="94" cy="573" rx="24" ry="5" fill="#fff" opacity=".4"/>` +
+      trees + roads + regs +
+      `<ellipse cx="450" cy="545" rx="86" ry="21" fill="#f1e6c6" stroke="#cdbd91" stroke-width="3"/>` +
+      `<g class="hier" transform="translate(${START[0]} ${START[1]})"><circle class="pulse" r="22" fill="#c4573f"/>` +
+      `<rect x="-66" y="-18" width="14" height="38" rx="6" fill="#8a6a3d"/><circle cx="-59" cy="-22" r="7" fill="#d6a243"/><rect x="52" y="-18" width="14" height="38" rx="6" fill="#8a6a3d"/><circle cx="59" cy="-22" r="7" fill="#d6a243"/>` +
+      `<circle r="10" fill="#c4573f" stroke="#fffdf8" stroke-width="3"/>` +
+      `<rect x="-64" y="28" width="128" height="28" rx="14" fill="#1f423a"/><text y="47" text-anchor="middle" fill="#fff">JIJ BENT HIER</text></g>` +
+      `<g transform="translate(850 52)"><circle r="27" fill="rgba(255,253,248,.7)" stroke="#1d2b28" stroke-width="1.5"/><path d="M0 -22L6 -4L22 0L6 4L0 22L-6 4L-22 0L-6 -4Z" fill="#1d2b28"/><path d="M0 -22L6 -4L-6 -4Z" fill="#c4573f"/><text y="-33" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="13" fill="#1d2b28">N</text></g>` +
+      `</svg>` +
+      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" data-gebied="${k}"><small>Faculteit</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${esc(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
   }
   function highlightMap(root, top) {
     root.querySelectorAll(".reg").forEach((g) => g.classList.remove("top1", "top2"));
@@ -457,7 +504,7 @@
     $("#alle").scrollIntoView({ behavior: "smooth", block: "start" });
   }
   $("#kaartKaart").innerHTML = buildMap() +
-    `<div class="kaartleg"><span>🔴 Jouw route (na de test)</span><span>🟫 Paadje naar een faculteit: via mbo, hbo of wo</span><span>👆 Klik op een faculteit</span></div>`;
+    `<div class="kaartleg"><span>Jouw route (na de test)</span><span>Paadje naar een faculteit: via mbo, hbo of wo</span><span>Klik op een faculteit</span></div>`;
   document.addEventListener("click", (e) => {
     const g = e.target.closest("[data-gebied]");
     if (g) openRegion(g.dataset.gebied);
