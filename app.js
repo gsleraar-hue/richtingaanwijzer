@@ -629,6 +629,14 @@
     renderOpenDagen();
   }));
 
+  /* ---------- Licht / donker ---------- */
+  $("#thema").addEventListener("click", () => {
+    const root = document.documentElement;
+    const nuDonker = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = nuDonker ? "light" : "dark";
+    try { localStorage.setItem("thema", root.dataset.theme); } catch (e) {}
+  });
+
   /* ---------- Init ---------- */
   const nc = $("#niveauChips");
   NIVEAUS.forEach((n) => chip(nc, n, "niveau", n));
