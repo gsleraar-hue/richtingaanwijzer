@@ -718,3 +718,4 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .geen-account{margin:14px 0 0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--tint);border-radius:6px;font-size:.9rem;max-width:760px}
 #test .geen-account{margin:0 0 14px}
 @media print{.geen-account{display:none!important}}
+.hero h1 .eigen{font-style:normal;text-decoration:underline;text-decoration-thickness:.09em;text-underline-offset:.1em;text-decoration-color:#fff}
