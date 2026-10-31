@@ -203,7 +203,7 @@ dialog::backdrop{background:rgba(10,16,32,.6)}
 .kaartwrap .roadedge{fill:none;stroke:#14213d;stroke-width:11;stroke-opacity:.5;stroke-linecap:round}
 .kaartwrap .road{fill:none;stroke:#fbfcff;stroke-width:8;stroke-linecap:round}
 .kaartwrap .roadmid{display:none}
-.kaartwrap .road.hot{stroke:#f7a8c0}
+.kaartwrap .road.hot{stroke:#f4a3a3}
 .kaartwrap .hier text{font:700 11px "Segoe UI",system-ui,sans-serif;letter-spacing:.18em}
 .kaartleg{display:none}
 .kaartlijst{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);background:var(--card)}
@@ -362,8 +362,8 @@ main{min-height:70vh}
 @media (max-width:520px){.tabs{gap:2px;overflow:visible}.tabs a{padding:6px 7px;font-size:.78rem}.brand{font-size:.95rem}}
 
 /* Plattegrond in de kleuren van de site, zonder groen */
-.kaartwrap{background:#e9eef9}
-.kaartwrap .reg .nm{stroke:#edf1fa}
+.kaartwrap{background:#f3eeec}
+.kaartwrap .reg .nm{stroke:#f5f0ee}
 /* Geen geel: accentbalk en regeltje in mint, voortgangsbalk blauw-mint */
 .hero .bar{background:#55d3c0}
 .hero .kicker{color:#bff2ea}
@@ -429,7 +429,7 @@ footer a{color:#3157d5}
 :root[data-theme="dark"] .btn,:root[data-theme="dark"] .chip[aria-pressed="true"],:root[data-theme="dark"] .scale label:has(input:checked),:root[data-theme="dark"] .kid:has(input:checked),:root[data-theme="dark"] .tabs a[aria-current="page"]{color:#111214}
 :root[data-theme="dark"] .btn.ghost,:root[data-theme="dark"] .btn.licht{color:var(--accent)}
 :root[data-theme="dark"] .hero .btn.licht{color:#fff}
-:root[data-theme="dark"] .kaartwrap{background:#e9eef9}
+:root[data-theme="dark"] .kaartwrap{background:#f3eeec}
 :root[data-theme="dark"] .card:hover,:root[data-theme="dark"] .flip:hover{box-shadow:0 12px 28px rgba(0,0,0,.35)}
 :root[data-theme="dark"] .brand svg{color:var(--accent)}
 :root[data-theme="dark"] .thema .zon{display:block} :root[data-theme="dark"] .thema .maan{display:none}
@@ -441,7 +441,7 @@ footer a{color:#3157d5}
 :root:not([data-theme="light"]) .btn,:root:not([data-theme="light"]) .chip[aria-pressed="true"],:root:not([data-theme="light"]) .scale label:has(input:checked),:root:not([data-theme="light"]) .kid:has(input:checked),:root:not([data-theme="light"]) .tabs a[aria-current="page"]{color:#111214}
 :root:not([data-theme="light"]) .btn.ghost,:root:not([data-theme="light"]) .btn.licht{color:var(--accent)}
 :root:not([data-theme="light"]) .hero .btn.licht{color:#fff}
-:root:not([data-theme="light"]) .kaartwrap{background:#e9eef9}
+:root:not([data-theme="light"]) .kaartwrap{background:#f3eeec}
 :root:not([data-theme="light"]) .card:hover,:root:not([data-theme="light"]) .flip:hover{box-shadow:0 12px 28px rgba(0,0,0,.35)}
 :root:not([data-theme="light"]) .brand svg{color:var(--accent)}
 :root:not([data-theme="light"]) .thema .zon{display:block} :root:not([data-theme="light"]) .thema .maan{display:none}
@@ -513,3 +513,37 @@ h4 small,h3 small{font-weight:500;text-transform:none;letter-spacing:0;color:var
 .od-knoppen{display:flex;align-items:center;gap:12px}
 .od-route{font-weight:700;font-size:.88rem;white-space:nowrap}
 @media (max-width:560px){.od-knoppen{grid-column:1/-1}}
+
+/* Ouderdeel: foto naast de inleiding, gespreksgids eronder; afgeronde kaart */
+.parents{margin:0;border-radius:28px;padding:56px 40px;overflow:hidden}
+.parents-art{position:static;float:right;transform:none;width:min(300px,34%);margin:0 0 24px 32px}
+.parents .gesprek{clear:both;padding-top:8px}
+@media (max-width:900px){
+  .parents{padding:40px 22px;border-radius:20px}
+  .parents-art{float:none;width:min(320px,90%);margin:0 auto 24px}
+}
+
+/* ===== Rood als basiskleur (los van Qompas en Claude) ===== */
+:root{--paper:#faf8f6;--ink:#1b1b1f;--muted:#5f5a5a;--card:#ffffff;--line:rgba(27,27,31,.14);--accent:#d62828;--green:#9e1b32;--tint:#fbeceb;--mbo:#c2410c;--hbo:#d62828;--wo:#6b21a8}
+:root[data-theme="dark"]{--paper:#141414;--ink:#efecec;--muted:#aaa4a4;--card:#1e1c1c;--line:rgba(255,255,255,.12);--accent:#ff6b6b;--green:#ff9b9b;--tint:#2b2222;--mbo:#ffa36b;--hbo:#ff6b6b;--wo:#c4a3ff;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#141414;--ink:#efecec;--muted:#aaa4a4;--card:#1e1c1c;--line:rgba(255,255,255,.12);--accent:#ff6b6b;--green:#ff9b9b;--tint:#2b2222;--mbo:#ffa36b;--hbo:#ff6b6b;--wo:#c4a3ff;}}
+.hero{background:#7a0f1a}
+.hero .wash{background:linear-gradient(120deg,rgba(214,40,40,.86) 0%,rgba(190,25,40,.8) 50%,rgba(122,15,26,.78) 100%)}
+.hero .bar{background:#fff}
+.hero .kicker{color:#ffe1dc}
+.parents{background:linear-gradient(120deg,#d62828 0%,#b81d2e 55%,#8e1426 100%)}
+.parents .sub{color:#ffe4e1}
+.gk p{color:#ffeceb}
+.gk strong{color:#ffd7d1}
+footer{background:#f3eceb;color:#4a4242}
+footer a{color:#d62828}
+:root[data-theme="dark"] footer{background:#1e1c1c;color:#b9b2b2}
+.sbar span{background:linear-gradient(90deg,#d62828,#9e1b32)}
+.card:hover,.flip:hover{box-shadow:0 12px 28px rgba(214,40,40,.14)}
+.quiz{box-shadow:0 14px 36px rgba(214,40,40,.10)}
+.flip .back{box-shadow:0 12px 28px rgba(214,40,40,.14)}
+.topbar{background:rgba(250,248,246,.94)}
+main section>h2::before{background:linear-gradient(90deg,#d62828,#9e1b32)}
+.ook{border-left-color:var(--accent)}
+.hero .hero-cta .btn:not(.licht){background:#fff;border-color:#fff;color:#b81d2e}
+.hero .hero-cta .btn:not(.licht):hover{background:#1b1b1f;border-color:#1b1b1f;color:#fff}
