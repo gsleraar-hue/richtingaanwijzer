@@ -554,3 +554,27 @@ main section>h2::before{background:linear-gradient(90deg,#d62828,#9e1b32)}
 .hero-cta{align-items:center}
 .cta-sub{margin:12px 0 0;color:#ffe1dc;font-size:.92rem}
 @media (prefers-reduced-motion:reduce){.btn-start svg{transition:none}}
+
+/* Mijn stappenplan */
+.plan-in{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;margin-bottom:18px}
+.plan-in select{padding:9px 14px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:inherit;font-size:.95rem}
+.plan-lijst{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:26px}
+.plan-lijst h3{margin:0 0 8px;font-size:1.1rem}
+.favitem{display:inline-flex;align-items:stretch}
+.favitem button:first-child{border-radius:6px 0 0 6px}
+.favweg{font:inherit;border:1px solid var(--line);border-left:0;border-radius:0 6px 6px 0;background:var(--paper);color:var(--muted);cursor:pointer;padding:0 10px}
+.vink{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.vink input{width:20px;height:20px;margin-top:3px;accent-color:var(--accent)}
+.plan-stappen li.af strong{text-decoration:line-through;color:var(--muted)}
+.plan-stappen li.af::before{background:var(--muted)}
+.plan-od{margin:6px 0;padding-left:18px;display:grid;gap:4px}
+.plan-hulp{margin:30px 0 10px}
+.gk.licht{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+.gk.licht p{color:var(--muted)}
+.favknop{padding:9px 18px;font-size:.92rem}
+@media (max-width:520px){.tabs a{padding:6px 5px;font-size:.74rem}}
+@media print{
+  body.print-plan .topbar,body.print-plan .hero,body.print-plan main>section:not(#plan),body.print-plan footer,body.print-plan .actions,body.print-plan .plan-in{display:none!important}
+  body.print-plan #plan{display:block!important}
+}
+@media (max-width:520px){.tabs{flex-wrap:wrap;justify-content:flex-start;gap:4px}.tabs a{padding:6px 9px;font-size:.8rem}}
