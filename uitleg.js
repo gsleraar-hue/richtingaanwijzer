@@ -183,3 +183,91 @@ const TERMEN = [
   ["Python", "een programmeertaal"],
   ["AI", "kunstmatige intelligentie"]
 ];
+
+// Doorvragen: na de gewone vragen wordt verder gevraagd binnen je twee sterkste richtingen.
+// Dit verfijnt alleen welke groep opleidingen het best past; de andere richtingen tellen gewoon mee.
+// [groep, vraag]. Voor ouders wordt "Ik wil" automatisch "Mijn kind wil".
+const DIEP = {
+  tech: [["ict", "Ik wil software, apps of slimme systemen bouwen."], ["techniek", "Ik wil machines, energie of robots ontwerpen."], ["bouw", "Ik wil gebouwen, wegen of wijken ontwerpen."]],
+  zorg: [["zorg", "Ik wil zieke mensen verzorgen of behandelen."], ["therapie", "Ik wil mensen helpen bewegen, herstellen of fit blijven."], ["natuur", "Ik wil in een lab uitzoeken hoe ziektes ontstaan."]],
+  weten: [["natuur", "Ik wil proeven doen en dingen meten in een lab."], ["groen", "Ik wil buiten werken met natuur, dieren of voedsel."], ["ict", "Ik wil met data en computers grote vragen beantwoorden."]],
+  creatief: [["design", "Ik wil beelden, ontwerpen of films maken."], ["muziek", "Ik wil muziek maken, spelen of dansen op een podium."], ["communicatie", "Ik wil schrijven en verhalen vertellen."]],
+  mens: [["onderwijs", "Ik wil kinderen of jongeren iets leren."], ["sociaal", "Ik wil mensen met problemen verder helpen."], ["recht", "Ik wil bezig zijn met regels, recht en politiek."], ["gedrag", "Ik wil snappen hoe mensen denken en doen."], ["talen", "Ik wil talen, culturen of geschiedenis bestuderen."]],
+  bedrijf: [["management", "Ik wil leidinggeven en dingen organiseren."], ["marketing", "Ik wil verkopen en klanten overtuigen."], ["economie", "Ik wil met geld, cijfers en economie werken."], ["horeca", "Ik wil werken in gastvrijheid, reizen of evenementen."]]
+};
+
+// Waar je vaak een toelatingsexamen, auditie, portfolio, loting of selectie tegenkomt
+const SELECTIE = {
+  design: "Vaak een portfolio of toelatingsopdracht.",
+  muziek: "Bijna altijd een auditie.",
+  zorg: "Bij onder meer geneeskunde, tandheelkunde en verloskunde selectie of loting.",
+  therapie: "Bij onder meer fysiotherapie vaak selectie.",
+  veilig: "Bij politie, defensie en luchtvaart een strenge selectie.",
+  groen: "Bij diergeneeskunde selectie.",
+  gedrag: "Bij sommige universiteiten selectie voor psychologie."
+};
+
+// Persona's: verzonnen voorbeelden van studenten, om je in te herkennen (of juist niet)
+const PERSONAS = {
+  tech: [
+    { naam: "Daan, 19", studie: "hbo Informatica", tekst: "Gamede veel en begon zelf kleine programma's te maken. Puzzelt door tot iets werkt en werkt het liefst met een paar mensen aan één project." },
+    { naam: "Noor, 18", studie: "wo Werktuigbouwkunde", tekst: "Vond wiskunde prima, maar het bouwen van een zeepkist het leukst. Wil later meewerken aan duurzame energie." }
+  ],
+  zorg: [
+    { naam: "Lisa, 18", studie: "hbo Verpleegkunde", tekst: "Werkte als bijbaan in een verpleeghuis en merkte dat ze rustig blijft als het spannend wordt. Houdt van afwisseling en van mensen." },
+    { naam: "Youssef, 19", studie: "hbo Fysiotherapie", tekst: "Voetbalt al jaren en kwam zelf bij de fysio na een blessure. Snapt graag hoe het lichaam werkt en coacht nu de jeugd." }
+  ],
+  weten: [
+    { naam: "Emma, 18", studie: "wo Biomedische wetenschappen", tekst: "Wil van alles weten waarom het zo werkt. Vindt het niet erg om lang aan één vraag te werken en houdt van precies werk." },
+    { naam: "Bram, 19", studie: "hbo Bos- en natuurbeheer", tekst: "Zit het liefst buiten, kent alle vogels in de buurt en wil iets doen aan natuur en klimaat." }
+  ],
+  creatief: [
+    { naam: "Sara, 18", studie: "hbo Communicatie & multimediaontwerp", tekst: "Maakt al jaren eigen video's en ontwerpen. Kan goed tegen kritiek en wil dingen maken waar mensen iets mee doen." },
+    { naam: "Milan, 20", studie: "Conservatorium", tekst: "Speelt sinds zijn achtste gitaar en oefent elke dag. Weet dat het een harde wereld is, maar kan zich niets anders voorstellen." }
+  ],
+  mens: [
+    { naam: "Fatima, 18", studie: "hbo Pabo", tekst: "Gaf bijles aan kinderen uit de buurt en vond het mooiste als het kwartje viel. Geduldig en goed in uitleggen." },
+    { naam: "Thomas, 19", studie: "wo Rechten", tekst: "Kan eindeloos discussiëren en leest graag. Wil weten hoe regels werken en wat eerlijk is." }
+  ],
+  bedrijf: [
+    { naam: "Jesse, 18", studie: "hbo Bedrijfskunde", tekst: "Had een bijbaan in de supermarkt en dacht steeds na over hoe het slimmer kon. Neemt graag de leiding in een groep." },
+    { naam: "Mila, 19", studie: "hbo Hotelmanagement", tekst: "Werkte in een strandtent en vindt het heerlijk als gasten een goede avond hebben. Organiseert graag en is flexibel." }
+  ]
+};
+
+// Stappenplan: hoe kom je daar? (algemene regels; check altijd de opleiding zelf)
+const ROUTE = [
+  ["Havo 4 / vwo 4–5", "Kies je profiel en ontdek wat je leuk vindt", "Je profiel bepaalt voor een deel welke studies open staan. Twijfel je? Een breed profiel houdt meer deuren open."],
+  ["Najaar en voorjaar", "Ga naar open dagen en meeloopdagen", "Bekijk in het tabblad Open dagen wanneer scholen open zijn. Eén dag meelopen zegt meer dan tien websites."],
+  ["Uiterlijk 15 januari", "Aanmelden bij loting of selectie", "Voor opleidingen met een beperkt aantal plekken (numerus fixus) meld je je vóór 15 januari aan via Studielink, de landelijke aanmeldsite."],
+  ["Uiterlijk 1 mei", "Aanmelden via Studielink", "Voor de meeste opleidingen meld je je vóór 1 mei aan. Dan heb je recht op een studiekeuzecheck en word je in principe toegelaten als je aan de eisen voldoet."],
+  ["Mei – juni", "De studiekeuzecheck", "Veel opleidingen nodigen je uit voor een kennismaking: een opdracht, vragenlijst of gesprek. Het is een advies, geen examen."],
+  ["Minstens 3 maanden voor de start", "Geld regelen bij DUO", "Vraag studiefinanciering aan bij DUO, de dienst die het geld voor je studie regelt. Daarvoor heb je je DigiD nodig."],
+  ["Voorjaar en zomer", "Woonruimte en reizen", "Ga je op kamers, begin dan vroeg met zoeken. Blijf je thuis wonen, kijk dan hoe lang je reist. Met je studentenreisproduct van DUO reis je goedkoper met het ov."],
+  ["Vanaf je 18e", "Zorgverzekering en andere zaken", "Vanaf je 18e moet je zelf een zorgverzekering hebben. Misschien kun je zorgtoeslag krijgen."],
+  ["September", "Je eerste studiedag", "De introductieweek helpt je je weg te vinden. Het eerste jaar heet de propedeuse."]
+];
+
+// Uitgelichte studie -> groep in de lijst met alle opleidingen
+const STUDIE_FAM = { verpleegkunde: "zorg", fysio: "therapie", sport: "therapie", ba: "management", iba: "management", marketing: "marketing", hrm: "management", informatica: "ict", datascience: "ict", ct: "ict", ido: "techniek", cmd: "design", mic: "communicatie", creativebiz: "design", psychologie: "gedrag", sw: "sociaal", recht: "recht", pabo: "onderwijs", biomed: "natuur", las: "natuur", biologie: "natuur" };
+
+// Gespreksgids voor ouders: [titel, waarom, vragen om te stellen, liever niet zeggen]
+const GESPREK = [
+  ["1. Het gesprek beginnen", "Kies een ontspannen moment: in de auto, tijdens het koken of bij een wandeling. Niet vlak na een slecht cijfer of als er haast is.",
+    ["Waar ben je de laatste tijd mee bezig dat je echt leuk vindt?", "Waar raak je de tijd bij kwijt?", "Wat vinden je vrienden van hun studiekeuze?"],
+    ["“Je moet nu toch eens weten wat je wilt.”", "“Toen ik zo oud was als jij …”"]],
+  ["2. Doorvragen zonder te sturen", "Je hoeft geen antwoord te hebben. Vraag door op wat je kind zegt, ook als het vaag is.",
+    ["Wat spreekt je daar precies in aan?", "Hoe zie je een gewone werkdag voor je?", "Wat zou je juist níét willen doen?"],
+    ["“Daar kun je toch niks mee verdienen.”", "“Dat is niks voor jou.”"]],
+  ["3. Samen uitzoeken", "Maak het concreet. Vul allebei de Padvinder in en vergelijk de uitslagen: de verschillen zijn het interessantste gesprek.",
+    ["Welke twee of drie opleidingen zullen we beter bekijken?", "Naar welke open dag gaan we samen?", "Kennen we iemand die dit werk doet en die je iets kunt vragen?"],
+    ["“Ik zoek het wel voor je uit.”"]],
+  ["4. Afspraken maken en loslaten", "Spreek af wie wat doet en wanneer, bijvoorbeeld aanmelden vóór 1 mei. Maar laat de keuze bij je kind.",
+    ["Wat is je volgende stap, en wanneer doe je die?", "Waar kan ik je mee helpen?"],
+    ["“Ik weet wat het beste voor je is.”"]]
+];
+const GESPREK_LASTIG = [
+  ["Als je kind het echt niet weet", "Dat is heel normaal, ook op 17. Kies dan voor iets breds, ga naar meeloopdagen, praat met de decaan of overweeg een tussenjaar met een duidelijk plan. Een verkeerde keuze is niet erg: overstappen kan."],
+  ["Als jullie het oneens zijn", "Vraag eerst waaróm je kind iets wil, en zoek het daarna samen uit: bekijk de opleiding, ga naar een open dag, zoek iemand die het werk doet. Jouw zorg mag je noemen, maar het blijft de keuze van je kind."],
+  ["Als het over geld gaat", "Studeren kost geld: collegegeld, boeken en misschien een kamer. Via DUO, de dienst die studiefinanciering regelt, krijgt je kind een basisbeurs en/of kan het lenen. Kijk samen op duo.nl wat dat voor jullie betekent."]
+];

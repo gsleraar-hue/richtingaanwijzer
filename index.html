@@ -6,7 +6,7 @@
 <title>De Richtingaanwijzer</title>
 <meta name="description" content="Wat is die studie nou eigenlijk, en wat kun je ermee? Uitleg in gewone taal, voor leerlingen én ouders.">
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=20">
+<link rel="stylesheet" href="ontwerp.css?v=23">
 </head>
 <body>
 
@@ -49,6 +49,12 @@
     <h2>De campus: bij welke faculteit hoor jij?</h2>
     <p class="sub">Je komt binnen bij de hoofdingang onderaan. Op de campus staan zes faculteiten: zes soorten werk. Welk pad je ook neemt (mbo, hbo of wo), je kunt bij elke faculteit uitkomen. <strong>Klik op een faculteit</strong> om de opleidingen te zien, of start de Padvinder: dan licht jouw route op.</p>
     <div id="kaartKaart" class="kaartwrap"></div>
+  </section>
+
+  <section id="route">
+    <h2>Hoe kom je daar? Het stappenplan</h2>
+    <p class="sub">Van profielkeuze tot je eerste studiedag: dit moet je wanneer doen en regelen. Data kunnen per opleiding verschillen, dus check altijd de opleiding zelf.</p>
+    <ol id="routeLijst" class="route"></ol>
   </section>
 
   <section id="niveaus">
@@ -138,8 +144,10 @@
         <button type="button" class="chip" data-s="" aria-pressed="true">Alles</button>
         <button type="button" class="chip" data-s="locatie" aria-pressed="false">Op locatie</button>
         <button type="button" class="chip" data-s="online" aria-pressed="false">Online</button>
+        <button type="button" class="chip" data-s="dichtbij" aria-pressed="false">Binnen 50 km</button>
       </div>
     </div>
+    <div class="woon-rij" id="odWoon"></div>
     <p id="odAantal" class="count"></p>
     <div id="odLijst"></div>
     <p class="source">Opgehaald op 31-10-2026 van de websites van de scholen zelf.</p>
@@ -162,6 +170,13 @@
       <li><strong>Een verkeerde keuze is niet erg.</strong> Wisselen of doorstromen kan vaak, en je leert er veel van.</li>
       <li><strong>Praat over werk, niet alleen over de studie.</strong> Welke mensen in jullie omgeving doen iets wat leuk lijkt? Vraag of je kind met ze mag praten.</li>
     </ul>
+    <div class="gesprek">
+      <h3 class="gesprek-kop">Gespreksgids: zo voer je het gesprek</h3>
+      <div id="gesprekLijst" class="gesprek-grid"></div>
+      <h3 class="gesprek-kop">Als het lastig wordt</h3>
+      <div id="gesprekLastig" class="gesprek-grid"></div>
+      <p><button type="button" class="btn licht" id="printGesprek">Print de gespreksgids</button></p>
+    </div>
   </section>
 
 </main>
@@ -170,6 +185,7 @@
   <form method="dialog"><button class="close" aria-label="Sluiten">✕</button></form>
   <div id="detailInhoud"></div>
 </dialog>
+<datalist id="woonLijst"></datalist>
 
 <footer>
   <div class="wrap">
@@ -178,10 +194,11 @@
   </div>
 </footer>
 
-<script src="data.js?v=20"></script>
-<script src="opleidingen.js?v=20"></script>
-<script src="uitleg.js?v=20"></script>
-<script src="opendagen.js?v=20"></script>
-<script src="app.js?v=20"></script>
+<script src="data.js?v=23"></script>
+<script src="opleidingen.js?v=23"></script>
+<script src="uitleg.js?v=23"></script>
+<script src="locaties.js?v=23"></script>
+<script src="opendagen.js?v=23"></script>
+<script src="app.js?v=23"></script>
 </body>
 </html>

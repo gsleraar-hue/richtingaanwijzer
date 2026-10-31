@@ -34,6 +34,52 @@
     return h;
   }
 
+  function personaHtml(k) {
+    return `<div class="personas">${(PERSONAS[k] || []).map((p) => `<div class="persona"><strong>${esc(p.naam)}</strong><span>${esc(p.studie)}</span><p>${vt(p.tekst)}</p></div>`).join("")}</div>`;
+  }
+
+  /* ---------- Waar woon je? Afstand en reistijd ---------- */
+  const WP = WOONPLAATSEN.map((w) => ({ naam: w[0], prov: w[1], lat: w[2], lon: w[3] }));
+  const telNaam = {};
+  WP.forEach((w) => (telNaam[w.naam] = (telNaam[w.naam] || 0) + 1));
+  const wpLabel = (w) => (telNaam[w.naam] > 1 ? `${w.naam} (${w.prov})` : w.naam);
+  const wpByLabel = new Map(WP.map((w) => [wpLabel(w).toLowerCase(), w]));
+  let thuis = null;
+  try {
+    const t = localStorage.getItem("woonplaats");
+    if (t) thuis = wpByLabel.get(t.toLowerCase()) || null;
+  } catch (e) {}
+  const km = (a, b) => {
+    const r = Math.PI / 180;
+    const x = Math.sin(((b.lat - a.lat) * r) / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(((b.lon - a.lon) * r) / 2) ** 2;
+    return 2 * 6371 * Math.asin(Math.sqrt(x));
+  };
+  const reistijd = (d) => Math.max(10, Math.round((12 + d * 1.15) / 5) * 5);
+  const afstandTekst = (d) => `${Math.round(d)} km, ± ${reistijd(d)} min reizen`;
+  const woonInput = (id) => `<label class="woon"><span>Waar woon je?</span><input id="${id}" list="woonLijst" placeholder="Bijv. Zwolle" autocomplete="off" value="${thuis ? esc(wpLabel(thuis)) : ""}"></label>`;
+  const plekkenVan = (naam) => (typeof LOC === "object" && LOC[String(naam).toLowerCase()]) || [];
+  function dichtsteBij(naam) {
+    const per = {};
+    if (!thuis) return per;
+    plekkenVan(naam).forEach(([inst, pl, lat, lon]) => {
+      const d = km(thuis, { lat, lon });
+      if (!per[inst] || d < per[inst].d) per[inst] = { d, pl };
+    });
+    return per;
+  }
+  // Hoofdlocatie per school, voor de open dagen
+  const instPlek = {};
+  if (typeof LOC === "object") Object.values(LOC).forEach((lijst) => lijst.forEach(([inst, pl, lat, lon]) => { if (!instPlek[inst]) instPlek[inst] = { pl, lat, lon }; }));
+  let huidigeOpl = null;
+  function zetThuis(val) {
+    const w = wpByLabel.get(String(val).trim().toLowerCase()) || null;
+    thuis = w;
+    try { w ? localStorage.setItem("woonplaats", wpLabel(w)) : localStorage.removeItem("woonplaats"); } catch (e) {}
+    document.querySelectorAll(".woon input").forEach((i) => { if (w) i.value = wpLabel(w); });
+    renderOpenDagen();
+    if (huidigeOpl && $("#detail").open) openOpleiding(huidigeOpl[0], huidigeOpl[1]);
+  }
+
   /* ---------- Gids ---------- */
   const state = { zoek: "", niveau: "", gebied: "" };
   const NIVEAUS = ["mbo", "hbo", "wo"];
@@ -132,8 +178,31 @@
   }
 
   function openOpleiding(o, f) {
+    huidigeOpl = [o, f];
     const X = FAM_EXTRA[f.id];
-    const insts = o.i.slice(0, 40);
+    const per = dichtsteBij(o.n);
+    const gesorteerd = thuis ? o.i.slice().sort((a, b) => ((per[a] || {}).d ?? 1e9) - ((per[b] || {}).d ?? 1e9)) : o.i;
+    const insts = gesorteerd.slice(0, 40);
+    let reis = `<div class="reis">${woonInput("woonDialog")}`;
+    if (!thuis) {
+      reis += `<p>Vul in waar je woont, dan zie je hoe ver elke school is en hoe lang je ongeveer reist.</p>`;
+    } else {
+      const afst = Object.values(per).map((x) => x.d);
+      const best = afst.length ? Math.min(...afst) : null;
+      if (best === null) reis += `<p>Van deze opleiding is geen locatie bekend.</p>`;
+      else if (best < 25) reis += `<p><strong>Thuis blijven wonen kan prima.</strong> De dichtstbijzijnde school is ${afstandTekst(best)}.</p>`;
+      else if (best <= 60) reis += `<p><strong>Reizen kan.</strong> De dichtstbijzijnde school is ${afstandTekst(best)} (enkele reis, indicatie). Veel studenten reizen zo'n afstand dagelijks.</p>`;
+      else reis += `<p><strong>Dat is ver weg:</strong> de dichtstbijzijnde school is ${afstandTekst(best)}. De meeste studenten gaan dan op kamers. Begin op tijd met zoeken, want in studentensteden is een kamer vinden niet altijd makkelijk.</p>`;
+      if (best !== null && best > 40) {
+        const alt = OPLEIDINGEN.filter((x) => x.f === o.f && x.n !== o.n).map((x) => {
+          let m = 1e9;
+          plekkenVan(x.n).forEach((p) => { const d = km(thuis, { lat: p[2], lon: p[3] }); if (d < m) m = d; });
+          return { x, d: m };
+        }).filter((z) => z.d <= 35).sort((p, q) => p.d - q.d).slice(0, 5);
+        if (alt.length) reis += `<p><strong>Dichterbij, in dezelfde groep:</strong></p><div class="mini">${alt.map((z) => `<button type="button" data-oplnaam="${esc(z.x.n)}">${esc(z.x.n)} <small style="color:var(--muted)">${Math.round(z.d)} km</small></button>`).join("")}</div>`;
+      }
+    }
+    reis += `</div>`;
     $("#detailInhoud").innerHTML =
       `<div class="badges">${o.l.map((n) => `<span class="badge ${n}">${NIV_LABEL[n]}</span>`).join("")}<span class="badge gebied">${esc(f.naam)}</span></div>` +
       `<h2 id="dTitel">${esc(o.n)}</h2>${naamRegels(o.n, o.e, "Internationale naam")}` +
@@ -143,9 +212,12 @@
       (X
         ? `<h3>Wat heb je ervoor nodig?</h3><ul><li><strong>Vooropleiding:</strong> ${o.l.map((n) => `voor ${NIV_LABEL[n]}: ${VOOROPLEIDING[n]}`).join(". ")}</li><li>${vt(X.profiel)}</li><li><strong>Het helpt als je:</strong> ${X.eigen.map(vt).join(", ")}</li></ul><p class="praat" style="margin-top:8px">Toelatingseisen verschillen per school. Lees ze altijd bij de opleiding zelf.</p>`
         : "") +
+      `<h3>Toelatingsexamen, auditie of selectie?</h3><p>${SELECTIE[f.id] ? esc(SELECTIE[f.id]) + " Kijk bij de opleiding zelf wat er precies gevraagd wordt." : "Meestal niet. Heb je de juiste vooropleiding en meld je je op tijd aan, dan mag je in principe beginnen."}</p>` +
+      `<h3>Hoe kom je daar?</h3><ol class="stapjes"><li>Zorg voor de juiste vooropleiding en het juiste profiel.</li><li>Ga naar een open dag of meeloopdag.</li><li>Meld je aan via Studielink: uiterlijk 1 mei${SELECTIE[f.id] ? ", bij selectie of loting vaak al vóór 15 januari" : ""}.</li><li>Doe de studiekeuzecheck.</li><li>Regel je geld bij DUO, en eventueel een kamer.</li></ol><p><a href="#route">Bekijk het hele stappenplan →</a></p>` +
+      `<h3>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h3>${personaHtml(f.gebied)}` +
       `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
       `<h3>Hoe studeer je?</h3><p>${o.v.map((v) => VORM[v] || v).join(", ") || "onbekend"}</p>` +
-      `<h3>Waar kan het? (${o.i.length} ${o.i.length === 1 ? "school" : "scholen"})</h3><ul>${insts.map(schoolRegel).join("")}</ul>` +
+      `<h3>Waar kan het? (${o.i.length} ${o.i.length === 1 ? "school" : "scholen"})</h3>${reis}<ul class="scholen">${insts.map((i) => schoolRegel(i, o.n, per[i])).join("")}</ul>` +
       (o.i.length > insts.length ? `<p style="color:var(--muted)">en ${o.i.length - insts.length} andere</p>` : "") +
       `<p class="praat" style="margin-top:16px">Namen kunnen misleiden. Vergelijk altijd het programma van twee scholen en lees de toelatingseisen op de website van de opleiding zelf.</p>`;
     const d = $("#detail");
@@ -194,7 +266,9 @@
       `<h3>Wat kun je ermee?</h3><ul>${s.kanJe.map((k) => `<li>${vt(k)}</li>`).join("")}</ul>` +
       `<h3>Wat heb je ervoor nodig?</h3><p>${vt(STUDIE_NODIG[s.id] || "")}</p>` +
       `<h3>Let op</h3><p>${vt(s.let)}</p>` +
-      `<h3>Praat erover</h3><p class="praat">${vt(s.praat)}</p>`;
+      `<h3>Praat erover</h3><p class="praat">${vt(s.praat)}</p>` +
+      `<h3>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h3>${personaHtml(s.gebied)}` +
+      (STUDIE_FAM[s.id] ? `<p style="margin-top:18px"><button type="button" class="btn" data-famopen="${STUDIE_FAM[s.id]}">Bekijk waar je dit kunt studeren</button></p>` : "");
     const d = $("#detail");
     if (d.showModal) d.showModal();
     else d.setAttribute("open", "");
@@ -206,7 +280,7 @@
   /* ---------- Test ---------- */
   let who = "leerling";
   let cur = 0;
-  const ANTW = ["Totaal niet", "Een beetje", "Wel", "Heel erg"];
+  const ANTW = ["Totaal niet", "Een beetje", "Neutraal", "Wel", "Heel erg"];
   const form = $("#testForm");
 
   function buildQuiz() {
@@ -256,6 +330,20 @@
     section("Deel 1: waar word je blij van?", "je interesses", "q", pick(VRAGEN));
     section("Deel 2: waar ben je goed in?", "je kwaliteiten", "k", pick(KWAL));
     section("Deel 3: wat telt voor jou in je werk?", "je waarden", "d", pick(DRIJF));
+    const tf = el("fieldset", { class: "q" });
+    tf.dataset.part = "Nog één ding";
+    tf.innerHTML = `<legend>${who === "ouder" ? "Hoe staat je kind tegenover een toelatingsexamen, auditie of portfolio?" : "Hoe sta jij tegenover een toelatingsexamen, auditie of portfolio?"}</legend>`;
+    const ts = el("div", { class: "scale drie" });
+    ["Prima, daar ga ik voor", "Liever niet, maar het mag", "Liever helemaal niet"].forEach((t, n) => {
+      const l = el("label");
+      const inp = el("input", { type: "radio", name: "t0", value: n });
+      if (kept.t0 === String(n)) inp.checked = true;
+      l.appendChild(inp);
+      l.appendChild(document.createTextNode(t));
+      ts.appendChild(l);
+    });
+    tf.appendChild(ts);
+    form.appendChild(tf);
     const act = el("div", { class: "actions" });
     act.innerHTML =
       '<button class="btn" type="submit" id="klaar" disabled>Bekijk mijn uitslag</button><span class="progress" id="voortgang" aria-live="polite"></span>';
@@ -291,14 +379,19 @@
   form.addEventListener("change", (e) => {
     const steps = [...form.querySelectorAll("fieldset.q")];
     if (e.target.type !== "radio" || steps.indexOf(e.target.closest("fieldset.q")) !== cur) return;
+    if (e.target.name === "t0") {
+      voegDiepToe();
+      setTimeout(() => toStep(cur + 1), 260);
+      return;
+    }
     if (cur < steps.length - 1) setTimeout(() => toStep(cur + 1), 260);
     else toStep(cur, true);
   });
   function updateProgress() {
-    const n = form.querySelectorAll("input[type=radio]:checked").length;
-    const tot = VRAGEN.length + KWAL.length + DRIJF.length;
-    $("#voortgang").textContent = `${n} van ${tot} ingevuld`;
-    $("#klaar").disabled = n < tot;
+    const sets = [...form.querySelectorAll("fieldset.q")].filter((f) => f.querySelector("input[type=radio]"));
+    const n = sets.filter((f) => f.querySelector("input:checked")).length;
+    $("#voortgang").textContent = `${n} van ${sets.length} ingevuld`;
+    $("#klaar").disabled = n < sets.length || !form.querySelector("fieldset.diep");
   }
   form.addEventListener("change", updateProgress);
 
@@ -306,20 +399,21 @@
     b.addEventListener("click", () => {
       who = b.dataset.who;
       document.querySelectorAll(".who .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      cur = 0;
       buildQuiz();
       $("#uitslag").hidden = true;
+      $(".testgrid").hidden = false;
     })
   );
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  function bereken() {
     const score = {};
     const max = {};
     Object.keys(GEBIEDEN).forEach((k) => ((score[k] = 0), (max[k] = 0)));
     VRAGEN.forEach((v, i) => {
       const c = form.querySelector(`input[name="q${i}"]:checked`);
       score[v[0]] += c ? Number(c.value) : 0;
-      max[v[0]] += 3;
+      max[v[0]] += 4;
     });
     const profiel = { kwal: [], drijf: [] };
     [["k", KWAL, "kwal"], ["d", DRIJF, "drijf"]].forEach(([p, lijst, sleutel]) => {
@@ -329,7 +423,7 @@
         profiel[sleutel].push({ naam: v[0], val });
         for (const g in v[3]) {
           score[g] += val * v[3][g];
-          max[g] += 3 * v[3][g];
+          max[g] += 4 * v[3][g];
         }
       });
     });
@@ -343,21 +437,59 @@
       max[k] += 3;
     });
     const rank = Object.keys(score).sort((a, b) => score[b] - score[a]);
-    showResult(rank, score, max, profiel);
+    return { score, max, profiel, rank };
+  }
+
+  // Doorvragen binnen de twee sterkste richtingen; verfijnt alleen, sluit niets uit
+  function voegDiepToe() {
+    form.querySelectorAll("fieldset.diep").forEach((f) => f.remove());
+    const voor = form.querySelector(".snav");
+    bereken().rank.slice(0, 2).forEach((k) => {
+      DIEP[k].forEach(([fam, tekst]) => {
+        const fs = el("fieldset", { class: "q diep" });
+        fs.dataset.part = "Even doorvragen: " + GEBIEDEN[k].naam;
+        fs.innerHTML = `<legend>${vt(who === "ouder" ? tekst.replace(/^Ik wil/, "Mijn kind wil") : tekst)}</legend>`;
+        const sc = el("div", { class: "scale" });
+        ANTW.forEach((t, n) => {
+          const l = el("label");
+          const inp = el("input", { type: "radio", name: `z_${k}_${fam}`, value: n });
+          l.appendChild(inp);
+          l.appendChild(document.createTextNode(t));
+          sc.appendChild(l);
+        });
+        fs.appendChild(sc);
+        fs.hidden = true;
+        form.insertBefore(fs, voor);
+      });
+    });
+    updateProgress();
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const r = bereken();
+    const famScore = {};
+    form.querySelectorAll("fieldset.diep input:checked").forEach((i) => {
+      const fam = i.name.split("_")[2];
+      famScore[fam] = Math.max(famScore[fam] || 0, Number(i.value));
+    });
+    const t = form.querySelector('input[name="t0"]:checked');
+    showResult(r.rank, r.score, r.max, r.profiel, famScore, t ? Number(t.value) : 0);
   });
 
   function topLijst(items) {
-    const s = items.slice().sort((a, b) => b.val - a.val).filter((x) => x.val >= 2).slice(0, 3);
+    const s = items.slice().sort((a, b) => b.val - a.val).filter((x) => x.val >= 3).slice(0, 3);
     return s.length ? s.map((x) => x.naam) : [];
   }
 
-  function showResult(rank, score, max, profiel) {
+  function showResult(rank, score, max, profiel, famScore = {}, toel = 0) {
     const top = rank.slice(0, 2);
     const ouder = who === "ouder";
     const pct = (k) => Math.round((score[k] / max[k]) * 100);
     const flat = pct(rank[0]) - pct(rank[5]) < 25;
 
-    let h = `<h3>${ouder ? "Wat opvalt bij je kind" : "Jouw richting"}</h3>`;
+    let h = `<div class="res-top"><button type="button" class="btn ghost" id="aanpassen">← Antwoorden aanpassen</button><button type="button" class="btn ghost" id="opnieuw">Opnieuw beginnen</button></div>` +
+      `<h3>${ouder ? "Wat opvalt bij je kind" : "Jouw richting"}</h3>`;
     h += flat
       ? `<p>Je scores liggen dicht bij elkaar. Dat is heel gewoon: er is nog niets uitgesloten. Kijk vooral naar de bovenste twee en blijf breed verkennen.</p>`
       : `<p>${ouder ? "Je kind lijkt" : "Je lijkt"} vooral te passen bij <strong>${esc(GEBIEDEN[top[0]].naam)}</strong> en <strong>${esc(GEBIEDEN[top[1]].naam)}</strong>. Dat is een richting, geen vonnis.</p>`;
@@ -375,11 +507,33 @@
     h += `<h4>${ouder ? "Wat voor je kind telt" : "Wat voor jou telt"}</h4>` +
       (dr.length ? `<div class="tags">${dr.map((t) => `<span class="tag2">${esc(t)}</span>`).join("")}</div>` : `<p>Geen uitgesproken waarden aangegeven.</p>`);
 
+    // Jij als student
+    const lijstje = (xs) => xs.map((x) => x.toLowerCase()).join(", ").replace(/, ([^,]*)$/, " en $1");
+    const delen = [];
+    if (kw.length) delen.push(`sterk in ${lijstje(kw)}`);
+    if (dr.length) delen.push(`${ouder ? "vindt" : "vindt"} ${lijstje(dr)} belangrijk`);
+    h += `<div class="jij"><h4>${ouder ? "Je kind als student" : "Jij als student"}</h4><p>${ouder ? "Je kind is" : "Jij bent"} ${delen.length ? delen.join(" en ") : "nog volop aan het ontdekken wat bij je past"}. ` +
+      `${ouder ? "Waarschijnlijk voelt je kind zich" : "Waarschijnlijk voel jij je"} thuis tussen studenten in <strong>${esc(GEBIEDEN[top[0]].naam)}</strong> en <strong>${esc(GEBIEDEN[top[1]].naam)}</strong>. Hieronder zie je wie je daar tegenkomt.</p></div>`;
+
+    // Doorvragen: welke groepen passen het best
+    const fams = Object.keys(famScore).filter((f) => famScore[f] >= 3).sort((a, b) => famScore[b] - famScore[a]).slice(0, 3);
+    if (fams.length) {
+      const famNaam = (f) => esc((FAMILIES.find((x) => x.id === f) || {}).naam || f);
+      h += `<h4>Hier pas je waarschijnlijk het best</h4><div class="mini">${fams.map((f) => `<button type="button" data-fam="${f}">${famNaam(f)}</button>`).join("")}</div>`;
+      const sel = fams.filter((f) => SELECTIE[f]);
+      if (sel.length) {
+        h += `<p class="praat">${toel === 2 ? "Je gaf aan liever geen toelatingsexamen, auditie of portfolio te willen. Let op: " : "Goed om te weten: "}` +
+          sel.map((f) => `<strong>${famNaam(f)}</strong>: ${esc(SELECTIE[f])}`).join(" ") +
+          `${toel === 2 ? " Vaak zijn er vergelijkbare opleidingen zonder selectie; vraag ernaar op de open dag." : ""}</p>`;
+      }
+    }
+
     top.forEach((k) => {
       const g = GEBIEDEN[k];
       h += `<h3 style="margin-top:30px;font-size:1.5rem;display:flex;align-items:center;gap:14px"><span class="res-ic">${icon(k, 44)}</span>${esc(g.naam)}</h3><p>${vt(g.uitleg)}</p>`;
       h += `<h4>Dit hebben deze opleidingen gemeen</h4><ul>${g.gemeen.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
       h += `<h4>Wat kun je ermee?</h4><ul>${g.kunJe.map((t) => `<li>${vt(t)}</li>`).join("")}</ul>`;
+      h += `<h4>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h4>${personaHtml(k)}`;
       h += `<p style="margin-top:8px"><strong>Studies om te bekijken:</strong></p><div class="mini">` +
         STUDIES.filter((s) => s.gebied === k).map((s) => `<button type="button" data-id="${s.id}">${esc(s.naam)} <small style="color:var(--muted)">(${s.niveau.join("/")})</small></button>`).join("") +
         "</div>";
@@ -387,6 +541,8 @@
         FAMILIES.filter((f) => f.gebied === k).map((f) => `<button type="button" data-fam="${f.id}">${esc(f.naam)}</button>`).join("") +
         "</div>";
     });
+
+    h += `<div class="ook"><h4>Ook het bekijken waard</h4><p><strong>${esc(GEBIEDEN[rank[2]].naam)}</strong> scoort ook goed. Niets is uitgesloten: <button type="button" class="linkbtn" data-gebied="${rank[2]}">bekijk die opleidingen</button>.</p></div>`;
 
     h += `<h4>Praat hier samen over</h4><ul>` +
       top.flatMap((k) => GEBIEDEN[k].praat).map((p) => `<li>${vt(p)}</li>`).join("") + "</ul>";
@@ -405,7 +561,7 @@
           ]
       ).map((t) => `<li>${vt(t)}</li>`).join("") + "</ul>";
 
-    h += `<div class="actions" style="margin-top:20px"><a class="btn" href="#/opleidingen" style="text-decoration:none">Alle studies bekijken</a><button class="btn ghost" type="button" id="opnieuw">Test opnieuw doen</button></div>`;
+    h += `<div class="actions" style="margin-top:20px"><a class="btn" href="#/opleidingen" style="text-decoration:none">Alle studies bekijken</a></div>`;
     h += `<p style="color:var(--muted);font-size:.9rem;margin-top:14px">Deze test is een gespreksstarter op basis van interesses, kwaliteiten en waarden, geen wetenschappelijk testresultaat.</p>`;
 
     const box = $("#uitslag");
@@ -418,6 +574,12 @@
     box.querySelectorAll(".mini button").forEach((b) =>
       b.addEventListener("click", () => (b.dataset.fam ? openFamily(b.dataset.fam) : openDetail(b.dataset.id)))
     );
+    $("#aanpassen").addEventListener("click", () => {
+      box.hidden = true;
+      $(".testgrid").hidden = false;
+      toStep(0);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    });
     $("#opnieuw").addEventListener("click", () => {
       form.reset();
       cur = 0;
@@ -551,7 +713,7 @@
   }
 
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
-  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], uitleg: ["niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], uitleg: ["route", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -566,6 +728,7 @@
     window.scrollTo({ top: t ? t.getBoundingClientRect().top + window.scrollY - 84 : 0, behavior: "instant" });
   }
   function route() {
+    if ($("#detail").open) $("#detail").close();
     const h = location.hash.replace(/^#\/?/, "");
     if (VIEWS[h]) return go(h);
     const v = Object.keys(VIEWS).find((k) => VIEWS[k].includes(h));
@@ -575,6 +738,8 @@
   $("#kaartKaart").innerHTML = buildMap() +
     `<div class="kaartleg"><span>Jouw route (na de test)</span><span>Paadje naar een faculteit: via mbo, hbo of wo</span><span>Klik op een faculteit</span></div>`;
   document.addEventListener("click", (e) => {
+    const fo = e.target.closest("[data-famopen]");
+    if (fo) { $("#detail").close(); openFamily(fo.dataset.famopen); return; }
     const g = e.target.closest("[data-gebied]");
     if (g) openRegion(g.dataset.gebied);
   });
@@ -594,12 +759,16 @@
     const e = OD[inst];
     return e && Array.isArray(e.dagen) ? e.dagen.filter((d) => d.datum && (d.eind || d.datum) >= vandaag).sort((a, b) => a.datum.localeCompare(b.datum)) : [];
   }
-  function schoolRegel(inst) {
+  function schoolRegel(inst, opleiding, afst) {
     const k = komend(inst)[0];
     const site = veiligeUrl(OD[inst] && OD[inst].site);
-    let r = esc(inst);
-    if (k) r += ` <span class="od-next">· ${esc(k.soort || "open dag")} ${fmt(k.datum, { weekday: "short", day: "numeric", month: "long" })}${k.plaats ? ", " + esc(k.plaats) : ""}</span>`;
-    if (site) r += ` <a href="${esc(site)}" target="_blank" rel="noopener">open dagen ↗</a>`;
+    const domein = (typeof DOMEINEN === "object" && DOMEINEN[inst]) || (site ? new URL(site).hostname.replace(/^www[.]/, "") : "");
+    const zoek = "https://duckduckgo.com/?q=" + encodeURIComponent(opleiding ? `${opleiding} ${domein ? "site:" + domein : inst}` : inst);
+    let r = `<strong>${esc(inst)}</strong>`;
+    if (afst) r += ` <span class="afst">${esc(afst.pl)} · ${afstandTekst(afst.d)}</span>`;
+    if (opleiding) r += ` <a href="${esc(zoek)}" target="_blank" rel="noopener">opleiding bekijken ↗</a>`;
+    if (k) r += `<br><span class="od-next">Eerstvolgende ${esc(k.soort || "open dag")}: ${fmt(k.datum, { weekday: "short", day: "numeric", month: "long" })}${k.plaats ? ", " + esc(k.plaats) : ""}</span>`;
+    if (site) r += ` · <a href="${esc(site)}" target="_blank" rel="noopener">open dagen ↗</a>`;
     return `<li>${r}</li>`;
   }
   function renderOpenDagen() {
@@ -607,15 +776,21 @@
     const rows = [];
     Object.keys(OD).forEach((inst) => komend(inst).forEach((d) => rows.push(Object.assign({ inst, site: OD[inst].site }, d))));
     rows.sort((a, b) => a.datum.localeCompare(b.datum) || a.inst.localeCompare(b.inst));
+    rows.forEach((r) => {
+      const p = instPlek[r.inst];
+      const viaNaam = r.plaats && WP.find((w) => w.naam.toLowerCase() === String(r.plaats).toLowerCase());
+      const loc = viaNaam || p;
+      r.km = thuis && loc && !/online/i.test(r.soort || "") ? km(thuis, loc) : null;
+    });
     const f = rows.filter((r) => (!q || (r.inst + " " + (r.plaats || "")).toLowerCase().includes(q)) &&
-      (!odSoort || (odSoort === "online" ? /online/i.test(r.soort || "") : !/online/i.test(r.soort || ""))));
+      (!odSoort || (odSoort === "online" ? /online/i.test(r.soort || "") : odSoort === "dichtbij" ? r.km !== null && r.km <= 50 : !/online/i.test(r.soort || ""))));
     let h = "", maand = "";
     f.forEach((r) => {
       const m = fmt(r.datum, { month: "long", year: "numeric" });
       if (m !== maand) { if (maand) h += "</div>"; h += `<h3 class="od-maand">${m}</h3><div class="od-groep">`; maand = m; }
       const link = veiligeUrl(r.aanmelden) || veiligeUrl(r.site);
       h += `<div class="od-rij"><div class="od-datum"><b>${fmt(r.datum, { day: "numeric" })}</b><span>${fmt(r.datum, { weekday: "short" })}</span></div>` +
-        `<div class="od-info"><strong>${esc(r.inst)}</strong><span>${esc(r.soort || "open dag")}${r.plaats ? " · " + esc(r.plaats) : ""}${r.tijd ? " · " + esc(r.tijd) : ""}${r.eind && r.eind !== r.datum ? " · t/m " + fmt(r.eind, { day: "numeric", month: "short" }) : ""}</span></div>` +
+        `<div class="od-info"><strong>${esc(r.inst)}</strong><span>${esc(r.soort || "open dag")}${r.plaats ? " · " + esc(r.plaats) : ""}${r.km !== null ? " · " + afstandTekst(r.km) : ""}${r.tijd ? " · " + esc(r.tijd) : ""}${r.eind && r.eind !== r.datum ? " · t/m " + fmt(r.eind, { day: "numeric", month: "short" }) : ""}</span></div>` +
         (link ? `<a class="btn ghost od-link" href="${esc(link)}" target="_blank" rel="noopener">${veiligeUrl(r.aanmelden) ? "Aanmelden" : "Info"} ↗</a>` : "") + `</div>`;
     });
     if (maand) h += "</div>";
@@ -629,6 +804,27 @@
     document.querySelectorAll("#odChips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     renderOpenDagen();
   }));
+
+  /* ---------- Stappenplan ---------- */
+  $("#routeLijst").innerHTML = ROUTE.map((r) => `<li><span class="r-wanneer">${esc(r[0])}</span><strong>${esc(r[1])}</strong><p>${vt(r[2])}</p></li>`).join("");
+
+  /* ---------- Woonplaats-invoer ---------- */
+  $("#odWoon").innerHTML = woonInput("woonOd");
+  $("#woonLijst").innerHTML = WP.map((w) => `<option value="${esc(wpLabel(w))}"></option>`).join("");
+  document.addEventListener("change", (e) => {
+    if (e.target.matches && e.target.matches(".woon input")) zetThuis(e.target.value);
+  });
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest && e.target.closest("[data-oplnaam]");
+    if (!b) return;
+    const x = OPLEIDINGEN.find((y) => y.n === b.dataset.oplnaam);
+    if (x) openOpleiding(x, FAMILIES.find((ff) => ff.id === x.f));
+  });
+
+  /* ---------- Gespreksgids ouders ---------- */
+  $("#gesprekLijst").innerHTML = GESPREK.map((g) => `<div class="gk"><h4>${esc(g[0])}</h4><p>${vt(g[1])}</p><strong>Vraag bijvoorbeeld</strong><ul>${g[2].map((v) => `<li>${esc(v)}</li>`).join("")}</ul><strong>Liever niet</strong><ul class="niet">${g[3].map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div>`).join("");
+  $("#gesprekLastig").innerHTML = GESPREK_LASTIG.map((g) => `<div class="gk"><h4>${esc(g[0])}</h4><p>${vt(g[1])}</p></div>`).join("");
+  $("#printGesprek").addEventListener("click", () => { document.body.classList.add("print-gesprek"); window.print(); setTimeout(() => document.body.classList.remove("print-gesprek"), 500); });
 
   /* ---------- Licht / donker ---------- */
   $("#thema").addEventListener("click", () => {
