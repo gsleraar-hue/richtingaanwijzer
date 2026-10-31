@@ -854,6 +854,7 @@
     planb: ["#planb", "Plan B", "Wat als je niet wordt aangenomen?"],
     geld: ["#geld", "Wie betaalt wat?", "Collegegeld, DUO, een kamer"],
     opties: ["#opties", "Buitenland of tussenjaar?", "En later nog switchen"],
+    eerlijk: ["#eerlijk", "Waarom misschien níet?", "De vragen die een open dag overslaat"],
     niveaus: ["#niveaus", "Mbo, hbo of wo?", "Drie paden, geen doodlopende"],
     vakken: ["#vakken", "Mijn lievelingsvak", "Wat zegt het over jou, wat kun je ermee?"],
     vertaal: ["#vertaal", "Business wát?", "Engelse studienamen vertaald"],
@@ -862,13 +863,13 @@
   const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
   const VERDER = {
     test: ["samen", "sterren", "droom", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
-    opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["plan", "metro", "ouders", "geld"], plan: ["profiel", "planb", "metro", "geld"], profiel: ["plan", "opleidingen", "vakken", "metro"],
+    opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["eerlijk", "plan", "ouders", "geld"], plan: ["profiel", "planb", "metro", "geld"], profiel: ["plan", "opleidingen", "vakken", "metro"],
     uitleg: ["metro", "plan", "test", "ouders"], ouders: ["samen", "metro", "plan", "test"], samen: ["ouders", "plan", "sterren", "opendagen"],
     sterren: ["test", "droom", "metro", "opleidingen"], metro: ["planb", "plan", "toelating", "sterren"],
   };
-  const UITLEG = ["route", "toelating", "planb", "geld", "opties", "niveaus", "leerwerk", "vakken", "vertaal", "woorden"];
+  const UITLEG = ["route", "toelating", "planb", "geld", "opties", "eerlijk", "niveaus", "leerwerk", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], profiel: ["profiel"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], profiel: ["profiel"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "eerlijk", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -1178,6 +1179,7 @@
   $("#toelatingLijst").innerHTML = kaartjes(TOELATING);
   $("#geldLijst").innerHTML = kaartjes(GELD);
   $("#optiesLijst").innerHTML = kaartjes(OPTIES);
+  $("#eerlijkLijst").innerHTML = KANTTEKENINGEN.map((k) => `<div class="gk licht"><h4>${esc(k[0])}</h4><p>${vt(k[1])}</p><ul>${k[2].map((p) => `<li>${vt(p)}</li>`).join("")}</ul></div>`).join("");
   $("#kamerLijst").innerHTML = KAMER_CHECKLIST.map((k) => `<li><span class="r-wanneer">${esc(k[0])}</span><p>${vt(k[1])}</p></li>`).join("");
 
   /* ---------- Koelkastversie: doorstroomschema op één A4 ---------- */

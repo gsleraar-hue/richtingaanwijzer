@@ -322,7 +322,7 @@ const OPENDAG_TIPS = [
   ["Vooraf", ["Meld je aan als dat moet; vaak krijg je dan een programma en een plattegrond.", "Kies twee of drie voorlichtingen of proefcolleges die je echt wilt zien.", "Schrijf je vragen op: over het programma, stages, toetsen en werk na de studie.", "Doe de Padvinder en lees de uitleg van de opleiding hier, dan weet je waar je op moet letten."]],
   ["Wie gaat er mee, en waarom?", ["Waarom: met z'n tweeën zie en hoor je meer, en je hebt iemand om het na afloop mee te bespreken. Dat helpt je kiezen.", "Rol van een ouder of begeleider: luisteren, praktische vragen stellen (over geld, reizen, wonen) en achteraf doorvragen. Niet het woord voeren.", "Rol van een vriend of vriendin: samen de sfeer proeven en eerlijk tegen elkaar zeggen wat je ervan vond. Zeker handig als jullie hetzelfde overwegen.", "Geen ouder die mee kan? Neem iemand anders mee die je vertrouwt, of ga alleen: studenten en voorlichters helpen je graag, en alleen praat je vaak makkelijker.", "Spreek vooraf af: jij stelt de vragen, wie meegaat mag aanvullen."]],
   ["Hoe kom je daar?", ["Plan je reis vooraf met de routeknop bij de open dag; op open dagen is het druk in trein en bus.", "Kom ongeveer een half uur voor het begin, zodat je rustig de weg vindt.", "Welke locatie? Veel scholen zitten in meer steden. Check op welke locatie jouw opleiding is; die staat op de aanmeldpagina of in je bevestigingsmail, net als het gebouw.", "Reis je straks elke dag? Doe de reis dan op een gewone schooldag, zo weet je hoe lang het echt duurt."]],
-  ["Vragen om te stellen", ["Hoe ziet een gewone week eruit: hoeveel uur les en hoeveel zelfstudie?", "Hoe is het eerste jaar opgebouwd, en wat is het bindend studieadvies?", "Wanneer en waar loop je stage?", "Wat doen oud-studenten nu voor werk?", "Vraag studenten: wat had je willen weten voordat je begon?"]],
+  ["Vragen om te stellen", ["Hoe ziet een gewone week eruit: hoeveel uur les en hoeveel zelfstudie?", "Hoe is het eerste jaar opgebouwd, en wat is het bindend studieadvies?", "Hoeveel studenten stoppen in het eerste jaar, en waarom?", "Wanneer en waar loop je stage?", "Wat doen oud-studenten nu voor werk?", "Vraag studenten: wat had je willen weten voordat je begon?"]],
   ["Daarna", ["Schrijf meteen op wat je goed en minder goed vond.", "Vergelijk minstens twee opleidingen of scholen.", "Twijfel je nog? Plan een meeloopdag: dan loop je een echte lesdag mee."]]
 ];
 
@@ -362,6 +362,64 @@ const OPTIES = [
   ["Studeren in het buitenland", "Kan in België, Duitsland, het Verenigd Koninkrijk of verder. Aanmeldingsdata en toelatingseisen verschillen per land, vaak al in de winter. Studiefinanciering kun je onder voorwaarden meenemen; check dat bij DUO. Begin minstens een jaar van tevoren."],
   ["Een tussenjaar", "Werken, vrijwilligerswerk, reizen of een cursus. Kan heel goed, maar maak een plan: wat wil je doen, en wanneer meld je je aan? De gewone deadlines (15 januari en 1 mei) gelden dan in het jaar dat je wilt beginnen."],
   ["Eerst iets anders, later switchen", "Een verkeerde keuze is niet erg. Je kunt na het eerste jaar overstappen, of na een associate degree of mbo doorstromen."]
+];
+
+// Waarom misschien níet? De vragen die een open dag overslaat.
+// [onderwerp, kernvraag, [punten]]
+const KANTTEKENINGEN = [
+  ["Werk na je opleiding", "Vind je straks werk dat bij je diploma past?", [
+    "Bij sommige opleidingen studeren veel meer mensen af dan er banen zijn.",
+    "Vraag niet alleen óf oud-studenten werk vinden, maar wát voor werk. Werken onder je niveau telt ook mee.",
+    "Sommige beroepen veranderen snel door computers en AI. Vraag hoe de opleiding daarop inspeelt.",
+    "Op het mbo: is er genoeg plek bij leerbedrijven voor je stage of bbl-baan?"
+  ]],
+  ["Het werk zelf", "De opleiding kan leuk zijn terwijl het werk daarna niet bij je past.", [
+    "Hoe zijn de werktijden? Denk aan nachten, weekenden en feestdagen.",
+    "Hoeveel verdien je, en hoe zwaar is het werk, lichamelijk of in je hoofd?",
+    "Werk je vooral alleen, met mensen, achter een scherm of buiten?",
+    "Praat met iemand die het werk al een paar jaar doet, niet alleen met studenten."
+  ]],
+  ["Geld", "Wat kost het, en wat levert het op?", [
+    "Een lening bij DUO moet je later terugbetalen. Zet dat naast wat je ongeveer gaat verdienen.",
+    "Naast het collegegeld betaal je reizen, boeken, materiaal en soms een kamer.",
+    "Stages zijn soms onbetaald, en reizen naar het buitenland zijn soms verplicht.",
+    "Heb je al een diploma op hetzelfde niveau? Een tweede opleiding is dan vaak veel duurder.",
+    "Veel lesuren of verplichte aanwezigheid laten weinig tijd over voor een bijbaan."
+  ]],
+  ["Haalbaarheid", "Kun je het halen, en wat gebeurt er als het niet lukt?", [
+    "Veel opleidingen hebben een bindend studieadvies (BSA). Haal je te weinig punten, dan moet je stoppen, soms met een lening en zonder diploma.",
+    "Vraag hoeveel studenten in het eerste jaar stoppen, en hoeveel er hun diploma halen.",
+    "Sluit je vooropleiding aan? Denk aan wiskunde, taal en zelfstandig plannen.",
+    "Bij loting of selectie is er een kans dat je niet wordt toegelaten. Zorg voor een plan B."
+  ]],
+  ["Afstand en wonen", "Hoe ziet je week eruit, buiten de les?", [
+    "Anderhalf uur heen en anderhalf uur terug is vijftien uur reizen per week.",
+    "Op kamers gaan kost geld, en een kamer vinden is in veel steden lastig.",
+    "Verhuizen kan betekenen dat je je vrienden, sportclub of bijbaan moet missen.",
+    "Vaak is er een vergelijkbare opleiding dichterbij. Vergelijk ze even."
+  ]],
+  ["Leeftijd en timing", "Is dit het goede moment?", [
+    "Weet je het nog niet zeker? Dat is heel normaal op je zestiende of zeventiende. Een tussenjaar of een brede opleiding kan dan beter zijn.",
+    "Ben je ouder, werk je al of heb je een gezin? Een deeltijdopleiding, een duale opleiding of een associate degree past dan misschien beter.",
+    "Niet nu is iets anders dan nooit. Later beginnen kan altijd nog."
+  ]],
+  ["Je eigen reden", "Kies je dit zelf, of omdat het van je verwacht wordt?", [
+    "Kies je het omdat je ouders, je vrienden of je school het verwachten?",
+    "Kies je het om de status, of omdat het makkelijk lijkt?",
+    "Ben je enthousiast door één leuk vak, één goede docent of de sfeer op de open dag?",
+    "Vraag jezelf: zou ik dit ook kiezen als niemand wist wat ik ging doen?"
+  ]],
+  ["Open dag of echte lesdag", "Wat je op een open dag ziet, is de mooiste kant.", [
+    "Een open dag is ook reclame. De voorlichters willen dat je komt.",
+    "Het eerste jaar heeft soms veel theorie, statistiek of algemene vakken. Vraag naar het rooster en de vakken.",
+    "Een opleiding met dezelfde naam kan per school heel anders zijn.",
+    "Is de opleiding erkend (geaccrediteerd)? En wat zeggen de studenten zelf in de Nationale Studenten Enquête?"
+  ]],
+  ["Je eigen situatie", "Krijg je de hulp die je nodig hebt?", [
+    "Heb je dyslexie, een beperking of een ziekte? Vraag wat de school voor je regelt.",
+    "Zorg je thuis voor iemand? Vraag of je rooster flexibel genoeg is.",
+    "Vraag wat er gebeurt als je een tijd niet kunt studeren."
+  ]]
 ];
 
 // "Later word ik de nieuwe …": een knipoog, met daarachter echte routes en banen.
