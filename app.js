@@ -763,6 +763,10 @@
   const fmt = (d, opt) => new Date(d + "T12:00:00").toLocaleDateString("nl-NL", opt);
   const veiligeUrl = (u) => (u && /^https?:\/\//.test(u) ? u : "");
   let odSoort = "";
+  let odNiveau = "";
+  // Welke soort onderwijs biedt een school aan (uit de opleidingen); ad telt als hbo
+  const instNiv = {};
+  if (typeof INST_NIV === "object") Object.keys(INST_NIV).forEach((k) => (instNiv[k] = new Set(INST_NIV[k])));
   function komend(inst) {
     const e = OD[inst];
     return e && Array.isArray(e.dagen) ? e.dagen.filter((d) => d.datum && (d.eind || d.datum) >= vandaag).sort((a, b) => a.datum.localeCompare(b.datum)) : [];
@@ -806,6 +810,7 @@
       r.km = thuis && loc && !/online/i.test(r.soort || "") ? km(thuis, loc) : null;
     });
     const f = rows.filter((r) => (!q || (r.inst + " " + (r.plaats || "")).toLowerCase().includes(q)) &&
+      (!odNiveau || (instNiv[r.inst] && instNiv[r.inst].has(odNiveau))) &&
       (!odSoort || (odSoort === "online" ? /online/i.test(r.soort || "") : odSoort === "dichtbij" ? r.km !== null && r.km <= 50 : !/online/i.test(r.soort || ""))));
     let h = "", maand = "";
     f.forEach((r) => {
@@ -820,11 +825,18 @@
         `</div></div>`;
     });
     if (maand) h += "</div>";
-    $("#odLijst").innerHTML = h || '<p class="empty">Geen open dagen gevonden. Probeer een andere school of stad.</p>';
+    $("#odLijst").innerHTML = h || (odNiveau === "mbo"
+      ? '<p class="empty">Open dagen van het mbo staan er nog niet in. Kijk op de website van het mbo-college in je buurt, of vraag het je mentor of decaan.</p>'
+      : '<p class="empty">Geen open dagen gevonden. Probeer een andere school of stad.</p>');
     const scholen = new Set(f.map((r) => r.inst)).size;
     $("#odAantal").textContent = `${f.length} ${f.length === 1 ? "datum" : "data"} bij ${scholen} ${scholen === 1 ? "school" : "scholen"}`;
   }
   $("#odZoek").addEventListener("input", renderOpenDagen);
+  document.querySelectorAll("#odNiveau .chip").forEach((b) => b.addEventListener("click", () => {
+    odNiveau = b.dataset.n;
+    document.querySelectorAll("#odNiveau .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    renderOpenDagen();
+  }));
   document.querySelectorAll("#odChips .chip").forEach((b) => b.addEventListener("click", () => {
     odSoort = b.dataset.s;
     document.querySelectorAll("#odChips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
