@@ -401,3 +401,8 @@ main{min-height:70vh}
 .flip .back strong{font:800 1.2rem/1.2 "Segoe UI",system-ui,sans-serif;color:var(--ink)}
 .flip .back .uitleg{color:var(--muted);font-size:.93rem}
 @media (prefers-reduced-motion:reduce){.flip-in{transition:none}}
+
+/* Eén rustige bannerfoto per scherm */
+.banner{margin:0 0 30px}
+.banner img{display:block;width:100%;height:230px;object-fit:cover;object-position:center 40%;border-radius:20px}
+@media (max-width:700px){.banner img{height:150px;border-radius:14px}}

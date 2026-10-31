@@ -656,6 +656,827 @@ const OPEN_DAGEN = {
 }
 ]
 },
+"HZ University of Applied Sciences": {
+"site": "https://hz.nl/open-dag",
+"dagen": [
+{
+"datum": "2026-11-14",
+"tijd": "09:30-14:30",
+"soort": "open dag",
+"plaats": "Vlissingen en Middelburg",
+"aanmelden": "https://www.eventbrite.co.uk/e/registratie-hz-open-dag-14-november-2026-1994122373700"
+},
+{
+"datum": "2027-01-09",
+"soort": "open dag"
+},
+{
+"datum": "2027-04-17",
+"soort": "open dag"
+}
+]
+},
+"Hogeschool Leiden": {
+"site": "https://hsleiden.nl/studeren/kennismaken/open-dag-hogeschool-leiden",
+"dagen": [
+{
+"datum": "2026-11-21",
+"tijd": "09:00-14:30",
+"soort": "open dag",
+"plaats": "Leiden",
+"aanmelden": "https://formulieren.hsleiden.nl/open-dag-21-november-2026"
+},
+{
+"datum": "2027-02-13",
+"tijd": "09:00-14:30",
+"soort": "open dag",
+"plaats": "Leiden",
+"aanmelden": "https://formulieren.hsleiden.nl/open-dag-13-februari-2027"
+},
+{
+"datum": "2027-04-02",
+"tijd": "09:00-14:30",
+"soort": "open dag",
+"plaats": "Leiden"
+}
+]
+},
+"Hogeschool Van Hall Larenstein": {
+"site": "https://www.hvhl.nl/studiekeuze/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-14",
+"tijd": "12:30-15:00",
+"soort": "online open dag",
+"aanmelden": "https://www.vhluas.com/events/open-days/"
+},
+{
+"datum": "2026-11-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-leeuwarden-vrijdag-20-november-2026/"
+},
+{
+"datum": "2026-11-20",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-velp-vrijdag-20-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-leeuwarden-zaterdag-21-november-2026/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Velp",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-velp-zaterdag-21-november-2026/"
+},
+{
+"datum": "2027-02-05",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-leeuwarden-vrijdag-5-februari-2027/"
+},
+{
+"datum": "2027-02-05",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-velp-vrijdag-5-februari-2027/"
+},
+{
+"datum": "2027-02-06",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-leeuwarden-zaterdag-6-februari-2027/"
+},
+{
+"datum": "2027-02-06",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Velp",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-velp-zaterdag-6-februari-2027/"
+},
+{
+"datum": "2027-03-18",
+"tijd": "14:30-17:00",
+"soort": "online open dag",
+"aanmelden": "https://www.vhluas.com/events/open-days/"
+},
+{
+"datum": "2027-03-25",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-leeuwarden-donderdag-25-maart-2027/"
+},
+{
+"datum": "2027-03-25",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-velp-donderdag-25-maart-2027/"
+},
+{
+"datum": "2027-06-03",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Leeuwarden",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-leeuwarden-donderdag-3-juni-2027/"
+},
+{
+"datum": "2027-06-03",
+"tijd": "16:00-20:00",
+"soort": "open dag",
+"plaats": "Velp",
+"aanmelden": "https://www.hvhl.nl/formulieren/aanmelden-open-dag-velp-donderdag-3-juni-2027/"
+},
+{
+"datum": "2027-06-03",
+"tijd": "19:00-20:00",
+"soort": "online open dag",
+"aanmelden": "https://www.vhluas.com/events/open-days/"
+}
+]
+},
+"Christelijke Hogeschool Ede": {
+"site": "https://che.nl/studiekeuzehulp/open-dagen-avonden/",
+"dagen": [
+{
+"datum": "2026-11-14",
+"tijd": "10:00-16:00",
+"soort": "open dag",
+"plaats": "Ede",
+"aanmelden": "https://che.nl/agenda/open-dag-14-november/"
+},
+{
+"datum": "2027-02-06",
+"soort": "open dag",
+"plaats": "Ede"
+},
+{
+"datum": "2027-03-24",
+"soort": "open dag",
+"plaats": "Ede"
+},
+{
+"datum": "2027-06-02",
+"soort": "open dag",
+"plaats": "Ede"
+}
+]
+},
+"HAS green academy": {
+"site": "https://www.has.nl/meer-has/evenementen/",
+"dagen": [
+{
+"datum": "2026-11-12",
+"tijd": "16:00-21:00",
+"soort": "open dag",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/open-dag-den-bosch-12-november-2026/"
+},
+{
+"datum": "2026-11-13",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/open-dag-venlo-13-november-2026/"
+},
+{
+"datum": "2026-11-30",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-bedrijfskunde-en-agribusiness-den-bosch-30-november-2026/"
+},
+{
+"datum": "2026-11-30",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-bedrijfskunde-en-foodbusiness-den-bosch-30-november-2026/"
+},
+{
+"datum": "2026-11-30",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-hippische-bedrijfskunde-en-pet-business-den-bosch-30-november-2026/"
+},
+{
+"datum": "2026-11-30",
+"soort": "proefstuderen",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-hippische-bedrijfskunde-en-pet-business-venlo-30-november-2026/"
+},
+{
+"datum": "2026-11-30",
+"soort": "proefstuderen",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-bedrijfskunde-en-agribusiness-venlo-30-november-2026/"
+},
+{
+"datum": "2026-11-30",
+"soort": "proefstuderen",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-bedrijfskunde-en-foodbusiness-venlo-30-november-2026/"
+},
+{
+"datum": "2026-12-01",
+"soort": "online open dag",
+"aanmelden": "https://www.has.nl/en/more-has/events/online-meet-greet-english-taught-bachelor-programmes-1-december-2026/"
+},
+{
+"datum": "2026-12-01",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-toegepaste-biologie-den-bosch-1-december-2026/"
+},
+{
+"datum": "2026-12-01",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-ad-groene-leefomgeving-den-bosch-1-december-2026/"
+},
+{
+"datum": "2026-12-02",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-ad-ecologie-den-bosch-2-december-2026/"
+},
+{
+"datum": "2026-12-02",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-tuinbouw-en-akkerbouw-2-december-2026/"
+},
+{
+"datum": "2026-12-03",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-milieukunde-3-december-2026/"
+},
+{
+"datum": "2026-12-03",
+"soort": "proefstuderen",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-ad-groene-leefomgeving-venlo-3-december-2026/"
+},
+{
+"datum": "2026-12-03",
+"soort": "proefstuderen",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-ad-ecologie-venlo-3-december-2026/"
+},
+{
+"datum": "2026-12-03",
+"soort": "proefstuderen",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-ad-food-venlo-3-december-2026/"
+},
+{
+"datum": "2026-12-04",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-veehouderij-4-december-2026/"
+},
+{
+"datum": "2026-12-04",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-ad-food-den-bosch-4-december-2026/"
+},
+{
+"datum": "2026-12-07",
+"soort": "proefstuderen",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-toegepaste-biologie-venlo-7-december-2026/"
+},
+{
+"datum": "2026-12-07",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-food-technology-7-december-2026/"
+},
+{
+"datum": "2026-12-08",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-management-van-de-leefomgeving-8-december-2026/"
+},
+{
+"datum": "2026-12-09",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-aarde-data-analyse-en-visualisatie-9-december-2026/"
+},
+{
+"datum": "2026-12-09",
+"soort": "proefstuderen",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-food-innovation-den-bosch-9-december-2026/"
+},
+{
+"datum": "2026-12-10",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-international-food-agribusiness-10-december-2026/"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "'s-Hertogenbosch",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/open-dag-den-bosch-23-januari-2027/"
+},
+{
+"datum": "2027-01-30",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Venlo",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/open-dag-venlo-30-januari-2027/"
+},
+{
+"datum": "2027-04-01",
+"soort": "proefstuderen",
+"aanmelden": "https://www.has.nl/meer-has/evenementen/proefstuderen-international-food-agribusiness-1-april-2027/"
+}
+]
+},
+"Breda University of Applied Sciences": {
+"site": "https://www.buas.nl/en/international-students/meet-us/open-day",
+"dagen": [
+{
+"datum": "2026-11-21",
+"tijd": "09:30-15:00",
+"soort": "open dag",
+"plaats": "Breda",
+"aanmelden": "https://forms.hippocampus.eu/buas/217gitlnb7q08ofv/open/eyJSZWdpc3RyYXRpb25MaW5rSWQiOiJkN2NkOGY4ZC0wYzQ4LTQyOGYtYjdhNS0zMWQ0MTY4ZGU0NTYifQ?culture=en-US"
+},
+{
+"datum": "2027-01-23",
+"tijd": "09:30-15:00",
+"soort": "open dag",
+"plaats": "Breda"
+},
+{
+"datum": "2027-03-17",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"plaats": "Breda"
+}
+]
+},
+"Aeres Hogeschool": {
+"site": "https://www.aereshogeschool.nl/studeren/studiekeuze/open-dagen",
+"dagen": [
+{
+"datum": "2026-11-14",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Almere, Dronten en Wageningen",
+"aanmelden": "https://www.aereshogeschool.nl/agenda/open-dagen-en-voorlichting/261114-open-dag"
+},
+{
+"datum": "2026-12-08",
+"soort": "proefstuderen",
+"aanmelden": "https://www.aeresuas.com/agenda/open-dagen-en-voorlichting/261208-proefstudeerdag"
+},
+{
+"datum": "2027-01-30",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Almere, Dronten en Wageningen",
+"aanmelden": "https://www.aereshogeschool.nl/agenda/open-dagen-en-voorlichting/270130-open-dag"
+},
+{
+"datum": "2027-03-20",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Almere, Dronten en Wageningen",
+"aanmelden": "https://www.aereshogeschool.nl/agenda/open-dagen-en-voorlichting/270320-open-dag"
+},
+{
+"datum": "2027-04-13",
+"soort": "proefstuderen",
+"aanmelden": "https://www.aeresuas.com/agenda/open-dagen-en-voorlichting/270413-proefstudeerdag"
+}
+]
+},
+"Driestar educatief": {
+"site": "https://www.driestar-hogeschool.nl/agenda-en-open-dagen",
+"dagen": [
+{
+"datum": "2026-11-11",
+"tijd": "20:00-21:30",
+"soort": "online open dag",
+"aanmelden": "https://www.driestar-hogeschool.nl/agenda-en-open-dagen/online-open-avond"
+},
+{
+"datum": "2026-12-02",
+"tijd": "17:00-20:30",
+"soort": "proefstuderen",
+"plaats": "Gouda",
+"aanmelden": "https://www.driestar-hogeschool.nl/agenda-en-open-dagen/open-collegeweek-alle-opleidingen"
+},
+{
+"datum": "2026-12-03",
+"tijd": "16:00-21:00",
+"soort": "proefstuderen",
+"plaats": "Gouda",
+"aanmelden": "https://www.driestar-hogeschool.nl/agenda-en-open-dagen/open-collegeweek-alle-opleidingen"
+},
+{
+"datum": "2026-12-04",
+"tijd": "10:00-13:45",
+"soort": "proefstuderen",
+"plaats": "Gouda",
+"aanmelden": "https://www.driestar-hogeschool.nl/agenda-en-open-dagen/open-collegeweek-alle-opleidingen"
+},
+{
+"datum": "2026-12-04",
+"tijd": "10:30-13:30",
+"soort": "proefstuderen",
+"plaats": "Gouda",
+"aanmelden": "https://www.driestar-hogeschool.nl/agenda-en-open-dagen/open-collegeweek-alle-opleidingen"
+},
+{
+"datum": "2027-02-06",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Gouda"
+}
+]
+},
+"Stichting Hogeschool Viaa": {
+"site": "https://www.viaa.nl/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-14",
+"tijd": "10:00-15:00",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://www.viaa.nl/open-dagen/aanmelden-open-dag-14-november-2026/"
+},
+{
+"datum": "2027-01-27",
+"soort": "open dag",
+"plaats": "Zwolle"
+},
+{
+"datum": "2027-04-14",
+"soort": "open dag",
+"plaats": "Zwolle"
+},
+{
+"datum": "2027-06-09",
+"soort": "open dag",
+"plaats": "Zwolle"
+}
+]
+},
+"Hogeschool KPZ": {
+"site": "https://www.kpz.nl/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-10",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://www.kpz.nl/activiteiten/open-avond-10-november-2026/"
+},
+{
+"datum": "2027-01-07",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://www.kpz.nl/activiteiten/open-avond-ad-pep-en-kpznext-7-januari-2027/"
+},
+{
+"datum": "2027-02-03",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://www.kpz.nl/activiteiten/open-avond-3-februari-2027/"
+},
+{
+"datum": "2027-03-13",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://www.kpz.nl/activiteiten/open-dag-13-maart-2027/"
+},
+{
+"datum": "2027-06-02",
+"soort": "open dag",
+"plaats": "Zwolle",
+"aanmelden": "https://www.kpz.nl/activiteiten/open-avond-2-juni-2027/"
+}
+]
+},
+"Marnix Academie": {
+"site": "https://www.marnixacademie.nl/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-07",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Utrecht",
+"aanmelden": "https://www.marnixacademie.nl/evenementen/open-dag-7-november-2026/"
+},
+{
+"datum": "2026-12-10",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"plaats": "Utrecht",
+"aanmelden": "https://www.marnixacademie.nl/evenementen/open-avond-10-december-2026/"
+},
+{
+"datum": "2027-02-04",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"plaats": "Utrecht"
+},
+{
+"datum": "2027-04-10",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Utrecht"
+},
+{
+"datum": "2027-06-03",
+"tijd": "18:00-21:00",
+"soort": "open dag",
+"plaats": "Utrecht"
+}
+]
+},
+"Iselinge Hogeschool": {
+"site": "https://www.iselinge.nl/studie-kiezen/open-dag",
+"dagen": [
+{
+"datum": "2026-11-07",
+"tijd": "10:00-14:00",
+"soort": "open dag",
+"plaats": "Doetinchem",
+"aanmelden": "https://www.iselinge.nl/Aanmelden/Open-dag-aanmelden"
+},
+{
+"datum": "2027-01-30",
+"soort": "open dag",
+"plaats": "Doetinchem",
+"aanmelden": "https://www.iselinge.nl/Aanmelden/Open-dag-aanmelden"
+},
+{
+"datum": "2027-04-15",
+"tijd": "19:00-21:00",
+"soort": "open dag",
+"plaats": "Doetinchem",
+"aanmelden": "https://www.iselinge.nl/Aanmelden/Open-dag-aanmelden"
+}
+]
+},
+"Hogeschool IPABO Amsterdam Alkmaar": {
+"site": "https://www.ipabo.nl/open-dag/voltijd/",
+"dagen": [
+{
+"datum": "2026-11-28",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Amsterdam en Alkmaar",
+"aanmelden": "https://www.ipabo.nl/open-dag/"
+},
+{
+"datum": "2026-12-08",
+"tijd": "09:45-12:00",
+"soort": "proefstuderen",
+"plaats": "Alkmaar",
+"aanmelden": "https://www.ipabo.nl/studeren/proefstuderen/ps-2627-20261208-bachelor-zij/"
+},
+{
+"datum": "2026-12-10",
+"tijd": "09:45-12:00",
+"soort": "proefstuderen",
+"plaats": "Amsterdam",
+"aanmelden": "https://www.ipabo.nl/studeren/proefstuderen/ps-2627-20261210-bachelor-zij/"
+},
+{
+"datum": "2027-01-11",
+"tijd": "09:45-12:00",
+"soort": "proefstuderen",
+"plaats": "Amsterdam",
+"aanmelden": "https://www.ipabo.nl/studeren/proefstuderen/ps-2627-20270111-adpep/"
+},
+{
+"datum": "2027-01-15",
+"tijd": "09:45-12:00",
+"soort": "proefstuderen",
+"plaats": "Alkmaar",
+"aanmelden": "https://www.ipabo.nl/studeren/proefstuderen/ps-2627-20270115-adpep/"
+},
+{
+"datum": "2027-02-02",
+"tijd": "18:00-20:30",
+"soort": "open dag",
+"plaats": "Amsterdam en Alkmaar",
+"aanmelden": "https://www.ipabo.nl/open-dag/"
+},
+{
+"datum": "2027-03-20",
+"tijd": "10:00-13:00",
+"soort": "open dag",
+"plaats": "Amsterdam en Alkmaar",
+"aanmelden": "https://www.ipabo.nl/open-dag/"
+},
+{
+"datum": "2027-04-20",
+"tijd": "19:00-21:00",
+"soort": "online open dag",
+"aanmelden": "https://www.ipabo.nl/open-dag/"
+}
+]
+},
+"Pedagogische Hogeschool De Kempel": {
+"site": "https://www.kempel.nl/open-dagen/",
+"dagen": [
+{
+"datum": "2026-11-01",
+"tijd": "10:30-13:30",
+"soort": "open dag",
+"plaats": "Helmond"
+},
+{
+"datum": "2027-01-17",
+"tijd": "10:30-13:30",
+"soort": "open dag",
+"plaats": "Helmond",
+"aanmelden": "https://www.kempel.nl/open-dagen/"
+},
+{
+"datum": "2027-03-22",
+"tijd": "18:00-20:00",
+"soort": "open dag",
+"plaats": "Helmond",
+"aanmelden": "https://www.kempel.nl/open-dagen/"
+}
+]
+},
+"Hotelschool The Hague": {
+"site": "https://www.hotelschool.nl/open-days/",
+"dagen": [
+{
+"datum": "2026-11-05",
+"soort": "online open dag",
+"aanmelden": "https://www.eventbrite.co.uk/e/bachelor-online-discovery-session-hotelschool-the-hague-tickets-2003776225631"
+},
+{
+"datum": "2026-11-10",
+"soort": "online open dag",
+"aanmelden": "https://www.eventbrite.co.uk/e/bachelor-online-discovery-session-hotelschool-the-hague-tickets-2003776412189"
+},
+{
+"datum": "2026-11-11",
+"tijd": "12:00-14:00",
+"soort": "open dag",
+"plaats": "Den Haag",
+"aanmelden": "https://www.eventbrite.co.uk/e/bachelor-open-day-hotelschool-the-hague-tickets-1993127016560"
+},
+{
+"datum": "2026-11-11",
+"tijd": "12:00-14:00",
+"soort": "open dag",
+"plaats": "Amsterdam",
+"aanmelden": "https://www.eventbrite.co.uk/e/bachelor-open-day-hotelschool-the-hague-tickets-1993127042638"
+}
+]
+},
+"Tio": {
+"site": "https://www.tio.nl/opendagen/",
+"dagen": [
+{
+"datum": "2026-10-31",
+"tijd": "10:30, 12:00 en 13:00 (starttijden)",
+"soort": "open dag",
+"plaats": "Eindhoven",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=1bc69094-3a9d-44a1-84c8-ad59c2244211"
+},
+{
+"datum": "2026-11-07",
+"tijd": "11:00 en 12:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Utrecht",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=e7cd9eb2-05ef-4a12-b612-4e879dcc86d5"
+},
+{
+"datum": "2026-11-12",
+"tijd": "10:15-13:55",
+"soort": "proefstuderen",
+"plaats": "Eindhoven",
+"aanmelden": "https://www.tio.nl/contact/meeloopdag/"
+},
+{
+"datum": "2026-11-14",
+"tijd": "11:00 en 12:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Groningen",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=806268f5-bda9-4e97-b104-4eedfd2f7126"
+},
+{
+"datum": "2026-11-18",
+"tijd": "10:15-13:55",
+"soort": "proefstuderen",
+"plaats": "Utrecht",
+"aanmelden": "https://www.tio.nl/contact/meeloopdag/"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:30, 12:00, 13:00 en 14:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Amsterdam",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=5d836a79-8795-f111-8076-7c1e523742b4"
+},
+{
+"datum": "2026-11-21",
+"tijd": "10:30, 12:00, 13:00 en 14:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Rotterdam",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=e2cbaa04-9dc4-4664-9d8c-a7be48f46973"
+},
+{
+"datum": "2026-12-01",
+"tijd": "19:00 en 20:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Hengelo",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=1410f5e5-1e6c-4a0c-9813-6260caf39e02"
+},
+{
+"datum": "2026-12-01",
+"tijd": "19:00 en 20:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Utrecht",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=c69e4927-c572-43d9-8ad4-72ca4b62ddff"
+},
+{
+"datum": "2026-12-02",
+"tijd": "10:15-13:55",
+"soort": "proefstuderen",
+"plaats": "Groningen",
+"aanmelden": "https://www.tio.nl/contact/meeloopdag/"
+},
+{
+"datum": "2026-12-03",
+"tijd": "19:00 en 20:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Eindhoven",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=17b37248-159b-f111-b8db-7ced8d4a1d1e"
+},
+{
+"datum": "2026-12-03",
+"tijd": "10:15-13:55",
+"soort": "proefstuderen",
+"plaats": "Rotterdam",
+"aanmelden": "https://www.tio.nl/contact/meeloopdag/"
+},
+{
+"datum": "2026-12-04",
+"tijd": "10:15-13:55",
+"soort": "proefstuderen",
+"plaats": "Amsterdam",
+"aanmelden": "https://www.tio.nl/contact/meeloopdag/"
+},
+{
+"datum": "2027-01-12",
+"tijd": "10:15-13:55",
+"soort": "proefstuderen",
+"plaats": "Hengelo",
+"aanmelden": "https://www.tio.nl/contact/meeloopdag/"
+},
+{
+"datum": "2027-01-16",
+"tijd": "10:30, 12:00, 13:00 en 14:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Amsterdam",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=919f136f-8e95-f111-8076-7ced8d4a12b6"
+},
+{
+"datum": "2027-01-16",
+"tijd": "11:00 en 12:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Groningen",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=005409ab-a082-48fb-beec-677c284dd8b5"
+},
+{
+"datum": "2027-01-23",
+"tijd": "11:00 en 12:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Hengelo",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=40ff94af-f6e5-4d2b-b717-18842ad48f0b"
+},
+{
+"datum": "2027-01-23",
+"tijd": "10:30, 12:00, 13:00 en 14:30 (starttijden)",
+"soort": "open dag",
+"plaats": "Rotterdam",
+"aanmelden": "https://www.tio.nl/opendagen/open-dagen/?opendag=8e2fde9b-3a34-4622-91ea-05569c0fc891"
+}
+]
+},
 "Universiteit van Amsterdam": {
 "site": "https://www.uva.nl/onderwijs/open-dagen/uva-bachelorweek/uva-bachelorweek.html",
 "dagen": []
