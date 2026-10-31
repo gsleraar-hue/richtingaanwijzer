@@ -1,4 +1,4 @@
-/* De Richtingaanwijzer: redactioneel, ingetogen. Fijne lijnen, serif, één accent. */
+/* Wat studeer je eigenlijk?: redactioneel, ingetogen. Fijne lijnen, serif, één accent. */
 :root{
   --paper:#f3f6fb; --ink:#101a3a; --muted:#52607f; --card:#ffffff; --line:rgba(16,26,58,.14);
   --accent:#3157d5; --green:#0e8f7e; --tint:#e6ecf8; --deep:#101a3a; --deep-ink:#eef2ff;
@@ -501,3 +501,5 @@ h4 small,h3 small{font-weight:500;text-transform:none;letter-spacing:0;color:var
   body.print-gesprek #ouders{display:block!important;background:#fff!important;color:#000!important;margin:0;padding:0}
   body.print-gesprek #ouders *{color:#000!important;background:none!important;border-color:#999!important}
 }
+.brand .vraag{color:var(--accent)}
+@media (max-width:520px){.brand span{font-size:.92rem}}

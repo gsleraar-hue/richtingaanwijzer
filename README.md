@@ -1,4 +1,4 @@
-# De Richtingaanwijzer
+# Wat studeer je eigenlijk?
 
 Studiekeuzewebsite voor leerlingen én ouders. De site vertaalt opleidingsnamen naar gewone taal (wat is het, wat kun je ermee, wat heb je ervoor nodig) en bevat een test op basis van interesses, kwaliteiten en waarden. De test vraagt bewust niet naar schoolvakken.
 
