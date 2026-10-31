@@ -732,7 +732,7 @@
   }
 
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
-  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { start: ["ontdek", "kaart"], droom: ["droom"], te: ["te"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -1059,6 +1059,45 @@
     window.print();
     setTimeout(() => { document.body.classList.remove("print-koelkast"); st.remove(); }, 800);
   });
+
+  /* ---------- Droombanen ---------- */
+  const famNm = (f) => esc((FAMILIES.find((x) => x.id === f) || {}).naam || f);
+  $("#droomLijst").innerHTML = DROOM.map((d, i) => `<button type="button" class="droom" data-droom="${i}"><small>Later word ik de nieuwe</small><strong>${esc(d[0])}</strong><span>${esc(d[1])}</span><em>Wat heb je nodig? →</em></button>`).join("");
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest && e.target.closest("[data-droom]");
+    if (!b) return;
+    const d = DROOM[Number(b.dataset.droom)];
+    huidigeOpl = null;
+    $("#detailInhoud").innerHTML = `<div class="badges"><span class="badge gebied">Droombaan · knipoog</span></div><h2 id="dTitel">De nieuwe ${esc(d[0])}</h2><p class="eng">${esc(d[1])}</p>` +
+      `<p class="praat">${vt(d[2])}</p>` +
+      `<h3>Wat heb je ervoor nodig?</h3><p>${vt(d[3])}</p>` +
+      `<h3>Nog meer banen in dit vak</h3><ul class="banen">${d[4].map(([baan, niv]) => `<li><strong>${vt(baan)}</strong> <span class="badge">${esc(niv)}</span></li>`).join("")}</ul>` +
+      `<h3>Opleidingen bekijken</h3><div class="mini">${d[5].map((f) => `<button type="button" data-famopen="${f}">${famNm(f)}</button>`).join("")}</div>`;
+    $("#detail").showModal();
+  });
+
+  /* ---------- Mensen vinden mij te … ---------- */
+  $("#teChips").innerHTML = TE.map((t, i) => `<button type="button" class="chip" data-te="${i}" aria-pressed="false">te ${esc(t[0])}</button>`).join("");
+  $("#teChips").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-te]");
+    if (!b) return;
+    const t = TE[Number(b.dataset.te)];
+    document.querySelectorAll("#teChips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    const k = $("#teKaart");
+    k.innerHTML = `<p class="te-kop"><span class="te-oud">Te ${esc(t[0])}?</span> <span class="te-nieuw">Nee: ${esc(t[1])}.</span></p><p>${vt(t[2])}</p><p><strong>Hier is het een kracht:</strong></p><div class="mini">${t[3].map((f) => `<button type="button" data-famopen="${f}">${famNm(f)}</button>`).join("")}</div>`;
+    k.hidden = false;
+  });
+
+  /* ---------- Printen: elk scherm en elke kaart ---------- */
+  function printMet(klasse) {
+    const dicht = [...document.querySelectorAll("main details:not([open])")];
+    dicht.forEach((d) => (d.open = true));
+    document.body.classList.add(klasse);
+    window.print();
+    setTimeout(() => { document.body.classList.remove(klasse); dicht.forEach((d) => (d.open = false)); }, 600);
+  }
+  $("#printPagina").addEventListener("click", () => printMet("print-scherm"));
+  $("#printDialoog").addEventListener("click", () => printMet("print-dialoog"));
 
   /* ---------- Licht / donker ---------- */
   $("#thema").addEventListener("click", () => {

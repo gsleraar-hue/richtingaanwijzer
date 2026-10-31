@@ -641,3 +641,43 @@ details.meer ul{margin:0;padding-left:20px}
 .pz:has(input:checked){border-color:var(--accent);background:var(--tint);box-shadow:0 0 0 2px var(--accent) inset}
 .pz:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:2px}
 .pz-geen{border-style:dashed}
+
+/* Ontdekbord, droombanen, "te …" */
+.tegels{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:14px}
+.tegel{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;transition:border-color .15s,transform .15s}
+.tegel strong{font-size:1.02rem}
+.tegel span{font-size:.86rem;opacity:.75}
+.tegel:hover,.tegel:focus-visible{border-color:var(--accent);transform:translateY(-2px)}
+.tegel.t-rood{background:var(--accent);border-color:var(--accent);color:#fff}
+.tegel.t-rood span{opacity:.9}
+.droom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:14px}
+.droom{text-align:left;display:flex;flex-direction:column;gap:2px;padding:16px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;font:inherit}
+.droom small{font-size:.75rem;opacity:.65}
+.droom strong{font-size:1.1rem}
+.droom span{font-size:.88rem}
+.droom em{font-style:normal;font-size:.82rem;color:var(--accent);margin-top:8px;font-weight:600}
+.droom:hover,.droom:focus-visible{background:var(--tint)}
+ul.banen{list-style:none;padding:0;margin:6px 0;display:grid;gap:6px}
+ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:5px}
+.te-chips{margin-top:12px}
+.te-chips .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.te-kaart{margin-top:16px;padding:18px 20px;border-radius:10px;background:var(--tint);border-left:4px solid var(--accent);max-width:680px}
+.te-kop{font-size:1.25rem;margin:0 0 8px}
+.te-oud{text-decoration:line-through;opacity:.6}
+.te-nieuw{font-weight:700;color:var(--accent)}
+.thema svg{width:18px;height:18px}
+.printdlg{right:64px;display:grid;place-items:center}
+
+/* Printen: elk scherm en elke kaart */
+@media print{
+  body.print-scherm .topbar,body.print-scherm .hero,body.print-scherm footer,body.print-scherm dialog,body.print-scherm button,body.print-scherm .tegels{display:none!important}
+  body.print-scherm,body.print-scherm main,body.print-scherm section{background:#fff!important;color:#000!important}
+  body.print-scherm section{break-inside:auto;box-shadow:none!important}
+  body.print-scherm .te-kaart,body.print-scherm .droom{border-color:#999!important}
+  body.print-dialoog > *:not(#detail){display:none!important}
+  body.print-dialoog{background:#fff!important}
+  body.print-dialoog #detail{position:static!important;display:block!important;max-width:none;width:auto;max-height:none;overflow:visible;border:0;box-shadow:none;background:#fff!important;color:#000!important}
+  body.print-dialoog #detail .close,body.print-dialoog #detail .mini,body.print-dialoog #detail [data-fav]{display:none!important}
+  body.print-dialoog #detail *{color:#000!important}
+}
+.hero .hero-cta .btn.licht:hover{background:#fff;border-color:#fff;color:#b81d2e}
