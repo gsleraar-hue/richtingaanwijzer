@@ -9,34 +9,38 @@
 </head>
 <body>
 
+<nav class="topbar" aria-label="Hoofdmenu">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#/start"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 5l3.4 8.6L28 16l-8.6 2.4L16 27l-3.4-8.6L4 16l8.6-2.4z" fill="currentColor"/></svg>Richtingaanwijzer</a>
+    <div class="tabs">
+      <a href="#/start" data-view="start">Start</a>
+      <a href="#/test" data-view="test">Kompastest</a>
+      <a href="#/opleidingen" data-view="opleidingen">Opleidingen</a>
+      <a href="#/uitleg" data-view="uitleg">Uitleg</a>
+      <a href="#/ouders" data-view="ouders">Voor ouders</a>
+    </div>
+    <div class="searchbox">
+      <label for="zoek" class="sr">Zoek een studie</label>
+      <input id="zoek" type="search" placeholder="Zoek een studie of beroep" autocomplete="off">
+    </div>
+  </div>
+</nav>
+
 <header class="hero">
   <div class="mosaic" aria-hidden="true"><i style="background-image:url('img/groep-buiten.jpg')"></i><i style="background-image:url('img/tafel-lachen.jpg')"></i><i style="background-image:url('img/campus-lopen.jpg')"></i><i style="background-image:url('img/vrienden-1.jpg')"></i><i style="background-image:url('img/koffie.jpg')"></i><i style="background-image:url('img/collegezaal.jpg')"></i><i style="background-image:url('img/laptop.jpg')"></i><i style="background-image:url('img/boeken.jpg')"></i><i style="background-image:url('img/samen-lezen.jpg')"></i><i style="background-image:url('img/vrienden-2.jpg')"></i><i style="background-image:url('img/tafel-lachen.jpg')"></i><i style="background-image:url('img/campus-lopen.jpg')"></i><i style="background-image:url('img/koffie.jpg')"></i></div>
   <div class="wash"></div><div class="shade"></div><div class="bar"></div>
   <div class="wrap">
     <p class="kicker">547 opleidingen in gewone taal · voor leerlingen én ouders</p>
-    <p class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 5l3.4 8.6L28 16l-8.6 2.4L16 27l-3.4-8.6L4 16l8.6-2.4z" fill="currentColor"/><circle cx="16" cy="16" r="2" fill="var(--paper)"/></svg>De Richtingaanwijzer</p>
     <h1>Wat is die studie nou eigenlijk?</h1>
     <p class="lead">Veel studies hebben een Engelse naam die alles en niets zegt. Hier lees je in gewone taal wat je er doet en wat je er later mee kunt. Voor jou, en voor je ouders aan de keukentafel.</p>
-    <div class="searchbox">
-      <label for="zoek" class="sr">Zoek een studie</label>
-      <input id="zoek" type="search" placeholder="Zoek op studie, beroep of woord, bijv. “business”, “psycholoog”, “data”" autocomplete="off">
+    <div class="hero-cta">
+      <a class="btn" href="#/test">Doe de kompastest</a>
+      <a class="btn licht" href="#/opleidingen">Bekijk alle opleidingen</a>
     </div>
   </div>
 </header>
 
 <main class="wrap">
-
-  <nav class="steps" aria-label="Onderdelen">
-    <a href="#kaart">Campuskaart</a>
-    <a href="#niveaus">Paden</a>
-    <a href="#vakken">Schoolvak ≠ studie</a>
-    <a href="#test">Kompastest</a>
-    <a href="#vertaal">Engelse namen</a>
-    <a href="#gids">Studies uitgelegd</a>
-    <a href="#alle">Alle opleidingen</a>
-    <a href="#woorden">Woordenlijst</a>
-    <a href="#ouders">Voor ouders</a>
-  </nav>
 
   <section id="kaart">
     <h2>De campus: bij welke faculteit hoor jij?</h2>
@@ -94,13 +98,6 @@
     <p class="sub">Studies hebben tegenwoordig flitsende namen. Klik op een kaartje en je ziet wat er echt achter zit.</p>
     <div id="vertaalLijst" class="flips"></div>
   </section>
-
-  <div class="fotoband" aria-hidden="true">
-    <img src="img/collegezaal.jpg" alt="" loading="lazy">
-    <img src="img/vrienden-1.jpg" alt="" loading="lazy">
-    <img src="img/campus-lopen.jpg" alt="" loading="lazy">
-    <img src="img/laptop.jpg" alt="" loading="lazy">
-  </div>
 
   <section id="gids">
     <h2>Studies in gewone taal</h2>

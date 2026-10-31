@@ -135,10 +135,8 @@
     renderChips();
     renderList();
     const d = document.getElementById("fam-" + id);
-    if (d) {
-      d.open = true;
-      d.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (d) d.open = true;
+    go("opleidingen", d ? d.id : "alle");
   }
 
   function badges(s) {
@@ -193,7 +191,7 @@
     const kf = el("fieldset", { class: "q" });
     kf.dataset.part = "Even opwarmen";
     kf.innerHTML = `<legend><span class="nr">0.</span>${
-      who === "ouder" ? "Waar werd je kind blij van toen het klein was?" : "Waar werd jij als kind blij van?"
+      who === "ouder" ? "Waar wordt je kind blij van? Denk aan vroeger én nu." : "Waar word jij blij van? Denk aan vroeger én nu."
     } <small>(kies er zoveel als je wilt)</small></legend>`;
     const kg = el("div", { class: "kids" });
     KIND.forEach((k, n) => {
@@ -205,7 +203,7 @@
       kg.appendChild(l);
     });
     kf.appendChild(kg);
-    kf.appendChild(el("p", { class: "hint" }, "Wat je als kind leuk vond, zegt vaak iets over wat je nu nog steeds fijn vindt."));
+    kf.appendChild(el("p", { class: "hint" }, "Wat je vroeger al leuk vond en nu nog steeds, zegt vaak veel over wat bij je past."));
     form.appendChild(kf);
     let nr = 0;
     const section = (titel, sub, prefix, items) => {
@@ -381,7 +379,7 @@
           ]
       ).map((t) => `<li>${esc(t)}</li>`).join("") + "</ul>";
 
-    h += `<div class="actions" style="margin-top:20px"><a class="btn" href="#gids" style="text-decoration:none">Alle studies bekijken</a><button class="btn ghost" type="button" id="opnieuw">Test opnieuw doen</button></div>`;
+    h += `<div class="actions" style="margin-top:20px"><a class="btn" href="#/opleidingen" style="text-decoration:none">Alle studies bekijken</a><button class="btn ghost" type="button" id="opnieuw">Test opnieuw doen</button></div>`;
     h += `<p style="color:var(--muted);font-size:.9rem;margin-top:14px">Deze test is een gespreksstarter op basis van interesses, kwaliteiten en waarden, geen wetenschappelijk testresultaat.</p>`;
 
     const box = $("#uitslag");
@@ -399,10 +397,12 @@
       cur = 0;
       buildQuiz();
       box.hidden = true;
-      $("#test").scrollIntoView();
+      $(".testgrid").hidden = false;
+      window.scrollTo({ top: 0, behavior: "instant" });
     });
-    box.focus();
-    box.scrollIntoView({ behavior: "smooth", block: "start" });
+    $(".testgrid").hidden = true;
+    box.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   /* ---------- Schoolvak -> studie ---------- */
@@ -520,8 +520,31 @@
     $("#zoek").value = "";
     renderChips();
     renderList();
-    $("#alle").scrollIntoView({ behavior: "smooth", block: "start" });
+    go("opleidingen", "alle");
   }
+
+  /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
+  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], uitleg: ["niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  let view = "";
+  function go(v, target) {
+    if (!VIEWS[v]) v = "start";
+    if (v !== view) {
+      view = v;
+      document.querySelectorAll("main > section").forEach((s) => (s.hidden = !VIEWS[v].includes(s.id)));
+      $(".hero").hidden = v !== "start";
+      document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.view === v ? "page" : "false"));
+      if (location.hash !== "#/" + v) history.replaceState(null, "", "#/" + v);
+    }
+    const t = target && document.getElementById(target);
+    window.scrollTo({ top: t ? t.getBoundingClientRect().top + window.scrollY - 84 : 0, behavior: "instant" });
+  }
+  function route() {
+    const h = location.hash.replace(/^#\/?/, "");
+    if (VIEWS[h]) return go(h);
+    const v = Object.keys(VIEWS).find((k) => VIEWS[k].includes(h));
+    go(v || "start", v ? h : null);
+  }
+  window.addEventListener("hashchange", route);
   $("#kaartKaart").innerHTML = buildMap() +
     `<div class="kaartleg"><span>Jouw route (na de test)</span><span>Paadje naar een faculteit: via mbo, hbo of wo</span><span>Klik op een faculteit</span></div>`;
   document.addEventListener("click", (e) => {
@@ -542,9 +565,10 @@
   $("#zoek").addEventListener("input", (e) => {
     state.zoek = e.target.value;
     renderList();
-    if (state.zoek && !["#gids", "#alle"].includes(location.hash)) $("#gids").scrollIntoView({ behavior: "smooth" });
+    if (state.zoek && view !== "opleidingen") go("opleidingen");
   });
   renderChips();
   renderList();
   buildQuiz();
+  route();
 })();

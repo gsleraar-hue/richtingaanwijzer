@@ -32,20 +32,20 @@ const GEBIEDEN = {
   }
 };
 
-// Kindertijd-vraag: waar werd je blij van? [gebied, tekst]
+// Opwarmvraag: waar word je blij van, vroeger en nu? [gebied, tekst]
 const KIND = [
-  ["tech", "Bouwen met Lego of knutselen"],
-  ["tech", "Gamen of met de computer spelen"],
-  ["creatief", "Tekenen, verhalen verzinnen of toneelspelen"],
-  ["creatief", "Muziek maken of optreden"],
-  ["bedrijf", "Winkeltje spelen, ruilen of handeltjes drijven"],
-  ["bedrijf", "Baas spelen en dingen organiseren"],
-  ["zorg", "Dokter spelen of voor dieren of knuffels zorgen"],
-  ["zorg", "Rennen, voetballen en bewegen"],
-  ["weten", "Insecten bekijken, proefjes doen, ‘waarom?’ vragen"],
-  ["weten", "Buiten in de natuur zijn"],
-  ["mens", "Juf of meester spelen"],
-  ["mens", "Ruzies sussen of vriendjes helpen"]
+  ["tech", "Iets bouwen, in elkaar zetten of repareren"],
+  ["tech", "Gamen of iets met computers doen"],
+  ["creatief", "Tekenen, schrijven, filmen of foto's maken"],
+  ["creatief", "Muziek maken, dansen of optreden"],
+  ["bedrijf", "Iets verkopen, ruilen of geld verdienen"],
+  ["bedrijf", "Dingen organiseren of de leiding nemen"],
+  ["zorg", "Voor iemand zorgen, mensen of dieren"],
+  ["zorg", "Sporten en bewegen"],
+  ["weten", "Uitzoeken hoe iets werkt, ‘waarom?’ vragen"],
+  ["weten", "Buiten zijn in de natuur"],
+  ["mens", "Iemand iets uitleggen of leren"],
+  ["mens", "Vrienden helpen of ruzies oplossen"]
 ];
 
 // Stellingen: [gebied, leerling-tekst, ouder-tekst]

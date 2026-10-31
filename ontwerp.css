@@ -333,3 +333,34 @@ h1{max-width:560px}
   .hero{min-height:0;padding-top:120px}
   .hero .kicker{top:-90px;max-width:80%}
 }
+
+/* Rust: vaste menubalk en losse schermen */
+[hidden]{display:none!important}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(243,246,251,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+@media (prefers-color-scheme: dark){.topbar{background:rgba(11,18,38,.92)}}
+.topbar-in{display:flex;align-items:center;gap:20px;min-height:64px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);text-decoration:none;white-space:nowrap}
+.brand svg{width:24px;height:24px;color:var(--accent)}
+.tabs{display:flex;gap:4px;flex:1}
+.tabs a{padding:8px 14px;border-radius:99px;text-decoration:none;color:var(--ink);font-weight:600;font-size:.92rem;white-space:nowrap}
+.tabs a:hover{background:var(--tint)}
+.tabs a[aria-current="page"]{background:var(--accent);color:#fff}
+@media (prefers-color-scheme: dark){.tabs a[aria-current="page"]{color:#0b1226}}
+.topbar .searchbox input{width:240px;padding:9px 16px;font-size:.92rem;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);box-shadow:none}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.btn.licht{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.7);color:#fff}
+.btn.licht:hover{background:#fff;color:#101a3a;border-color:#fff}
+.hero .kicker{top:-70px}
+main section>h2::before{content:"";width:44px;height:4px;border-radius:4px;background:linear-gradient(90deg,#3157d5,#0e9aa7);margin:0 0 16px}
+main{min-height:70vh}
+@media (max-width:900px){
+  .topbar-in{flex-wrap:wrap;gap:8px 12px;padding:10px 0}
+  .tabs{order:3;flex-basis:100%;overflow-x:auto;scrollbar-width:none}
+  .topbar .searchbox{flex:1}
+  .topbar .searchbox input{width:100%}
+}
+.topbar .searchbox{flex:0 1 230px;min-width:150px}
+.topbar .searchbox input{width:100%}
+@media (max-width:1100px) and (min-width:901px){.tabs a{padding:8px 10px;font-size:.88rem}.topbar-in{gap:14px}}
+@media (max-width:900px){.topbar .searchbox{flex:1 1 auto}.tabs{justify-content:space-between}.tabs a{padding:7px 10px;font-size:.86rem}}
+@media (max-width:520px){.tabs{gap:2px;overflow:visible}.tabs a{padding:6px 7px;font-size:.78rem}.brand{font-size:.95rem}}
