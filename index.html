@@ -6,7 +6,7 @@
 <title>Wat studeer je eigenlijk?</title>
 <meta name="description" content="Wat is die studie nou eigenlijk, en wat kun je ermee? Uitleg in gewone taal, voor leerlingen én ouders.">
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=31">
+<link rel="stylesheet" href="ontwerp.css?v=34">
 </head>
 <body>
 
@@ -59,6 +59,7 @@
     <div class="plan-in">
       <label class="woon"><span>Ik zit nu in</span><select id="planKlas"></select></label>
       <div id="planWoon"></div>
+      <span class="plan-opties">Ik denk ook aan: <label><input type="checkbox" id="optBuitenland"> studeren in het buitenland</label> <label><input type="checkbox" id="optTussenjaar"> een tussenjaar</label></span>
     </div>
     <div id="planLijst" class="plan-lijst"></div>
     <ol id="planStappen" class="route plan-stappen"></ol>
@@ -68,6 +69,7 @@
     </div>
     <div class="actions">
       <button type="button" class="btn" id="planPrint">Print mijn plan</button>
+      <button type="button" class="btn ghost" id="planKoelkast">Print voor op de koelkast</button>
       <button type="button" class="btn ghost" id="planAgenda">Zet de data in mijn agenda</button>
     </div>
   </section>
@@ -76,6 +78,26 @@
     <h2>Hoe kom je daar? Het stappenplan</h2>
     <p class="sub">Van profielkeuze tot je eerste studiedag: dit moet je wanneer doen en regelen. Data kunnen per opleiding verschillen, dus check altijd de opleiding zelf.</p>
     <ol id="routeLijst" class="route"></ol>
+  </section>
+
+  <section id="toelating">
+    <h2>Toelating: zo kom je binnen</h2>
+    <p class="sub">Eerst meld je je aan, dan word je toegelaten, en tot slot schrijf je je definitief in. Bij de toelating kan van alles horen.</p>
+    <div id="toelatingLijst" class="gesprek-grid"></div>
+  </section>
+
+  <section id="geld">
+    <h2>Wie betaalt wat?</h2>
+    <p class="sub">Studeren kost geld. Dit zijn de kosten en wie ze meestal betaalt. Bedragen veranderen, dus kijk voor de actuele bedragen op duo.nl.</p>
+    <div id="geldLijst" class="gesprek-grid"></div>
+    <h3 class="part" style="margin-top:28px">Op kamers? Wat regel je wanneer</h3>
+    <ol id="kamerLijst" class="route"></ol>
+  </section>
+
+  <section id="opties">
+    <h2>Buitenland, tussenjaar of later switchen?</h2>
+    <p class="sub">Er is niet één goede route. Dit zijn de andere mogelijkheden.</p>
+    <div id="optiesLijst" class="gesprek-grid"></div>
   </section>
 
   <section id="niveaus">
@@ -208,6 +230,7 @@
   <div id="detailInhoud"></div>
 </dialog>
 <datalist id="woonLijst"></datalist>
+<div id="koelkast" class="koelkast" aria-hidden="true"></div>
 
 <footer>
   <div class="wrap">
@@ -216,11 +239,11 @@
   </div>
 </footer>
 
-<script src="data.js?v=31"></script>
-<script src="opleidingen.js?v=31"></script>
-<script src="uitleg.js?v=31"></script>
-<script src="locaties.js?v=31"></script>
-<script src="opendagen.js?v=31"></script>
-<script src="app.js?v=31"></script>
+<script src="data.js?v=34"></script>
+<script src="opleidingen.js?v=34"></script>
+<script src="uitleg.js?v=34"></script>
+<script src="locaties.js?v=34"></script>
+<script src="opendagen.js?v=34"></script>
+<script src="app.js?v=34"></script>
 </body>
 </html>

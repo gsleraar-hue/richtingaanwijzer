@@ -275,8 +275,46 @@ const GESPREK_LASTIG = [
 // Open dag voorbereiden: [titel, punten]
 const OPENDAG_TIPS = [
   ["Vooraf", ["Meld je aan als dat moet; vaak krijg je dan een programma en een plattegrond.", "Kies twee of drie voorlichtingen of proefcolleges die je echt wilt zien.", "Schrijf je vragen op: over het programma, stages, toetsen en werk na de studie.", "Doe de Padvinder en lees de uitleg van de opleiding hier, dan weet je waar je op moet letten."]],
-  ["Wie gaat er mee?", ["Een ouder of verzorger: twee paar oren horen meer, en jullie kunnen er na afloop samen over praten.", "Een vriend of vriendin die hetzelfde overweegt.", "Of alleen: dan praat je vaak makkelijker met studenten.", "Spreek af dat jij de vragen stelt; je ouder mag aanvullen."]],
-  ["Hoe kom je daar?", ["Plan je reis vooraf met de routeknop bij de open dag; op open dagen is het druk in trein en bus.", "Kom ongeveer een half uur voor het begin, zodat je rustig de weg vindt.", "Het adres en welk gebouw je moet hebben, staan op de aanmeldpagina of in je bevestigingsmail. Grote scholen hebben vaak meerdere gebouwen of locaties.", "Reis je straks elke dag? Doe de reis dan op een gewone schooldag, zo weet je hoe lang het echt duurt."]],
+  ["Wie gaat er mee, en waarom?", ["Waarom: met z'n tweeën zie en hoor je meer, en je hebt iemand om het na afloop mee te bespreken. Dat helpt je kiezen.", "Rol van een ouder of begeleider: luisteren, praktische vragen stellen (over geld, reizen, wonen) en achteraf doorvragen. Niet het woord voeren.", "Rol van een vriend of vriendin: samen de sfeer proeven en eerlijk tegen elkaar zeggen wat je ervan vond. Zeker handig als jullie hetzelfde overwegen.", "Geen ouder die mee kan? Neem iemand anders mee die je vertrouwt, of ga alleen: studenten en voorlichters helpen je graag, en alleen praat je vaak makkelijker.", "Spreek vooraf af: jij stelt de vragen, wie meegaat mag aanvullen."]],
+  ["Hoe kom je daar?", ["Plan je reis vooraf met de routeknop bij de open dag; op open dagen is het druk in trein en bus.", "Kom ongeveer een half uur voor het begin, zodat je rustig de weg vindt.", "Welke locatie? Veel scholen zitten in meer steden. Check op welke locatie jouw opleiding is; die staat op de aanmeldpagina of in je bevestigingsmail, net als het gebouw.", "Reis je straks elke dag? Doe de reis dan op een gewone schooldag, zo weet je hoe lang het echt duurt."]],
   ["Vragen om te stellen", ["Hoe ziet een gewone week eruit: hoeveel uur les en hoeveel zelfstudie?", "Hoe is het eerste jaar opgebouwd, en wat is het bindend studieadvies?", "Wanneer en waar loop je stage?", "Wat doen oud-studenten nu voor werk?", "Vraag studenten: wat had je willen weten voordat je begon?"]],
   ["Daarna", ["Schrijf meteen op wat je goed en minder goed vond.", "Vergelijk minstens twee opleidingen of scholen.", "Twijfel je nog? Plan een meeloopdag: dan loop je een echte lesdag mee."]]
+];
+
+
+// Toelating: de mogelijkheden
+const TOELATING = [
+  ["Gewoon toegelaten", "Bij de meeste opleidingen: heb je de juiste vooropleiding en meld je je vóór 1 mei aan, dan mag je beginnen."],
+  ["Loting of selectie (numerus fixus)", "Beperkt aantal plekken. Aanmelden vóór 15 januari; daarna volgt een selectie (opdrachten, toets, gesprek) of een loting."],
+  ["Portfolio of toelatingsopdracht", "Vooral bij kunst en ontwerp. Je laat werk zien of maakt een opdracht. Begin ruim op tijd met verzamelen."],
+  ["Auditie", "Bij muziek, dans en theater. Je speelt, danst of acteert voor een commissie."],
+  ["Aanvullende eisen of een toets", "Mis je een vak? Soms kun je dat inhalen met een cursus of toets (deficiëntie wegwerken). Ben je 21 of ouder zonder het juiste diploma, dan is er vaak een toelatingstoets (21+-toets)."]
+];
+
+// Wie betaalt wat?
+const GELD = [
+  ["Collegegeld", "Elk jaar te betalen aan de school, meestal met een machtiging. Kan door jou of je ouders; je kunt er ook voor lenen bij DUO (collegegeldkrediet)."],
+  ["Studiefinanciering", "Van DUO: een basisbeurs (hoger als je uitwonend bent) en je kunt lenen. Verdienen je ouders weinig, dan krijg je vaak een aanvullende beurs."],
+  ["Wat ouders bijdragen", "DUO gaat ervan uit dat ouders die genoeg verdienen bijdragen. Kunnen of willen ze dat niet? Praat erover, en kijk bij DUO wat er dan kan."],
+  ["Wonen", "Kamerhuur, gas en licht. Op een zelfstandige woning met eigen voordeur kun je vanaf je 18e huurtoeslag krijgen; op een gewone studentenkamer meestal niet."],
+  ["Reizen", "Met het studentenreisproduct van DUO reis je gratis of met korting met het ov. Je kiest zelf een week- of weekendabonnement."],
+  ["Boeken en spullen", "Boeken, een laptop en soms materiaal. Vraag op de open dag hoeveel dat ongeveer kost."],
+  ["Zorgverzekering", "Vanaf je 18e verplicht en zelf te betalen. Met een laag inkomen krijg je zorgtoeslag."],
+  ["Bijbaan", "Veel studenten werken een paar uur per week. Let op dat je studie voorgaat, zeker in het eerste jaar."]
+];
+
+// Kamer: wat regel je en wanneer
+const KAMER_CHECKLIST = [
+  ["Zodra je weet in welke stad", "Schrijf je in bij kamersites en studentenhuisvesters in die stad. Bij sommige tel je inschrijfduur: hoe eerder, hoe beter."],
+  ["Voorjaar", "Reageer op kamers, ga hospiteren (kennismaken met de huisgenoten) en kijk naar de echte kosten per maand."],
+  ["Voor je tekent", "Lees het huurcontract: huurprijs, borg, servicekosten en opzegtermijn. Betaal nooit vooraf aan iemand die je niet kunt controleren."],
+  ["Zomer", "Verhuizen, je adres binnen vijf dagen wijzigen bij de gemeente, en een inboedel- en aansprakelijkheidsverzekering regelen."],
+  ["Na verhuizen", "Laat DUO weten dat je uitwonend bent (dat scheelt in je beurs) en vraag eventueel huurtoeslag aan."]
+];
+
+// Buitenland en tussenjaar
+const OPTIES = [
+  ["Studeren in het buitenland", "Kan in België, Duitsland, het Verenigd Koninkrijk of verder. Aanmeldingsdata en toelatingseisen verschillen per land, vaak al in de winter. Studiefinanciering kun je onder voorwaarden meenemen; check dat bij DUO. Begin minstens een jaar van tevoren."],
+  ["Een tussenjaar", "Werken, vrijwilligerswerk, reizen of een cursus. Kan heel goed, maar maak een plan: wat wil je doen, en wanneer meld je je aan? De gewone deadlines (15 januari en 1 mei) gelden dan in het jaar dat je wilt beginnen."],
+  ["Eerst iets anders, later switchen", "Een verkeerde keuze is niet erg. Je kunt na het eerste jaar overstappen, of na een associate degree of mbo doorstromen."]
 ];

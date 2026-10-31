@@ -604,7 +604,9 @@
     const d = el("details", { class: "fam" });
     d.innerHTML =
       `<summary><span class="fname">${esc(v[0])}</span><span class="fgebied">${v[5].length} beroepen</span></summary>` +
-      `<div class="vakbody"><h4>Wat je er waarschijnlijk écht leuk aan vindt</h4><p>${vt(v[1])}</p>` +
+      `<div class="vakbody"><h4>Wat zegt dit vak over jou?</h4>` +
+      (VAKKEN_OVERJOU[v[0]] ? `<p><strong>Je bent waarschijnlijk goed in:</strong> ${VAKKEN_OVERJOU[v[0]][0].map(esc).join(", ")}.<br><strong>Je bent waarschijnlijk geïnteresseerd in:</strong> ${VAKKEN_OVERJOU[v[0]][1].map(esc).join(", ")}.</p>` : "") +
+      `<h4>Wat je er waarschijnlijk écht leuk aan vindt</h4><p>${vt(v[1])}</p>` +
       `<h4>Wat kun je ermee?</h4><ul class="vakwerk">${v[5].map((t) => `<li>${vt(t)}</li>`).join("")}</ul>` +
       `<h4>Waar dat terugkomt</h4><p>${vt(v[2])}</p>` +
       `<h4>Let op</h4><p>${vt(v[3])}</p>` +
@@ -719,7 +721,7 @@
   }
 
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
-  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["route", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { start: ["kaart"], test: ["test"], opleidingen: ["gids", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["route", "toelating", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -784,6 +786,14 @@
     if (thuis) p.set("origin", thuis.naam);
     return "https://www.google.com/maps/dir/?" + p.toString();
   }
+  // Scholen met meer locaties: waar is de open dag van jouw opleiding?
+  const instLocs = {};
+  if (typeof LOC === "object") Object.values(LOC).forEach((l) => l.forEach(([inst, pl]) => { (instLocs[inst] = instLocs[inst] || new Set()).add(pl); }));
+  function locatieWaarschuwing(r) {
+    const n = instLocs[r.inst] ? instLocs[r.inst].size : 0;
+    if (n < 2 || /online/i.test(r.soort || "")) return "";
+    return `<span class="od-loc">${r.plaats ? "Deze open dag is in " + esc(r.plaats) + ". " : ""}Let op: deze school zit op ${n} locaties (${[...instLocs[r.inst]].slice(0, 6).map(esc).join(", ")}${n > 6 ? ", …" : ""}). Check vooraf waar jouw opleiding is.</span>`;
+  }
   function renderOpenDagen() {
     const q = $("#odZoek").value.trim().toLowerCase();
     const rows = [];
@@ -803,7 +813,7 @@
       if (m !== maand) { if (maand) h += "</div>"; h += `<h3 class="od-maand">${m}</h3><div class="od-groep">`; maand = m; }
       const link = veiligeUrl(r.aanmelden) || veiligeUrl(r.site);
       h += `<div class="od-rij"><div class="od-datum"><b>${fmt(r.datum, { day: "numeric" })}</b><span>${fmt(r.datum, { weekday: "short" })}</span></div>` +
-        `<div class="od-info"><strong>${esc(r.inst)}</strong><span>${esc(r.soort || "open dag")}${r.plaats ? " · " + esc(r.plaats) : ""}${r.km !== null ? " · " + afstandTekst(r.km) : ""}${r.tijd ? " · " + esc(r.tijd) : ""}${r.eind && r.eind !== r.datum ? " · t/m " + fmt(r.eind, { day: "numeric", month: "short" }) : ""}</span></div>` +
+        `<div class="od-info"><strong>${esc(r.inst)}</strong>${locatieWaarschuwing(r)}<span>${esc(r.soort || "open dag")}${r.plaats ? " · " + esc(r.plaats) : ""}${r.km !== null ? " · " + afstandTekst(r.km) : ""}${r.tijd ? " · " + esc(r.tijd) : ""}${r.eind && r.eind !== r.datum ? " · t/m " + fmt(r.eind, { day: "numeric", month: "short" }) : ""}</span></div>` +
         `<div class="od-knoppen">` +
         (link ? `<a class="btn ghost od-link" href="${esc(link)}" target="_blank" rel="noopener">${veiligeUrl(r.aanmelden) ? "Aanmelden" : "Info"} ↗</a>` : "") +
         (!/online/i.test(r.soort || "") ? `<a class="od-route" href="${esc(routeLink(r))}" target="_blank" rel="noopener">Route ↗</a>` : "") +
@@ -890,10 +900,18 @@
     st.push({ id: "opendag", wanneer: "Najaar en voorjaar", titel: "Ga naar open dagen en meeloopdagen", tekst: od.length ? `<ul class="plan-od">${od.slice(0, 8).map((x) => `<li><strong>${fmt(x.dag.datum, { weekday: "short", day: "numeric", month: "long" })}</strong>: ${esc(x.inst)}${x.d ? ` (${esc(x.d.pl)}, ${Math.round(x.d.d)} km)` : ""}, voor ${esc(x.opl)}${x.site ? ` · <a href="${esc(veiligeUrl(x.site))}" target="_blank" rel="noopener">info ↗</a>` : ""}</li>`).join("")}</ul>Bereid je voor met de tips bij <a href="#/opendagen">Open dagen</a>.` : `Zet opleidingen op je lijst en vul je woonplaats in, dan zie je hier de open dagen dichtbij. Of bekijk alle <a href="#/opendagen">open dagen</a>.` });
     if (selectie.length) st.push({ id: "fixus", wanneer: `Vóór 15 januari ${sj}`, titel: "Aanmelden voor opleidingen met selectie of loting", tekst: selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>: ${esc(SELECTIE[f])}`).join("<br>") + "<br>Check bij de opleiding de precieze datum en wat je moet inleveren.", datum: new Date(sj, 0, 15) });
     st.push({ id: "digid", wanneer: "Ruim op tijd", titel: "Vraag een DigiD aan", tekst: "Die heb je nodig voor Studielink en DUO. Aanvragen kost een paar dagen, want je krijgt een brief met een code." });
-    st.push({ id: "aanmelden", wanneer: `Vóór 1 mei ${sj}`, titel: "Aanmelden via Studielink", tekst: "Dan heb je recht op een studiekeuzecheck en word je in principe toegelaten als je aan de eisen voldoet. Je mag je voor meer opleidingen aanmelden.", datum: new Date(sj, 4, 1) });
+    st.push({ id: "aanmelden", wanneer: `Vóór 1 mei ${sj}`, titel: "Aanmelding: via Studielink", tekst: "Dan heb je recht op een studiekeuzecheck en word je in principe toegelaten als je aan de eisen voldoet. Je mag je voor meer opleidingen aanmelden.", datum: new Date(sj, 4, 1) });
+    st.push({ id: "toelating", wanneer: `Voorjaar ${sj}`, titel: "Toelating: word je toegelaten?", tekst: (selectie.length ? `Voor je lijst geldt: ${selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>: ${esc(SELECTIE[f])}`).join(" ")}<br>` : "Voor de opleidingen op je lijst geldt meestal: juiste vooropleiding en op tijd aangemeld, dan mag je beginnen.<br>") + `Andere vormen: loting, portfolio, auditie, aanvullende eisen. <a href="#toelating">Lees wat die betekenen →</a>` });
     st.push({ id: "check", wanneer: `Mei – juni ${sj}`, titel: "Doe de studiekeuzecheck", tekst: "Een opdracht, vragenlijst of gesprek. Het is een advies, geen examen." });
-    st.push({ id: "duo", wanneer: `Vóór 1 juni ${sj}`, titel: "Geld regelen bij DUO", tekst: "Vraag minstens drie maanden voor de start studiefinanciering aan bij DUO. Verdienen je ouders weinig of hebben ze geen inkomen? Dan kun je vaak een aanvullende beurs krijgen. Je studentenreisproduct vraag je ook bij DUO aan.", datum: new Date(sj, 5, 1) });
-    st.push({ id: "wonen", wanneer: `Voorjaar ${sj}`, titel: verst !== null && verst > 60 ? "Zoek op tijd een kamer" : "Regel je reis of woonplek", tekst: verst !== null ? (verst > 60 ? `Een opleiding op je lijst is ongeveer ${Math.round(verst)} km van huis. Begin in het voorjaar met kamers zoeken; in studentensteden is dat soms lastig.` : `De opleidingen op je lijst zijn te doen vanuit huis (tot ± ${Math.round(verst)} km). Maak de reis een keer op een gewone dag.`) : "Vul je woonplaats in, dan kijkt de site of reizen of op kamers gaan het handigst is." });
+    st.push({ id: "duo", wanneer: `Vóór 1 juni ${sj}`, titel: "Geld regelen bij DUO", tekst: "Vraag minstens drie maanden voor de start studiefinanciering aan bij DUO. Verdienen je ouders weinig of hebben ze geen inkomen? Dan kun je vaak een aanvullende beurs krijgen. Je studentenreisproduct vraag je ook bij DUO aan. <a href='#geld'>Wie betaalt wat? →</a>", datum: new Date(sj, 5, 1) });
+    st.push({ id: "inschrijving", wanneer: `Vóór 31 augustus ${sj}`, titel: "Inschrijving: maak het definitief", tekst: "Ben je toegelaten, dan schrijf je je definitief in via Studielink en regel je de betaling van het collegegeld (meestal met een machtiging). Pas dan sta je echt ingeschreven.", datum: new Date(sj, 7, 31) });
+    if (verst !== null && verst > 60) {
+      st.push({ id: "wonen", wanneer: `Voorjaar en zomer ${sj}`, titel: "Kamer zoeken en regelen", tekst: `Een opleiding op je lijst is ongeveer ${Math.round(verst)} km van huis; dan gaan de meeste studenten op kamers.<ul class="plan-od">${KAMER_CHECKLIST.map((k) => `<li><strong>${esc(k[0])}:</strong> ${vt(k[1])}</li>`).join("")}</ul>Liever niet verhuizen? Kijk bij de opleiding naar <strong>alternatieven dichterbij</strong>.` });
+    } else {
+      st.push({ id: "wonen", wanneer: `Zomer ${sj}`, titel: "Reizen met het ov", tekst: verst !== null ? `De opleidingen op je lijst zijn vanuit huis te doen (tot ± ${Math.round(verst)} km, ± ${reistijd(verst)} min). Vraag je studentenreisproduct aan bij DUO en maak de reis een keer op een gewone schooldag.` : "Vul je woonplaats in, dan kijkt de site of reizen met het ov of op kamers gaan het handigst is." });
+    }
+    if (lees("optie_buitenland", false)) st.push({ id: "buitenland", wanneer: `Uiterlijk winter ${sj - 1}`, titel: "Studeren in het buitenland voorbereiden", tekst: vt(OPTIES[0][1]) });
+    if (lees("optie_tussenjaar", false)) st.push({ id: "tussenjaar", wanneer: "Voor je eindexamen", titel: "Tussenjaar plannen", tekst: vt(OPTIES[1][1]) });
     st.push({ id: "zorg", wanneer: "Zodra je 18 wordt", titel: "Zorgverzekering en zorgtoeslag", tekst: "Vanaf je 18e moet je zelf een zorgverzekering hebben. Met een laag inkomen kun je zorgtoeslag krijgen." });
     st.push({ id: "start", wanneer: `September ${sj}`, titel: "Je eerste studiedag", tekst: "De introductieweek helpt je je weg te vinden. Vragen? Elke opleiding heeft studieadviseurs bij wie je terechtkunt.", datum: new Date(sj, 8, 1) });
     return st;
@@ -916,6 +934,10 @@
   }
 
   $("#planKlas").addEventListener("change", (e) => { bewaar("klas", e.target.value); renderPlan(); });
+  [["optBuitenland", "optie_buitenland"], ["optTussenjaar", "optie_tussenjaar"]].forEach(([id, k]) => {
+    $("#" + id).checked = lees(k, false);
+    $("#" + id).addEventListener("change", (e) => { bewaar(k, e.target.checked); renderPlan(); });
+  });
   document.addEventListener("change", (e) => {
     const c = e.target.closest && e.target.closest("[data-stap]");
     if (!c) return;
@@ -954,6 +976,56 @@
     l.download = "mijn-stappenplan.ics";
     l.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  /* ---------- Toelating, geld, kamers, opties ---------- */
+  const kaartjes = (lijst) => lijst.map((x) => `<div class="gk licht"><h4>${esc(x[0])}</h4><p>${vt(x[1])}</p></div>`).join("");
+  $("#toelatingLijst").innerHTML = kaartjes(TOELATING);
+  $("#geldLijst").innerHTML = kaartjes(GELD);
+  $("#optiesLijst").innerHTML = kaartjes(OPTIES);
+  $("#kamerLijst").innerHTML = KAMER_CHECKLIST.map((k) => `<li><span class="r-wanneer">${esc(k[0])}</span><p>${vt(k[1])}</p></li>`).join("");
+
+  /* ---------- Koelkastversie: doorstroomschema op één A4 ---------- */
+  function koelkastHtml() {
+    const sj = startJaar();
+    const fav = favOpleidingen();
+    const metSelectie = fav.some((o) => SELECTIE[o.f]);
+    const vak = (t) => `<span class="kk-vak"></span>${t}`;
+    const stap = (titel, wanneer, extra) => `<div class="kk-stap"><strong>${titel}</strong><span>${wanneer}</span>${extra ? `<em>${extra}</em>` : ""}<i class="kk-vink"></i></div>`;
+    const pijl = `<div class="kk-pijl">→</div>`;
+    const rijen = fav.map((o) => {
+      const per = dichtsteBij(o.n);
+      const scholen = thuis ? o.i.slice().sort((x, y) => ((per[x] || {}).d ?? 1e9) - ((per[y] || {}).d ?? 1e9)) : o.i;
+      const inst = scholen[0];
+      const p = per[inst];
+      const od = komend(inst).find((d) => !/online/i.test(d.soort || "")) || komend(inst)[0];
+      const sel = SELECTIE[o.f];
+      return `<tr><td>${vak("")}<strong>${esc(o.n)}</strong></td><td>${esc(inst || "")}${p ? `<br><small>${esc(p.pl)}, ${Math.round(p.d)} km</small>` : ""}</td><td>${od ? fmt(od.datum, { weekday: "short", day: "numeric", month: "short" }) : "zie site school"}</td><td>${sel ? esc(sel) : "Juiste vooropleiding is genoeg"}</td><td><strong>${sel ? "15 jan " + sj : "1 mei " + sj}</strong></td></tr>`;
+    }).join("");
+    return `<div class="kk-kop"><div><h1>Mijn route naar september ${sj}</h1><p>Naam: ______________________ &nbsp; Klas: ${esc((KLASSEN.find((k) => k[0] === lees("klas", "")) || ["", "______"])[1])}</p></div><div class="kk-merk">Wat studeer je eigenlijk?</div></div>` +
+      `<div class="kk-flow">` +
+      stap("1. Ontdekken", "nu", "Padvinder, mijn lijst") + pijl +
+      stap("2. Open dagen", "najaar en voorjaar", "kijk, vraag, vergelijk") + pijl +
+      stap("3. Aanmelding", metSelectie ? `vóór 15 jan (selectie)<br>vóór 1 mei ${sj}` : `vóór 1 mei ${sj}`, "via Studielink, met DigiD") + pijl +
+      stap("4. Toelating", `voorjaar ${sj}`, "studiekeuzecheck, evt. selectie") + pijl +
+      stap("5. Inschrijving", `vóór 31 aug ${sj}`, "collegegeld regelen") + pijl +
+      stap("6. Start", `september ${sj}`, "introductieweek") +
+      `</div>` +
+      `<h2>Mijn opleidingen</h2>` +
+      (rijen ? `<table class="kk-tabel"><thead><tr><th>Opleiding</th><th>School (dichtstbij)</th><th>Open dag</th><th>Toelating</th><th>Aanmelden vóór</th></tr></thead><tbody>${rijen}</tbody></table>` : `<p class="kk-leeg">Nog geen opleidingen op je lijst. Zet er 2 of 3 op je lijst en print opnieuw.<br><br>1. ______________________ &nbsp; 2. ______________________ &nbsp; 3. ______________________</p>`) +
+      `<div class="kk-onder"><div><h2>Niet vergeten</h2><ul>` +
+      [`DigiD aanvragen`, `Studiefinanciering bij DUO, vóór 1 juni ${sj}`, `Studentenreisproduct bij DUO`, `Reizen of een kamer zoeken`, `Zorgverzekering vanaf je 18e`].map((t) => `<li>${vak(t)}</li>`).join("") +
+      `</ul></div><div><h2>Hulp nodig?</h2><p>Je decaan of mentor, studenten op open dagen, de studieadviseur van de opleiding en DUO helpen je graag. Je hoeft het niet alleen te doen.</p><p class="kk-url">${esc(location.origin + location.pathname)}</p></div></div>`;
+  }
+  $("#planKoelkast").addEventListener("click", () => {
+    $("#koelkast").innerHTML = koelkastHtml();
+    const st = document.createElement("style");
+    st.id = "kkPagina";
+    st.textContent = "@page{size:A4 landscape;margin:12mm}";
+    document.head.appendChild(st);
+    document.body.classList.add("print-koelkast");
+    window.print();
+    setTimeout(() => { document.body.classList.remove("print-koelkast"); st.remove(); }, 800);
   });
 
   /* ---------- Licht / donker ---------- */
