@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://gsleraar-hue.github.io/watstudeerje/sitemap.xml
+Sitemap: https://watstudeerje.nl/sitemap.xml

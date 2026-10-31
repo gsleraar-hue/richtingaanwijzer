@@ -6,7 +6,7 @@ Wordt aangeroepen door build_seo.py; draai dat na het aanpassen van WOORDEN of a
 """
 import json, os, re, unicodedata, html, datetime
 
-BASE = "https://gsleraar-hue.github.io/watstudeerje/"  # straks: https://watstudeerje.nl/
+BASE = "https://watstudeerje.nl/"
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NAAM = "Wat studeer je eigenlijk?"
 

@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wat studeer je eigenlijk? Studiekeuze in gewone taal</title>
 <meta name="description" content="Ontdek wat bij je past, wat een studie écht is en hoe je er komt. In gewone taal, voor leerlingen én ouders. Zonder account.">
-<link rel="canonical" href="https://gsleraar-hue.github.io/watstudeerje/">
+<link rel="canonical" href="https://watstudeerje.nl/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_NL">
 <meta property="og:site_name" content="Wat studeer je eigenlijk?">
 <meta property="og:title" content="Wat studeer je eigenlijk? Studiekeuze in gewone taal">
 <meta property="og:description" content="Ontdek wat bij je past, wat een studie écht is en hoe je er komt. In gewone taal, voor leerlingen én ouders. Zonder account.">
-<meta property="og:url" content="https://gsleraar-hue.github.io/watstudeerje/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Wat studeer je eigenlijk?","url":"https://gsleraar-hue.github.io/watstudeerje/","inLanguage":"nl","description":"Onafhankelijke hulp bij studiekeuze in gewone taal: ruim 1.100 mbo-, hbo- en wo-opleidingen uitgelegd, Engelse studienamen vertaald, een persoonlijk stappenplan en uitleg van begrippen als LOB, BSA en numerus fixus."}</script>
+<meta property="og:url" content="https://watstudeerje.nl/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Wat studeer je eigenlijk?","url":"https://watstudeerje.nl/","inLanguage":"nl","description":"Onafhankelijke hulp bij studiekeuze in gewone taal: ruim 1.100 mbo-, hbo- en wo-opleidingen uitgelegd, Engelse studienamen vertaald, een persoonlijk stappenplan en uitleg van begrippen als LOB, BSA en numerus fixus."}</script>
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=69">
+<link rel="stylesheet" href="ontwerp.css?v=70">
 </head>
 <body>
 
@@ -27,6 +27,7 @@
       <a href="#/opleidingen" data-view="opleidingen">Opleidingen</a>
       <a href="#/opendagen" data-view="opendagen">Open dagen</a>
       <a href="#/plan" data-view="plan">Mijn plan</a>
+      <a href="#/profiel" data-view="profiel">Mijn profiel</a>
       <a href="#/uitleg" data-view="uitleg">Uitleg</a>
       <a href="#/ouders" data-view="ouders">Ouders</a>
     </div>
@@ -73,6 +74,7 @@
       <a class="tegel" href="#planb"><strong>Plan B</strong><span>Wat als je niet wordt aangenomen?</span></a>
       <a class="tegel" href="#/opendagen"><strong>Open dagen</strong><span>En een dag meelopen</span></a>
       <a class="tegel" href="#/plan"><strong>Mijn stappenplan</strong><span>Van nu tot je eerste studiedag</span></a>
+      <a class="tegel" href="#/profiel"><strong>Mijn profiel</strong><span>Je klas, profiel en vakken, anoniem</span></a>
       <a class="tegel" href="#/ouders"><strong>Voor ouders</strong><span>Zo voer je het gesprek</span></a>
     </div>
     <p class="geen-account">Geen account nodig: je browser onthoudt waar je gebleven bent. Werk dus op hetzelfde apparaat, bijvoorbeeld je schoollaptop.</p>
@@ -158,6 +160,19 @@
         <label class="btn ghost bestandknop">Zet terug uit bestand<input type="file" id="bewaarTerug" accept=".json,application/json" hidden></label>
         <button type="button" class="btn ghost" id="bewaarWis">Alles wissen</button>
       </div>
+    </div>
+  </section>
+
+  <section id="profiel">
+    <h2>Mijn profiel</h2>
+    <p class="sub">Vul in waar je nu staat. Dan zie je bij elke opleiding of je profiel en vakken passen, en klopt je stappenplan beter.</p>
+    <p class="anoniem"><strong>Anoniem en alleen op dit apparaat.</strong> Je naam is niet nodig en er is geen account. Wat je kiest, blijft in deze browser staan en gaat niet naar internet.</p>
+    <div id="profielForm" class="profiel-form"></div>
+    <div id="profielSamen" class="profiel-samen" aria-live="polite"></div>
+    <div class="actions">
+      <a class="btn" href="#/opleidingen">Bekijk opleidingen met mijn profiel</a>
+      <a class="btn ghost" href="#/plan">Naar mijn stappenplan</a>
+      <button type="button" class="btn ghost" id="profielWis">Profiel wissen</button>
     </div>
   </section>
 
@@ -435,12 +450,12 @@
   </div>
 </footer>
 
-<script src="data.js?v=69"></script>
-<script src="opleidingen.js?v=69"></script>
-<script src="uitleg.js?v=69"></script>
-<script src="mbo.js?v=69"></script>
-<script src="locaties.js?v=69"></script>
-<script src="opendagen.js?v=69"></script>
-<script src="app.js?v=69"></script>
+<script src="data.js?v=70"></script>
+<script src="opleidingen.js?v=70"></script>
+<script src="uitleg.js?v=70"></script>
+<script src="mbo.js?v=70"></script>
+<script src="locaties.js?v=70"></script>
+<script src="opendagen.js?v=70"></script>
+<script src="app.js?v=70"></script>
 </body>
 </html>

@@ -180,7 +180,7 @@
           { type: "button", class: "oplbtn" },
           `<span class="on">${esc(o.n)}</span>` +
             (o.e ? `<span class="oe">${esc(o.e)}</span>` : "") +
-            `<span class="badges">${o.l.map((n) => `<span class="badge ${n}">${NIV_LABEL[n]}</span>`).join("")}</span>`
+            `<span class="badges">${o.l.map((n) => `<span class="badge ${n}">${NIV_LABEL[n]}</span>`).join("")}${profielTeken(o, f.id)}</span>`
         );
         b.addEventListener("click", () => openOpleiding(o, f));
         ul.appendChild(b);
@@ -239,6 +239,7 @@
       (X
         ? `<h3>Wat heb je ervoor nodig?</h3><ul><li><strong>Vooropleiding:</strong> ${o.l.map((n) => `voor ${NIV_LABEL[n]}: ${VOOROPLEIDING[n] || ""}`).join(". ")}</li><li>${vt(X.profiel)}</li><li><strong>Het helpt als je:</strong> ${X.eigen.map(vt).join(", ")}</li></ul><p class="praat" style="margin-top:8px">Toelatingseisen verschillen per school. Lees ze altijd bij de opleiding zelf.</p>`
         : "") +
+      profielCheck(o, f.id) +
       `<h3>Toelatingsexamen, auditie of selectie?</h3><p>${SELECTIE[f.id] ? esc(SELECTIE[f.id]) + " Kijk bij de opleiding zelf wat er precies gevraagd wordt." : "Meestal niet. Heb je de juiste vooropleiding en meld je je op tijd aan, dan mag je in principe beginnen."}</p>` +
       `<div class="planb-box"><h3>Plan B: wat als je niet wordt aangenomen?</h3><ul>` +
       `<li>Dezelfde opleiding bij een andere school${o.i.length > 1 ? ` (${o.i.length} scholen bieden hem aan)` : ""}.</li>` +
@@ -582,7 +583,12 @@
     });
     bewaar("uitslag_" + who, { ...formWaarden(), datum: new Date().toISOString().slice(0, 10) });
     const t = form.querySelector('input[name="t0"]:checked');
-    showResult(r.rank, r.score, r.max, r.profiel, famScore, t ? Number(t.value) : 0);
+    const toon = () => showResult(r.rank, r.score, r.max, r.profiel, famScore, t ? Number(t.value) : 0);
+    // De vragen eerst rustig laten verdwijnen, dan pas de uitslag tonen
+    const grid = $(".testgrid");
+    if (grid.hidden || matchMedia("(prefers-reduced-motion: reduce)").matches) return toon();
+    grid.classList.add("weg");
+    setTimeout(() => { grid.classList.remove("weg"); toon(); }, 220);
   });
 
   function topLijst(items) {
@@ -677,8 +683,12 @@
       window.scrollTo({ top: 0, behavior: "instant" });
     });
     $(".testgrid").hidden = true;
+    box.classList.remove("verschijnt");
+    void box.offsetWidth;
+    box.classList.add("verschijnt");
     box.focus({ preventScroll: true });
-    window.scrollTo({ top: 0, behavior: "instant" });
+    // Naar het begin van de uitslag, niet naar de top van de pagina
+    window.scrollTo({ top: Math.max(0, box.getBoundingClientRect().top + window.scrollY - onderKop()), behavior: "instant" });
   }
 
   /* ---------- Schoolvak -> studie ---------- */
@@ -836,6 +846,7 @@
     opleidingen: ["#/opleidingen", "Alle opleidingen", "Mbo, hbo en wo in gewone taal"],
     opendagen: ["#/opendagen", "Open dagen", "En een dag meelopen"],
     plan: ["#/plan", "Mijn stappenplan", "Van nu tot je eerste studiedag"],
+    profiel: ["#/profiel", "Mijn profiel", "Je klas, profiel en vakken, anoniem"],
     ouders: ["#/ouders", "Voor ouders", "Zo voer je het gesprek"],
     route: ["#route", "Hoe kom je daar?", "Aanmelden, toelating, inschrijven"],
     toelating: ["#toelating", "Toelating", "Loting, selectie, portfolio"],
@@ -851,13 +862,13 @@
   const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
   const VERDER = {
     test: ["samen", "sterren", "droom", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
-    opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["plan", "metro", "ouders", "geld"], plan: ["planb", "metro", "geld", "opendagen"],
+    opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["plan", "metro", "ouders", "geld"], plan: ["profiel", "planb", "metro", "geld"], profiel: ["plan", "opleidingen", "vakken", "metro"],
     uitleg: ["metro", "plan", "test", "ouders"], ouders: ["samen", "metro", "plan", "test"], samen: ["ouders", "plan", "sterren", "opendagen"],
     sterren: ["test", "droom", "metro", "opleidingen"], metro: ["planb", "plan", "toelating", "sterren"],
   };
   const UITLEG = ["route", "toelating", "planb", "geld", "opties", "niveaus", "leerwerk", "vakken", "vertaal", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
-  const VIEWS = { samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
+  const VIEWS = { samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], profiel: ["profiel"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
   function go(v, target) {
     if (!VIEWS[v]) v = "start";
@@ -874,11 +885,14 @@
       document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.view === v ? "page" : "false"));
     }
     if (v === "samen") renderSamen();
+    if (v === "profiel") renderProfiel();
     const adres = los ? "#" + target : "#/" + v;
     if (location.hash !== adres) history.replaceState(null, "", adres);
     const t = target && document.getElementById(v === "uitleg" ? "uitlegmenu" : target);
-    window.scrollTo({ top: t ? t.getBoundingClientRect().top + window.scrollY - 84 : 0, behavior: "instant" });
+    window.scrollTo({ top: t ? t.getBoundingClientRect().top + window.scrollY - onderKop() : 0, behavior: "instant" });
   }
+  // Ruimte onder de vaste menubalk, die op desktop twee regels hoog is
+  function onderKop() { return ($(".topbar")?.offsetHeight || 64) + 20; }
   function route() {
     if ($("#detail").open) $("#detail").close();
     let h = location.hash.replace(/^#\/?/, "");
@@ -1069,7 +1083,7 @@
     const st = [];
     st.push({ id: "padvinder", wanneer: "Nu", titel: "Ontdek wat bij je past", tekst: padvinder ? `Gedaan: je Padvinder wees op <strong>${esc(GEBIEDEN[padvinder.top[0]].naam)}</strong> en <strong>${esc(GEBIEDEN[padvinder.top[1]].naam)}</strong>.` : `Doe de Padvinder (± 5 minuten). <a href="#/test">Start de Padvinder →</a>`, klaar: !!padvinder });
     st.push({ id: "lijst", wanneer: "Nu", titel: "Zet 2 of 3 opleidingen op je lijst", tekst: fav.length ? `Op je lijst: ${fav.map((o) => `<strong>${esc(o.n)}</strong>`).join(", ")}.` : `Open een opleiding en klik op “+ Zet op mijn lijst”. <a href="#/opleidingen">Naar de opleidingen →</a>`, klaar: fav.length >= 2 });
-    st.push({ id: "profiel", wanneer: "Nu", titel: "Check of je de juiste vooropleiding en het juiste profiel hebt", tekst: fams.length ? fams.map((f) => `<strong>${esc((FAMILIES.find((x) => x.id === f) || {}).naam || f)}</strong>: ${vt(FAM_EXTRA[f].profiel)}`).join("<br>") : "Dit vul je aan zodra er opleidingen op je lijst staan. Twijfel je? Vraag het je decaan." });
+    st.push({ id: "profiel", wanneer: "Nu", titel: "Check of je de juiste vooropleiding en het juiste profiel hebt", tekst: fav.length && profielIngevuld() ? `<ul class="plan-od pf-lijst">${fav.map((o) => `<li>${profielTeken(o, o.f) || ""} <strong>${esc(o.n)}</strong></li>`).join("")}</ul>Open een opleiding voor de details. <a href="#/profiel">Mijn profiel →</a>` : fams.length ? fams.map((f) => `<strong>${esc((FAMILIES.find((x) => x.id === f) || {}).naam || f)}</strong>: ${vt(FAM_EXTRA[f].profiel)}`).join("<br>") : "Dit vul je aan zodra er opleidingen op je lijst staan. Twijfel je? Vraag het je decaan." });
     st.push({ id: "opendag", wanneer: "Najaar en voorjaar", titel: "Ga naar open dagen", tekst: od.length ? `<ul class="plan-od">${od.slice(0, 8).map((x) => `<li><strong>${fmt(x.dag.datum, { weekday: "short", day: "numeric", month: "long" })}</strong>: ${esc(x.inst)}${x.d ? ` (${esc(x.d.pl)}, ${Math.round(x.d.d)} km)` : ""}, voor ${esc(x.opl)}${x.site ? ` · <a href="${esc(veiligeUrl(x.site))}" target="_blank" rel="noopener">info ↗</a>` : ""}</li>`).join("")}</ul>Bereid je voor met de tips bij <a href="#/opendagen">Open dagen</a>.` : `Zet opleidingen op je lijst en vul je woonplaats in, dan zie je hier de open dagen dichtbij. Of bekijk alle <a href="#/opendagen">open dagen</a>.` });
     st.push({ id: "meeloop", wanneer: "Vóór je je aanmeldt", titel: "Loop een dag mee", tekst: "Een open dag laat de mooie kant zien. Op een meeloopdag zit je een dag echt in de lessen en praat je met studenten. Doe het bij je top 2 of 3, liefst samen met iemand, zodat je achteraf kunt napraten. Vraag je mentor om vrij: dat mag bijna altijd." + (fav.length ? `<br>${fav.slice(0, 3).map((o) => `<a href="${esc("https://duckduckgo.com/?q=" + encodeURIComponent("meeloopdag " + o.n))}" target="_blank" rel="noopener">Meeloopdag ${esc(o.n)} ↗</a>`).join(" · ")}` : "") + ` <a href="#/opendagen">Zo regel je het →</a>` });
     if (selectie.length && !mboRoute) st.push({ id: "fixus", wanneer: `Vóór 15 januari ${sj}`, titel: "Aanmelden voor opleidingen met selectie of loting", tekst: selectie.map((f) => `<strong>${esc(FAMILIES.find((x) => x.id === f).naam)}</strong>: ${esc(SELECTIE[f])}`).join("<br>") + "<br>Check bij de opleiding de precieze datum en wat je moet inleveren.", datum: new Date(sj, 0, 15) });
@@ -1241,7 +1255,7 @@
   if (TE[lees("te", -1)]) $(`#teChips [data-te="${lees("te", -1)}"]`).click();
 
   /* ---------- Bewaard op dit apparaat ---------- */
-  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "vak", "uitslag_leerling", "uitslag_ouder", "thema"];
+  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "vak", "profiel", "uitslag_leerling", "uitslag_ouder", "thema", "hbo_waarom"];
   function renderBewaard() {
     let wp = "";
     try { wp = localStorage.getItem("woonplaats") || ""; } catch (e) {}
@@ -1257,6 +1271,7 @@
       rij("Stappen afgevinkt", String(vinkjes)) +
       rij("Woonplaats", wp ? esc(wp) : "niet ingevuld") +
       rij("Klas", klas ? esc(klas) : "niet ingevuld") +
+      rij("Profiel", profielIngevuld() ? "ingevuld" : "niet ingevuld") +
       (te ? rij("Mensen vinden mij te…", esc(te[0]) + " (" + esc(te[1]) + ")") : "");
   }
   $("#bewaarBestand").addEventListener("click", () => {
@@ -1285,6 +1300,157 @@
     if (!confirm("Alles wissen wat op dit apparaat is bewaard? Je lijst, je Padvinder en je plan zijn dan weg.")) return;
     try { BEWAAR_SLEUTELS.forEach((k) => localStorage.removeItem(k)); } catch (e) {}
     location.reload();
+  });
+
+  /* ---------- Mijn profiel (anoniem, alleen op dit apparaat) ---------- */
+  const LEERWEGEN = [["bb", "Basis (bb)"], ["kb", "Kader (kb)"], ["gl", "Gemengd (gl)"], ["tl", "Theoretisch (tl)"]];
+  const PROFIELEN_HV = [["NT", "Natuur & Techniek"], ["NG", "Natuur & Gezondheid"], ["EM", "Economie & Maatschappij"], ["CM", "Cultuur & Maatschappij"]];
+  const PROFIELEN_VMBO = ["Bouwen, wonen en interieur", "Produceren, installeren en energie", "Mobiliteit en transport", "Maritiem en techniek", "Media, vormgeving en ICT", "Zorg en welzijn", "Economie en ondernemen", "Horeca, bakkerij en recreatie", "Dienstverlening en producten", "Groen"];
+  const VAKKEN_HV = ["Wiskunde A", "Wiskunde B", "Wiskunde C", "Wiskunde D", "Natuurkunde", "Scheikunde", "Biologie", "NLT", "Informatica", "Economie", "Bedrijfseconomie", "Aardrijkskunde", "Geschiedenis", "Maatschappijwetenschappen", "Filosofie", "Duits", "Frans", "Spaans", "Latijn", "Grieks", "Kunst", "Muziek", "Tekenen", "BSM"];
+  const VAKKEN_VMBO = ["Wiskunde", "Nask1 (natuurkunde)", "Nask2 (scheikunde)", "Biologie", "Economie", "Aardrijkskunde", "Geschiedenis", "Maatschappijkunde", "Duits", "Frans", "Spaans", "Kunstvakken", "Lichamelijke opvoeding"];
+  // Vakken die bij een profiel altijd horen (havo en vwo)
+  const PROFIEL_VAKKEN = { NT: ["Wiskunde B", "Natuurkunde", "Scheikunde"], NG: ["Biologie", "Scheikunde"], EM: ["Economie", "Geschiedenis"], CM: ["Geschiedenis"] };
+  // Per groep: welk profiel past, welke vakken vaak gevraagd worden (één van), en wat het wo extra vraagt. Indicatie, geen eis.
+  const PROF_EIS = {
+    gedrag: { een: ["Wiskunde A", "Wiskunde B"] },
+    economie: { een: ["Wiskunde A", "Wiskunde B"], helpt: ["Economie"], wo: ["Wiskunde B"] },
+    management: { helpt: ["Economie", "Wiskunde A"] },
+    marketing: { helpt: ["Economie"] },
+    natuur: { prof: ["NT", "NG"], wo: ["Wiskunde B", "Scheikunde"] },
+    ict: { een: ["Wiskunde A", "Wiskunde B", "Wiskunde C"], wo: ["Wiskunde B"] },
+    techniek: { prof: ["NT", "NG"], wo: ["Wiskunde B", "Natuurkunde"] },
+    bouw: { prof: ["NT", "NG"], wo: ["Wiskunde B"] },
+    groen: { prof: ["NT", "NG"] },
+    zorg: { prof: ["NG", "NT"], wo: ["Scheikunde", "Biologie"] },
+    therapie: { prof: ["NG", "NT"] },
+  };
+  let profiel = lees("profiel", {});
+  const schoolSoort = () => { const k = lees("klas", ""); return k.startsWith("vmbo") ? "vmbo" : k.startsWith("havo") ? "havo" : k.startsWith("vwo") ? "vwo" : k.startsWith("mbo") ? "mbo" : k; };
+  const profKort = (p) => (PROFIELEN_HV.find((x) => x[0] === p) || [p, p])[1];
+  function bewaarProfiel() { bewaar("profiel", profiel); renderProfielSamen(); renderPlan(); renderList(); }
+  // Klein vinkje of kruisje in de lijst met opleidingen, alleen als je profiel is ingevuld
+  function profielTeken(o, famId) {
+    if (!profielIngevuld()) return "";
+    const c = profielCheck(o, famId, true);
+    return c === "goed" ? `<span class="pf-ok" title="Past bij je profiel en vakken" aria-label="past bij je profiel">✓</span>` : c === "let" ? `<span class="pf-nee" title="Er ontbreekt iets in je profiel of vakken" aria-label="er ontbreekt iets">✗</span>` : "";
+  }
+  function profielIngevuld() { return !!(lees("klas", "") && ((profiel.prof || []).length || (profiel.vakken || []).length || profiel.leerweg || profiel.richting)); }
+
+  function chipGroep(naam, label, opties, gekozen, extra = "") {
+    return `<fieldset class="pf-groep"><legend>${label}</legend>${extra}<div class="chips">${opties.map(([w, t]) => `<button type="button" class="chip" data-pf="${naam}" data-w="${esc(w)}" aria-pressed="${gekozen.includes(w)}">${esc(t)}</button>`).join("")}</div></fieldset>`;
+  }
+  function renderProfiel() {
+    const klas = lees("klas", "");
+    const s = schoolSoort();
+    let h = chipGroep("klas", "Ik zit nu in", KLASSEN.filter((k) => k[0]), [klas]);
+    if (s === "vmbo") {
+      h += chipGroep("leerweg", "Mijn leerweg", LEERWEGEN, [profiel.leerweg || ""]);
+      h += chipGroep("vmboprof", "Mijn profiel", PROFIELEN_VMBO.map((p) => [p, p]), [profiel.richting || ""], `<p class="pf-hint">Zit je in de theoretische leerweg zonder profiel? Sla dit dan over.</p>`);
+    }
+    if (s === "havo" || s === "vwo") h += chipGroep("prof", "Mijn profiel", PROFIELEN_HV, profiel.prof || [], `<p class="pf-hint">Een combinatieprofiel, zoals N&amp;T met N&amp;G? Kies ze allebei.</p>`);
+    if (s === "mbo") h += `<fieldset class="pf-groep"><legend>Mijn opleiding gaat over</legend><select id="pfRichting"><option value="">Kies…</option>${FAMILIES.map((f) => `<option value="${f.id}" ${profiel.richting === f.id ? "selected" : ""}>${esc(f.naam)}</option>`).join("")}</select></fieldset>`;
+    const vakLijst = s === "vmbo" ? VAKKEN_VMBO : s === "havo" ? VAKKEN_HV.filter((v) => !["Wiskunde C", "Latijn", "Grieks"].includes(v)) : s === "vwo" ? VAKKEN_HV : [];
+    if (vakLijst.length) h += chipGroep("vak", "Mijn vakken", vakLijst.map((v) => [v, v]), profiel.vakken || [], `<p class="pf-hint">Nederlands en Engels heb je altijd. Klik de vakken aan die verder in je pakket zitten${s !== "vmbo" ? "; bij je profiel zetten we de vaste vakken alvast aan" : ""}.</p>`);
+    h += `<fieldset class="pf-groep"><legend>Mijn lievelingsvak</legend><select id="pfLiefst"><option value="">Kies…</option>${VAKKEN.map((v, i) => `<option value="${i}" ${profiel.liefst && lees("vak", -1) === i ? "selected" : ""}>${esc(v[0])}</option>`).join("")}</select> <a href="#vakken">Wat zegt dat over jou? →</a></fieldset>`;
+    h += `<fieldset class="pf-groep"><legend>Waar woon je?</legend>${woonInput("woonProfiel").replace("<span>Waar woon je?</span>", "")}<p class="pf-hint">Alleen je woonplaats, voor de afstand naar scholen. Geen adres.</p></fieldset>`;
+    $("#profielForm").innerHTML = h;
+    renderProfielSamen();
+  }
+  function renderProfielSamen() {
+    const s = schoolSoort();
+    const klas = (KLASSEN.find((k) => k[0] && k[0] === lees("klas", "")) || [])[1];
+    if (!klas) { $("#profielSamen").innerHTML = `<p class="count">Kies eerst waar je nu in zit.</p>`; return; }
+    const delen = [esc(klas)];
+    if (profiel.leerweg && s === "vmbo") delen.push(esc((LEERWEGEN.find((l) => l[0] === profiel.leerweg) || [])[1] || ""));
+    if ((profiel.prof || []).length && (s === "havo" || s === "vwo")) delen.push(profiel.prof.map(profKort).map(esc).join(" + "));
+    if (profiel.richting && s === "vmbo") delen.push(esc(profiel.richting));
+    if (profiel.richting && s === "mbo") delen.push(esc((FAMILIES.find((f) => f.id === profiel.richting) || {}).naam || ""));
+    let wat = "";
+    if (s === "vmbo") wat = profiel.leerweg === "bb" ? "Met de basisberoepsgerichte leerweg kun je naar mbo niveau 2. Daarna kun je doorstromen naar niveau 3 en 4." : profiel.leerweg ? "Met deze leerweg kun je naar mbo niveau 3 of 4. Met gl of tl kun je ook naar de havo (vraag naar de eisen op je school)." : "Kies je leerweg, dan zie je naar welk mbo-niveau je kunt.";
+    if (s === "havo") wat = "Met havo kun je naar het hbo of naar mbo 4. Naar het wo kan na je hbo-propedeuse.";
+    if (s === "vwo") wat = "Met vwo kun je naar het wo, het hbo of mbo 4.";
+    if (s === "mbo") wat = "Met een mbo-4-diploma kun je naar het hbo. Soms vraagt een hbo-opleiding een bepaald vak of een bijspijkercursus.";
+    const vk = profiel.vakken || [];
+    let passend = "";
+    if ((s === "havo" || s === "vwo") && ((profiel.prof || []).length || vk.length)) {
+      const goed = FAMILIES.filter((f) => profielCheck({ l: [s === "vwo" ? "wo" : "hbo"] }, f.id, true) === "goed");
+      passend = `<p><strong>Past goed bij je profiel en vakken:</strong></p><div class="mini">${goed.map((f) => `<button type="button" data-famopen="${f.id}">${esc(f.naam)}</button>`).join("")}</div>`;
+    }
+    $("#profielSamen").innerHTML = `<h3>Jouw profiel</h3><p class="pf-kort">${delen.join(" · ")}${vk.length ? `<br><span class="count">Vakken: ${vk.map(esc).join(", ")}</span>` : ""}</p><p>${wat}</p>${passend}`;
+  }
+  // Past een opleiding bij je profiel? Html voor de detailweergave, of alleen "goed" / "let" als kaal = true
+  function profielCheck(o, famId, kaal) {
+    const s = schoolSoort();
+    if (!s || s === "anders") return kaal ? "" : `<div class="pf-check"><p><strong>Past dit bij jou?</strong> <a href="#/profiel">Vul je profiel in</a>, dan zie je hier of je klas, profiel en vakken passen. Anoniem en alleen op dit apparaat.</p></div>`;
+    // Elk punt: [true = in orde, false = ontbreekt, null = ter info, tekst]
+    const punten = [];
+    if (s === "vmbo") {
+      if (!o.l.includes("mbo")) punten.push([false, o.l.includes("hbo") ? "Niveau: vanaf het vmbo ga je eerst naar mbo 4 (of de havo). Daarna kun je naar het hbo." : "Niveau: dit is een universitaire opleiding. Vanaf het vmbo kom je er via mbo 4 en het hbo."]);
+      else if (profiel.leerweg && o.mn && o.mn.length) {
+        const max = profiel.leerweg === "bb" ? 2 : 4;
+        if (Math.min(...o.mn) > max) punten.push([false, `Niveau ${o.mn.join(", ")}: met de basisberoepsgerichte leerweg begin je op niveau 2 en stroom je daarna door.`]);
+        else punten.push([true, `Niveau ${o.mn.filter((n) => n <= max).join(" of ")} kun je met jouw leerweg direct doen.`]);
+      } else if (!profiel.leerweg) punten.push([null, "Kies je leerweg in je profiel, dan zie je of je niveau past."]);
+    } else if (s === "havo" || s === "mbo") {
+      if (!o.l.some((n) => n !== "wo")) punten.push([false, s === "havo" ? "Diploma: met havo kun je niet direct naar het wo. Wel via een hbo-propedeuse." : "Diploma: vanaf het mbo ga je eerst naar het hbo. Met je hbo-propedeuse kun je daarna naar het wo."]);
+      else punten.push([true, `Diploma: met ${s === "havo" ? "havo" : "mbo 4"} kun je je hiervoor aanmelden${o.l.includes("wo") ? " (de wo-variant via een hbo-propedeuse)" : ""}.`]);
+    } else if (s === "vwo") punten.push([true, "Diploma: met vwo kun je je hiervoor aanmelden."]);
+    if (s === "havo" || s === "vwo") {
+      const E = PROF_EIS[famId] || {};
+      const pr = profiel.prof || [];
+      const vk = profiel.vakken || [];
+      const ingevuld = pr.length || vk.length;
+      const heeft = (v) => vk.includes(v) || pr.some((p) => (PROFIEL_VAKKEN[p] || []).includes(v));
+      if (!ingevuld && (E.prof || E.een || E.wo)) punten.push([null, `Hier is je profiel of vakkenpakket belangrijk. Vul ze in bij je profiel, dan zie je of het klopt.`]);
+      if (E.prof && pr.length) {
+        if (pr.some((p) => E.prof.includes(p))) punten.push([true, `Profiel: ${pr.map(profKort).join(" + ")} past.`]);
+        else punten.push([false, `Profiel: meestal is ${E.prof.map(profKort).join(" of ")} nodig. Een ontbrekend vak kun je soms bijwerken (een deficiëntie wegwerken).`]);
+      }
+      if (E.een && ingevuld) {
+        const wel = E.een.filter(heeft);
+        punten.push(wel.length ? [true, `Verplicht vak: ${E.een.join(" of ")}. Jij hebt ${wel.join(" en ")}.`] : [false, `Verplicht vak: ${E.een.join(" of ")}. Dat zit niet in je pakket.`]);
+      }
+      if (E.wo && o.l.includes("wo") && ingevuld) E.wo.forEach((v) => punten.push(heeft(v) ? [true, `Verplicht voor het wo: ${v} heb je.`] : [false, `Verplicht voor het wo: ${v}. Dat zit niet in je pakket.`]));
+      (E.helpt || []).filter(heeft).forEach((v) => punten.push([true, `Handig: ${v} heb je.`]));
+      if (!E.prof && !E.een && !E.wo) punten.push([true, "Profiel: meestal geen vast profiel of verplicht vak."]);
+    }
+    const letOp = punten.some((p) => p[0] === false);
+    if (kaal) return letOp ? "let" : punten.some((p) => p[0]) ? "goed" : "";
+    if (!punten.length) return "";
+    const teken = (ok) => (ok === true ? `<span class="pf-ok" aria-label="in orde">✓</span>` : ok === false ? `<span class="pf-nee" aria-label="ontbreekt">✗</span>` : `<span class="pf-info" aria-hidden="true">i</span>`);
+    return `<div class="pf-check ${letOp ? "pf-let" : "pf-goed"}"><p><strong>${letOp ? "Let op: niet alles is in orde" : "Jouw profiel en vakken: in orde"}</strong> <small>(<a href="#/profiel">wijzig je profiel</a>)</small></p><ul>${punten.map(([ok, t]) => `<li>${teken(ok)}<span>${esc(t)}</span></li>`).join("")}</ul><p class="count">Een indicatie. De precieze eisen verschillen per school: check ze altijd bij de opleiding zelf.</p></div>`;
+  }
+  $("#profielForm").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-pf]");
+    if (!b) return;
+    const w = b.dataset.w;
+    const soort = b.dataset.pf;
+    if (soort === "klas") {
+      const oud = schoolSoort();
+      bewaar("klas", w);
+      if (schoolSoort() !== oud) profiel = { liefst: profiel.liefst };
+    }
+    if (soort === "leerweg") profiel.leerweg = profiel.leerweg === w ? "" : w;
+    if (soort === "vmboprof") profiel.richting = profiel.richting === w ? "" : w;
+    if (soort === "prof") {
+      const pr = profiel.prof || [];
+      profiel.prof = pr.includes(w) ? pr.filter((x) => x !== w) : pr.concat(w).slice(-2);
+      if (!pr.includes(w)) profiel.vakken = [...new Set((profiel.vakken || []).concat(PROFIEL_VAKKEN[w] || []))];
+    }
+    if (soort === "vak") { const vk = profiel.vakken || []; profiel.vakken = vk.includes(w) ? vk.filter((x) => x !== w) : vk.concat(w); }
+    bewaarProfiel();
+    renderProfiel();
+  });
+  $("#profielForm").addEventListener("change", (e) => {
+    if (e.target.id === "pfRichting") { profiel.richting = e.target.value; bewaarProfiel(); }
+    if (e.target.id === "pfLiefst") { profiel.liefst = e.target.value !== ""; if (profiel.liefst) toonVak(Number(e.target.value)); bewaarProfiel(); }
+  });
+  $("#profielWis").addEventListener("click", () => {
+    if (!confirm("Je profiel wissen? Je klas, profiel en vakken zijn dan weg. Je lijst en je plan blijven staan.")) return;
+    profiel = {};
+    try { localStorage.removeItem("profiel"); localStorage.removeItem("klas"); } catch (e) {}
+    renderPlan();
+    renderProfiel();
   });
 
   /* ---------- Plan B ---------- */
@@ -1462,28 +1628,34 @@
       const [x, y] = polar(170, gebHoek[k]);
       lijnen += `<line class="st-l1${mijn.includes(k) ? " mijn" : ""}" x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
     });
+    // open groep: waaier ver genoeg naar buiten dat hij voorbij het eigen label begint
+    const WAAIER_R = 600, WAAIER_STAP = 0.065;
+    const openF = ster.open && FAMILIES.find((x) => x.id === ster.open);
+    const waaierHalf = openF ? (Math.min(famOpls(openF.id).length, 13) / 2) * WAAIER_STAP + 0.06 : 0;
     FAMILIES.forEach((f) => {
       const [x1, y1] = polar(170, gebHoek[f.gebied]);
       const [x2, y2] = polar(330, famHoek[f.id]);
       lijnen += `<line class="st-l2${ster.open === f.id ? " aan" : ""}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
       const links = Math.cos(famHoek[f.id]) < -0.2, rechts = Math.cos(famHoek[f.id]) > 0.2;
       const [lx, ly] = polar(350, famHoek[f.id]);
-      knopen += `<g class="st-k st-fam${ster.open === f.id ? " open" : ""}" data-ster="fam:${f.id}" tabindex="0" role="button" aria-label="${esc(f.naam)}"><circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="9"/>` +
+      // labels van buurgroepen die onder de open waaier vallen, verbergen
+      const onderWaaier = openF && f !== openF && Math.abs(Math.atan2(Math.sin(famHoek[f.id] - famHoek[openF.id]), Math.cos(famHoek[f.id] - famHoek[openF.id]))) < waaierHalf;
+      knopen += `<g class="st-k st-fam${ster.open === f.id ? " open" : ""}${onderWaaier ? " stil" : ""}" data-ster="fam:${f.id}" tabindex="0" role="button" aria-label="${esc(f.naam)}"><circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="9"/>` +
         `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" text-anchor="${links ? "end" : rechts ? "start" : "middle"}">${esc(kortNaam(f.naam, 26))}</text></g>`;
     });
     if (ster.open) {
       const f = FAMILIES.find((x) => x.id === ster.open);
       const alle = famOpls(f.id);
       const toon = alle.slice(0, 12);
-      const stap = 0.075;
+      const stap = WAAIER_STAP;
       const items = toon.map((o) => ["opl", o]).concat(alle.length > toon.length ? [["meer", alle.length - toon.length]] : []);
       items.forEach(([soort, o], j) => {
         const a = famHoek[f.id] + (j - (items.length - 1) / 2) * stap;
         const [x1, y1] = polar(330, famHoek[f.id]);
-        const [x2, y2] = polar(500, a);
+        const [x2, y2] = polar(WAAIER_R, a);
         const graden = (a * 180) / Math.PI;
         const links = Math.cos(a) < 0;
-        const [tx, ty] = polar(514, a);
+        const [tx, ty] = polar(WAAIER_R + 14, a);
         lijnen += `<line class="st-l3" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" style="animation-delay:${j * 25}ms"/>`;
         const label = soort === "opl" ? `${esc(kortNaam(o.n, 34))} <tspan class="st-niv">${o.l.join(" · ")}</tspan>` : `+ ${o} meer opleidingen`;
         knopen += `<g class="st-k st-opl${soort === "meer" ? " meer" : ""}" data-ster="${soort === "opl" ? "opl:" + OPLEIDINGEN.indexOf(o) : "meer:" + f.id}" tabindex="0" role="button" style="animation-delay:${j * 25}ms">` +
@@ -1531,8 +1703,8 @@
       tekenSter();
       const f = FAMILIES.find((x) => x.id === id);
       if (ster.open) {
-        const [x, y] = polar(440, famHoek[id]);
-        sterNaar(sterKader(x, y, 820));
+        const [x, y] = polar(520, famHoek[id]);
+        sterNaar(sterKader(x, y, 1180));
       }
       const dromen = DROOM.map((d, i) => [d, i]).filter(([d]) => d[5].includes(id));
       sterInfo(`<p class="st-soort">Groep opleidingen</p><h3>${esc(f.naam)}</h3><p>${vt(f.uitleg)}</p>` +
@@ -1641,6 +1813,21 @@
       ["Alleen een bachelor, dan werken", "Alleen bachelor", ["vwo", "vwod", "wob", "werk"], "Na je bachelor mag je ook gaan werken, en later eventueel nog een master doen."],
     ],
   };
+  // Vanuit het vmbo naar het hbo: eerst even stilstaan bij het waarom
+  const HBO_WAAROM = [
+    ["Ik wil een beroep waarvoor het hbo nodig is", "Sterke reden. Zoek uit welke hbo-opleiding daar precies bij hoort, en of er ook een mbo 4-opleiding is die er dichtbij komt."],
+    ["Ik wil nog meer leren, het vak boeit me", "Mooi. Op het hbo werk je meer met theorie, verslagen en zelfstandig plannen. Vraag op een open dag hoe een gewone studieweek eruitziet."],
+    ["Ik wil later meer verdienen", "Gemiddeld verdien je met hbo meer, maar goede vakmensen van het mbo zijn ook hard nodig en verdienen vaak prima. Kijk vooral naar het werk dat je wilt doen."],
+    ["Anderen verwachten het van me", "Goed dat je dit merkt. Praat erover: wat wil jij zelf? Een route kiezen voor een ander houd je minder lang vol."],
+    ["Ik weet het nog niet", "Dat is prima. Kies eerst iets wat je nu leuk vindt. De weg naar het hbo blijft open, ook later."],
+  ];
+  function hboWaarom() {
+    const gekozen = lees("hbo_waarom", null);
+    const a = HBO_WAAROM[gekozen];
+    return `<div class="m-waarom"><p class="st-soort">Even stilstaan</p><h4>Waarom wil je naar het hbo?</h4>` +
+      `<div class="chips">${HBO_WAAROM.map(([t], i) => `<button type="button" class="chip" data-waarom="${i}" aria-pressed="${gekozen === i}">${esc(t)}</button>`).join("")}</div>` +
+      `<p class="m-waarom-antw" aria-live="polite">${a ? vt(a[1]) : "Er is geen goed of fout antwoord. Het helpt wel om je reden te kennen."}</p></div>`;
+  }
   let metroRoute = null;
   // pad door de stations van een route, met de bochten naar "werk"
   function routePad(ids) {
@@ -1665,7 +1852,9 @@
     metroRoute = i;
     const r = ROUTES[metroLijn][i];
     tekenMetro();
-    $("#metroInfo").innerHTML = `<p class="st-soort">Route</p><h3>${r[0]}</h3><p>${vt(r[3])}</p><p class="m-volgorde">${r[2].filter((id) => !["vmbo", "havo", "vwo"].includes(id)).map((id) => STATIONS[id][0]).join(" → ")}</p><p class="count">Klik op een station op de kaart voor meer uitleg.</p>`;
+    $("#metroInfo").innerHTML = `<p class="st-soort">Route</p><h3>${r[0]}</h3><p>${vt(r[3])}</p><p class="m-volgorde">${r[2].filter((id) => !["vmbo", "havo", "vwo"].includes(id)).map((id) => STATIONS[id][0]).join(" → ")}</p>` +
+      (metroLijn === "vmbo" && r[2].includes("hbop") ? hboWaarom() : "") +
+      `<p class="count">Klik op een station op de kaart voor meer uitleg.</p>`;
   }
   let metroLijn = "alle";
   function tekenMetro() {
@@ -1717,6 +1906,13 @@
     $("#metroSvg").addEventListener("click", kies);
     $("#metroSvg").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); kies(e); } });
     $("#metroInfo").addEventListener("click", (e) => {
+      const w = e.target.closest("[data-waarom]");
+      if (w) {
+        bewaar("hbo_waarom", Number(w.dataset.waarom));
+        $("#metroInfo .m-waarom").outerHTML = hboWaarom();
+        $(`#metroInfo [data-waarom="${w.dataset.waarom}"]`).focus();
+        return;
+      }
       const b = e.target.closest("[data-metroniv]");
       if (!b) return;
       state.zoek = "";

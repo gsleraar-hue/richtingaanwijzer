@@ -360,6 +360,14 @@ main{min-height:70vh}
 @media (max-width:1100px) and (min-width:901px){.tabs a{padding:8px 10px;font-size:.88rem}.topbar-in{gap:14px}}
 @media (max-width:900px){.topbar .searchbox{flex:1 1 auto}.tabs{justify-content:space-between}.tabs a{padding:7px 10px;font-size:.86rem}}
 @media (max-width:520px){.tabs{gap:2px;overflow:visible}.tabs a{padding:6px 7px;font-size:.78rem}.brand{font-size:.95rem}}
+/* Het menu past niet naast logo en zoekveld (de wrap is max 1040px), dus het krijgt een eigen regel; nooit breder dan het scherm */
+.tabs{min-width:0;overflow-x:auto;scrollbar-width:none}
+@media not all and (max-width:900px){
+  .topbar-in{flex-wrap:wrap;gap:8px 14px;padding:10px 0}
+  .tabs{order:3;flex-basis:100%}
+  .topbar .searchbox{flex:1 1 auto;max-width:360px;margin-left:auto}
+  .testgrid .levendpad{top:134px}
+}
 
 /* Plattegrond in de kleuren van de site, zonder groen */
 .kaartwrap{background:#f3eeec}
@@ -772,7 +780,8 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .st-l2.aan{stroke:#ff8a8a;stroke-width:2}
 .st-l3{stroke:rgba(255,138,138,.5);stroke-width:1;animation:stIn .45s both}
 .st-k{cursor:pointer;outline:none}
-.st-k text{fill:#ececf1;font:600 15px "Segoe UI",system-ui,sans-serif}
+.st-k text{fill:#ececf1;font:600 15px "Segoe UI",system-ui,sans-serif;paint-order:stroke;stroke:#151518;stroke-width:4px;stroke-linejoin:round}
+.st-fam.stil text{opacity:0}
 .st-geb circle{fill:#27272d;stroke:rgba(255,255,255,.55);stroke-width:2}
 .st-geb text{font-size:17px;font-weight:800}
 .st-geb.mijn circle{fill:#d62828;stroke:#ffb3b3;filter:drop-shadow(0 0 14px rgba(214,40,40,.9))}
@@ -873,6 +882,12 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .replay .lp-knoop.gekozen{animation:rpKiesTekst .01s both}
 @keyframes rpKies{from{fill:var(--card);stroke:var(--muted)}to{fill:var(--accent);stroke:var(--accent)}}
 @media (max-width:640px){.pad-terug{grid-template-columns:1fr}.levendpad.replay{max-width:260px;margin:0 auto}}
+/* Rustige overgang van de laatste vraag naar de uitslag */
+.testgrid{transition:opacity .22s ease,transform .22s ease}
+.testgrid.weg{opacity:0;transform:translateY(-8px)}
+.result.verschijnt{animation:resIn .45s ease both}
+@keyframes resIn{from{opacity:0;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){.testgrid{transition:none}.result.verschijnt{animation:none}}
 @media (prefers-reduced-motion:reduce){.rp-pad{animation:none;stroke-dashoffset:0}.replay .lp-knoop.gekozen circle{animation:none}}
 
 /* Meeloopdag */
@@ -985,6 +1000,11 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .heeft-route .m-eind{opacity:.35}
 .heeft-route .m-eind.op-route{opacity:1}
 .m-volgorde{font-weight:600}
+.m-waarom{margin:14px 0 10px;padding:14px 16px;border-radius:14px;background:var(--tint)}
+.m-waarom h4{margin:2px 0 10px}
+.m-waarom .chips{margin:0;gap:6px}
+.m-waarom .chip{font-size:.85rem}
+.m-waarom-antw{margin:10px 0 0;font-size:.92rem}
 
 /* Sterrenkaart: tekst erboven, kaart over de volle breedte */
 .sterkaart{display:flex;flex-direction:column;gap:12px}
@@ -1012,3 +1032,27 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .heeft-route .m-eind.op-route text,.m-eind text{fill:#fff;font-weight:800}
 .heeft-route .m-eind.l-vwo.op-route text,.m-eind.l-vwo text{fill:var(--paper)}
 .heeft-route .m-eind{opacity:.55}
+
+/* Mijn profiel */
+.anoniem{display:inline-block;margin:0 0 20px;padding:10px 16px;border-radius:10px;background:var(--tint);font-size:.95rem}
+.profiel-form{display:grid;gap:18px;margin-bottom:22px}
+.pf-groep{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:14px 18px 16px;margin:0;min-width:0}
+.pf-groep legend{font-weight:700;padding:0 6px}
+.pf-groep select{padding:9px 14px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:inherit;font-size:.95rem;max-width:100%}
+.pf-hint{margin:0 0 10px;color:var(--muted);font-size:.9rem}
+.profiel-samen{padding:16px 20px;border-left:4px solid var(--accent);background:var(--card);border-radius:0 10px 10px 0;margin-bottom:18px}
+.profiel-samen h3{margin:0 0 6px}
+.pf-kort{font-weight:600}
+.pf-check{margin:14px 0;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card)}
+.pf-check.pf-goed{border-color:var(--green)}
+.pf-check.pf-let{border-color:#c2410c}
+.pf-check p{margin:0 0 6px}
+.pf-check ul{list-style:none;padding:0;margin:0 0 6px;display:grid;gap:6px}
+.pf-check li{display:flex;gap:10px;align-items:flex-start}
+.pf-ok,.pf-nee,.pf-info{flex:none;display:inline-grid;place-items:center;width:1.35em;height:1.35em;border-radius:50%;font-weight:800;font-size:.85rem;line-height:1;color:#fff}
+.pf-ok{background:var(--green)}
+.pf-nee{background:#c2410c}
+.pf-info{background:var(--muted);font-style:italic;font-family:Georgia,serif}
+.oplbtn .badges .pf-ok,.oplbtn .badges .pf-nee{margin-left:4px}
+.pf-lijst{list-style:none;padding-left:0}
+.pf-lijst li{display:flex;gap:8px;align-items:center}
