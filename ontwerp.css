@@ -185,7 +185,7 @@ dialog::backdrop{background:rgba(10,16,32,.6)}
 .praat{background:var(--tint);padding:14px 18px;border-radius:6px;margin-top:8px}
 
 /* Campusplattegrond */
-.kaartwrap{background:#ece8dc;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;color:#14213d}
+.kaartwrap{background:#c0d3a8;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;color:#14213d}
 .kaartwrap svg{display:block;width:100%;height:auto}
 .kaartwrap .reg{cursor:pointer;outline:none}
 .kaartwrap .reg .disc{fill:#f8f5ec;stroke:#14213d;stroke-width:1.6;transition:fill .2s}
@@ -194,7 +194,7 @@ dialog::backdrop{background:rgba(10,16,32,.6)}
 .kaartwrap .reg .bnr circle{fill:#14213d}
 .kaartwrap .reg.top1 .bnr circle,.kaartwrap .reg.top2 .bnr circle{fill:#14213d}
 .kaartwrap .reg .bnr text{font:600 13px Georgia,serif;fill:#f4f1ea;text-anchor:middle}
-.kaartwrap .reg .nm{font:600 15px "Segoe UI",system-ui,sans-serif;fill:#14213d;text-anchor:middle;paint-order:stroke;stroke:#ece8dc;stroke-width:5px;stroke-linejoin:round;pointer-events:none}
+.kaartwrap .reg .nm{font:600 15px "Segoe UI",system-ui,sans-serif;fill:#14213d;text-anchor:middle;paint-order:stroke;stroke:#c4d6ac;stroke-width:5px;stroke-linejoin:round;pointer-events:none}
 .kaartwrap .reg:hover .disc,.kaartwrap .reg:focus-visible .disc{stroke:#9a3b2e;stroke-width:3}
 .kaartwrap .reg.top1 .disc,.kaartwrap .reg.top2 .disc{fill:#9a3b2e;stroke:#9a3b2e}
 .kaartwrap .reg.top1 .ring,.kaartwrap .reg.top2 .ring{stroke:#f4f1ea;stroke-opacity:.5}
