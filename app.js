@@ -938,11 +938,10 @@
   let view = "";
   function go(v, target, zacht = false) {
     if (!VIEWS[v]) v = "start";
-    // Uitleg: één onderwerp tegelijk, met de onderwerpen als tegels erboven
+    // Uitleg: één onderwerp tegelijk; de onderwerptegels alleen op het overzicht
     const los = v === "uitleg" && UITLEG.includes(target);
     document.querySelectorAll("main > section").forEach((s) => (s.hidden = !VIEWS[v].includes(s.id) || (v === "uitleg" && UITLEG.includes(s.id) && s.id !== target)));
-    $("#uitlegmenu").classList.toggle("compact", los);
-    document.querySelectorAll("#uitlegTegels .tegel").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + target ? "page" : "false"));
+    $("#uitlegmenu").hidden = !VIEWS[v].includes("uitlegmenu") || los;
     // Binnen hetzelfde scherm soepel scrollen; een nieuw scherm begint meteen bovenaan
     if (v === view) zacht = true;
     if (v !== view) {
@@ -956,7 +955,7 @@
     if (v === "profiel") renderProfiel();
     const adres = los ? "#" + target : "#/" + v;
     if (location.hash !== adres) history.replaceState(null, "", adres);
-    const t = target && document.getElementById(v === "uitleg" ? "uitlegmenu" : target);
+    const t = target && document.getElementById(target);
     scrollNaar(t ? t.getBoundingClientRect().top + window.scrollY - onderKop() : 0, zacht);
   }
   // Soepel waar het kan, direct als iemand liever geen beweging ziet
