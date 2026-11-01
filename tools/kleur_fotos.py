@@ -1,5 +1,5 @@
-"""Geeft een foto dezelfde look als de rest van de site: iets warmer, iets minder verzadigd,
-zachte zwarten en lichte korrel. Zo passen stock en AI-beeld bij elkaar.
+"""Geeft een foto dezelfde look als de rest van de site: iets warmer, wat meer contrast en kleur,
+en lichte korrel. Zo passen stock en AI-beeld bij elkaar zonder dat alles vlak en beige wordt.
 
     python tools/kleur_fotos.py bron.png img/groep/zorg.jpg
 """
@@ -9,13 +9,15 @@ from PIL import Image, ImageEnhance
 
 
 def look(im):
-    im = ImageEnhance.Color(im.convert("RGB")).enhance(0.86)
+    im = ImageEnhance.Color(im.convert("RGB")).enhance(1.18)  # de AI-beelden zijn van zichzelf vrij grauw
     a = np.asarray(im).astype(np.float32) / 255
-    a = a * 0.94 + 0.035                      # zachte zwarten, geen hard wit
-    a[..., 0] *= 1.025                        # warmer
-    a[..., 2] *= 0.965
+    lo, hi = np.percentile(a.mean(axis=2), [1, 99])
+    a = np.clip((a - lo) / max(hi - lo, 0.2), 0, 1)           # volle toonomvang
+    a = a + 0.18 * a * (1 - a) * (2 * a - 1) * 2               # zachte S-curve: meer contrast
+    a[..., 0] *= 1.015                                         # net iets warmer
+    a[..., 2] *= 0.985
     rng = np.random.default_rng(7)
-    a += rng.normal(0, 0.012, a.shape[:2])[..., None]  # lichte korrel
+    a += rng.normal(0, 0.008, a.shape[:2])[..., None]          # lichte korrel
     return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
 
 

@@ -1683,6 +1683,14 @@
     renderProfiel();
   });
 
+  /* ---------- Ouders: één onderwerp tegelijk, het gesprek eerst ---------- */
+  $("#ouderTegels").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-ouder]");
+    if (!b) return;
+    document.querySelectorAll("#ouderTegels [data-ouder]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    document.querySelectorAll("#ouders .ouderpaneel").forEach((p) => (p.hidden = p.dataset.paneel !== b.dataset.ouder));
+  });
+
   /* ---------- Plan B ---------- */
   $("#planbKnoppen").innerHTML = PLANB.map((p, i) => `<button type="button" class="vakknop" data-planb="${i}" aria-pressed="false">${esc(p[0])}</button>`).join("");
   function toonPlanB(i) {
