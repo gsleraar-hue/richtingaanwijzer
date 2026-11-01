@@ -357,10 +357,12 @@ const KAMER_CHECKLIST = [
   ["Na verhuizen", "Laat DUO weten dat je uitwonend bent (dat scheelt in je beurs) en vraag eventueel huurtoeslag aan."]
 ];
 
-// Buitenland en tussenjaar
+// Buitenland, tussenjaar, Defensie en politie
 const OPTIES = [
   ["Studeren in het buitenland", "Kan in België, Duitsland, het Verenigd Koninkrijk of verder. Aanmeldingsdata en toelatingseisen verschillen per land, vaak al in de winter. Studiefinanciering kun je onder voorwaarden meenemen; check dat bij DUO. Begin minstens een jaar van tevoren."],
   ["Een tussenjaar", "Werken, vrijwilligerswerk, reizen of een cursus. Kan heel goed, maar maak een plan: wat wil je doen, en wanneer meld je je aan? De gewone deadlines (15 januari en 1 mei) gelden dan in het jaar dat je wilt beginnen."],
+  ["Werken bij Defensie", "Bij de landmacht, marine, luchtmacht of marechaussee leer je het vak in dienst: je krijgt salaris tijdens je opleiding. Er zijn functies voor vmbo, mbo, havo en vwo, en een Dienjaar om een jaar te proberen. Officier word je via de KMA of het KIM, een bachelor. Je solliciteert via werkenbijdefensie.nl, niet via Studielink. Reken op een selectie van een paar maanden: sporttest, medische keuring, psychologisch onderzoek en een veiligheidsonderzoek."],
+  ["Werken bij de politie", "Je wordt agent via de Politieacademie: op mbo-niveau 4, of met een hbo-bachelor politiekunde. Je bent dan al in dienst en krijgt salaris tijdens je opleiding. Je solliciteert via werkenbijdepolitie.nl, niet via Studielink of de mbo-school. De selectie duurt een paar maanden: sporttest, medische keuring, psychologisch onderzoek en een onderzoek naar je achtergrond. Je hebt de Nederlandse nationaliteit nodig en een rijbewijs helpt."],
   ["Eerst iets anders, later switchen", "Een verkeerde keuze is niet erg. Je kunt na het eerste jaar overstappen, of na een associate degree of mbo doorstromen."]
 ];
 

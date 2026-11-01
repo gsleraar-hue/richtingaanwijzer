@@ -174,7 +174,7 @@
     <div class="plan-in">
       <label class="woon"><span>Ik zit nu in</span><select id="planKlas"></select></label>
       <div id="planWoon"></div>
-      <span class="plan-opties">Ik denk ook aan: <label><input type="checkbox" id="optBuitenland"> studeren in het buitenland</label> <label><input type="checkbox" id="optTussenjaar"> een tussenjaar</label></span>
+      <span class="plan-opties">Ik denk ook aan: <label><input type="checkbox" id="optBuitenland"> studeren in het buitenland</label> <label><input type="checkbox" id="optTussenjaar"> een tussenjaar</label> <label><input type="checkbox" id="optDefensie"> Defensie</label> <label><input type="checkbox" id="optPolitie"> de politie</label></span>
     </div>
     <div id="planLijst" class="plan-lijst"></div>
     <ol id="planStappen" class="route plan-stappen"></ol>
@@ -205,9 +205,12 @@
     <p class="anoniem"><strong>Anoniem en alleen op dit apparaat.</strong> Je naam is niet nodig en er is geen account. Wat je kiest, blijft in deze browser staan en gaat niet naar internet.</p>
     <div id="profielForm" class="profiel-form"></div>
     <div id="profielSamen" class="profiel-samen" aria-live="polite"></div>
+    <div id="profielLijst" class="profiel-samen"></div>
     <div class="actions">
-      <a class="btn" href="#/opleidingen">Bekijk opleidingen met mijn profiel</a>
-      <a class="btn ghost" href="#/plan">Naar mijn stappenplan</a>
+      <a class="btn" href="#/plan">Verder met mijn stappenplan</a>
+      <a class="btn ghost" href="#/opleidingen">Bekijk opleidingen met mijn profiel</a>
+      <a class="btn ghost" href="#/opendagen">Open dagen</a>
+      <button type="button" class="btn ghost" id="profielPrint">Print mijn profiel en lijst</button>
       <button type="button" class="btn ghost" id="profielWis">Profiel wissen</button>
     </div>
   </section>
@@ -254,7 +257,7 @@
   </section>
 
   <section id="opties">
-    <h2>Buitenland, tussenjaar of later switchen?</h2>
+    <h2>Buitenland, tussenjaar, Defensie of politie?</h2>
     <p class="sub">Er is niet één goede route. Dit zijn de andere mogelijkheden.</p>
     <div id="optiesLijst" class="gesprek-grid"></div>
   </section>

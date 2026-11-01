@@ -911,7 +911,7 @@
     leerwerk: ["#leerwerk", "Leren of werken?", "Bol of bbl: wat past bij jou?"],
     planb: ["#planb", "Plan B", "Wat als je niet wordt aangenomen?"],
     geld: ["#geld", "Wie betaalt wat?", "Collegegeld, DUO, een kamer"],
-    opties: ["#opties", "Buitenland of tussenjaar?", "En later nog switchen"],
+    opties: ["#opties", "Buitenland, tussenjaar, Defensie of politie?", "En later nog switchen"],
     eerlijk: ["#eerlijk", "Waarom misschien níet?", "De vragen die een open dag overslaat"],
     niveaus: ["#niveaus", "Mbo, hbo of wo?", "Drie paden, geen doodlopende"],
     vakken: ["#vakken", "Mijn lievelingsvak", "Wat zegt het over jou, wat kun je ermee?"],
@@ -1165,6 +1165,8 @@
     }
     if (lees("optie_buitenland", false)) st.push({ id: "buitenland", wanneer: `Uiterlijk winter ${sj - 1}`, titel: "Studeren in het buitenland voorbereiden", tekst: vt(OPTIES[0][1]) });
     if (lees("optie_tussenjaar", false)) st.push({ id: "tussenjaar", wanneer: "Voor je eindexamen", titel: "Tussenjaar plannen", tekst: vt(OPTIES[1][1]) });
+    if (lees("optie_defensie", false)) st.push({ id: "defensie", wanneer: `Uiterlijk najaar ${sj - 1}`, titel: "Solliciteren bij Defensie", tekst: vt(OPTIES[2][1]) + " Begin dus ruim een half jaar voor je wilt starten, en meld je voor de zekerheid ook bij een gewone opleiding aan." });
+    if (lees("optie_politie", false)) st.push({ id: "politie", wanneer: `Uiterlijk najaar ${sj - 1}`, titel: "Solliciteren bij de politie", tekst: vt(OPTIES[3][1]) + " Begin dus ruim een half jaar voor je wilt starten, en meld je voor de zekerheid ook bij een gewone opleiding aan." });
     st.push({ id: "zorg", wanneer: "Zodra je 18 wordt", titel: "Zorgverzekering en zorgtoeslag", tekst: "Vanaf je 18e moet je zelf een zorgverzekering hebben. Met een laag inkomen kun je zorgtoeslag krijgen." });
     st.push({ id: "start", wanneer: `September ${sj}`, titel: "Je eerste studiedag", tekst: "De introductieweek helpt je je weg te vinden. Vragen? Elke opleiding heeft studieadviseurs bij wie je terechtkunt.", datum: new Date(sj, 8, 1) });
     return st;
@@ -1181,6 +1183,7 @@
       ? `<div class="mini">${fav.map((o) => `<span class="favitem"><button type="button" data-oplnaam="${esc(o.n)}">${esc(o.n)}</button><button type="button" class="favweg" data-fav="${esc(o.n)}" aria-label="Haal ${esc(o.n)} van je lijst">✕</button></span>`).join("")}</div>`
       : `<p class="count">Nog leeg. Open een opleiding en klik op “+ Zet op mijn lijst”.${padvinder ? " Tip: begin bij de groepen uit je Padvinder: " + (padvinder.fams || []).map((f) => `<button type="button" class="linkbtn" data-fam="${f}">${esc((FAMILIES.find((x) => x.id === f) || {}).naam || f)}</button>`).join(", ") : ""}</p>`);
     $("#planLijst").querySelectorAll("[data-fam]").forEach((b) => b.addEventListener("click", () => openFamily(b.dataset.fam)));
+    renderProfielLijst();
     $("#planStappen").innerHTML = planStappen().map((x) => {
       const af = x.klaar || afgevinkt[x.id];
       return `<li class="${af ? "af" : ""}"><span class="r-wanneer">${esc(x.wanneer)}</span><label class="vink"><input type="checkbox" data-stap="${x.id}" ${af ? "checked" : ""} ${x.klaar ? "disabled" : ""}><strong>${esc(x.titel)}</strong></label><p>${x.tekst}</p></li>`;
@@ -1188,7 +1191,7 @@
   }
 
   $("#planKlas").addEventListener("change", (e) => { bewaar("klas", e.target.value); renderPlan(); });
-  [["optBuitenland", "optie_buitenland"], ["optTussenjaar", "optie_tussenjaar"]].forEach(([id, k]) => {
+  [["optBuitenland", "optie_buitenland"], ["optTussenjaar", "optie_tussenjaar"], ["optDefensie", "optie_defensie"], ["optPolitie", "optie_politie"]].forEach(([id, k]) => {
     $("#" + id).checked = lees(k, false);
     $("#" + id).addEventListener("change", (e) => { bewaar(k, e.target.checked); renderPlan(); });
   });
@@ -1315,7 +1318,7 @@
   if (TE[lees("te", -1)]) $(`#teChips [data-te="${lees("te", -1)}"]`).click();
 
   /* ---------- Bewaard op dit apparaat ---------- */
-  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "te", "vak", "profiel", "uitslag_leerling", "uitslag_ouder", "thema", "hbo_waarom"];
+  const BEWAAR_SLEUTELS = ["woonplaats", "klas", "favorieten", "afgevinkt", "padvinder", "antwoorden", "optie_buitenland", "optie_tussenjaar", "optie_defensie", "optie_politie", "te", "vak", "profiel", "uitslag_leerling", "uitslag_ouder", "thema", "hbo_waarom"];
   function renderBewaard() {
     let wp = "";
     try { wp = localStorage.getItem("woonplaats") || ""; } catch (e) {}
@@ -1415,6 +1418,14 @@
     h += `<fieldset class="pf-groep"><legend>Waar woon je?</legend>${woonInput("woonProfiel").replace("<span>Waar woon je?</span>", "")}<p class="pf-hint">Alleen je woonplaats, voor de afstand naar scholen. Geen adres.</p></fieldset>`;
     $("#profielForm").innerHTML = h;
     renderProfielSamen();
+    renderProfielLijst();
+  }
+  // Alle opleidingen op je lijst, met een vinkje of kruisje als je profiel is ingevuld
+  function renderProfielLijst() {
+    const fav = favOpleidingen();
+    $("#profielLijst").innerHTML = `<h3>Mijn opgeslagen opleidingen</h3>` + (fav.length
+      ? `<ul class="pf-lijst">${fav.map((o) => `<li>${profielTeken(o, o.f)}<span class="favitem"><button type="button" data-oplnaam="${esc(o.n)}">${esc(o.n)}</button><button type="button" class="favweg" data-fav="${esc(o.n)}" aria-label="Haal ${esc(o.n)} van je lijst">✕</button></span></li>`).join("")}</ul>`
+      : `<p class="count">Nog leeg. Open een opleiding en klik op “+ Zet op mijn lijst”. <a href="#/opleidingen">Naar de opleidingen →</a></p>`);
   }
   function renderProfielSamen() {
     const s = schoolSoort();
@@ -1505,6 +1516,7 @@
     if (e.target.id === "pfRichting") { profiel.richting = e.target.value; bewaarProfiel(); }
     if (e.target.id === "pfLiefst") { profiel.liefst = e.target.value !== ""; if (profiel.liefst) toonVak(Number(e.target.value)); bewaarProfiel(); }
   });
+  $("#profielPrint").addEventListener("click", () => { document.body.classList.add("print-profiel"); window.print(); setTimeout(() => document.body.classList.remove("print-profiel"), 500); });
   $("#profielWis").addEventListener("click", () => {
     if (!confirm("Je profiel wissen? Je klas, profiel en vakken zijn dan weg. Je lijst en je plan blijven staan.")) return;
     profiel = {};

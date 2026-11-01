@@ -155,8 +155,8 @@ main section>h2::before{counter-increment:stop;content:"Nr. " counter(stop,decim
 .tags{display:flex;flex-wrap:wrap;gap:8px}
 .tag2{border:1px solid var(--ink);border-radius:4px;padding:5px 14px;font-weight:500;font-size:.95rem}
 .mini{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-.mini button{font:inherit;font-weight:500;font-size:.92rem;padding:9px 16px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;text-align:left}
-.mini button:hover{border-color:var(--ink)}
+.mini button,.pf-lijst .favitem button:first-child{font:inherit;font-weight:500;font-size:.92rem;padding:9px 16px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;text-align:left}
+.mini button:hover,.pf-lijst .favitem button:first-child:hover{border-color:var(--ink)}
 .borden{display:none}
 @media (max-width:560px){.bar{grid-template-columns:110px 1fr 38px}.scale label{font-size:.78rem}.level{border-right:0;border-bottom:1px solid var(--line)}}
 
@@ -1057,3 +1057,8 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .oplbtn .badges .pf-ok,.oplbtn .badges .pf-nee{margin-left:4px}
 .pf-lijst{list-style:none;padding-left:0}
 .pf-lijst li{display:flex;gap:8px;align-items:center}
+.pf-lijst{margin:8px 0 0;display:grid;gap:6px}
+@media print{
+  body.print-profiel .topbar,body.print-profiel .hero,body.print-profiel main>section:not(#profiel),body.print-profiel footer,body.print-profiel .actions,body.print-profiel .profiel-form,body.print-profiel .favweg{display:none!important}
+  body.print-profiel #profiel{display:block!important}
+}
