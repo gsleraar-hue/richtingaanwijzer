@@ -46,7 +46,7 @@
   // Onder een naam: Nederlandse vertaling (als de hele naam Engels is) en eventueel een echt andere naam
   function naamRegels(naam, alt, label) {
     let h = "";
-    const nl = termNl(naam);
+    const nl = termNl(naam) || (Object.hasOwn(ENGELSE_NAAM_NL, naam) && norm(ENGELSE_NAAM_NL[naam]) !== norm(naam) ? ENGELSE_NAAM_NL[naam] : null);
     if (nl) h += `<p class="eng">In het Nederlands: <strong>${esc(nl)}</strong></p>`;
     const kaal = (x) => String(x).toLowerCase().replace(/[^a-z]/g, "");
     if (alt && kaal(alt) !== kaal(naam) && !(nl && kaal(alt).startsWith(kaal(naam)))) h += `<p class="eng">${label || "Ook bekend als"}: ${esc(alt)}</p>`;
@@ -813,6 +813,54 @@
       `<span class="back"><small>Letterlijk</small><span class="letterlijk">${esc(v[1])}</span><small>Wat het echt is</small><strong>${esc(v[2])}</strong><span class="uitleg">${vt(v[3])}</span></span></span>`);
     b.addEventListener("click", () => b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")));
     $("#vertaalLijst").appendChild(b);
+  });
+  // Engelse studienaam intypen: alleen echte opleidingen (Engelse naam uit DUO, of opleiding met alleen een Engelse naam)
+  const nlVan = (o) => (Object.hasOwn(ENGELSE_NAAM_NL, o.n) ? ENGELSE_NAAM_NL[o.n] : o.n);
+  const engIndex = new Map();
+  OPLEIDINGEN.forEach((o) => {
+    const en = o.e && norm(o.e) !== norm(o.n) ? o.e : Object.hasOwn(ENGELSE_NAAM_NL, o.n) ? o.n : "";
+    if (!en) return;
+    const k = norm(en);
+    if (!engIndex.has(k)) engIndex.set(k, { en, items: [] });
+    if (!engIndex.get(k).items.includes(o)) engIndex.get(k).items.push(o);
+  });
+  const engNamen = [...engIndex.entries()].sort((a, b) => a[1].en.localeCompare(b[1].en, "en"));
+  $("#vertaalNamen").innerHTML = engNamen.map(([, x]) => `<option value="${esc(x.en)}">`).join("");
+  let vtTreffers = [];
+  function engKaart(x, i) {
+    const nl = [...new Set(x.items.map(nlVan))];
+    const zelfde = nl.length === 1 && norm(nl[0]) === norm(x.en);
+    return `<div class="vt-kaart"><small>Engelse naam</small><strong lang="en">${esc(x.en)}</strong>` +
+      `<small>In het Nederlands</small><strong class="vt-nl">${nl.map(esc).join(" of ")}</strong>${zelfde ? `<span class="vt-noot">Dit woord gebruiken we in het Nederlands ook.</span>` : ""}` +
+      `<small>${x.items.length === 1 ? "De opleiding" : "De opleidingen"}</small><div class="mini">${x.items.map((o, j) =>
+        `<button type="button" data-vt="${i}:${j}">${esc(o.n)} <small style="color:var(--muted)">${o.l.map((n) => NIV_LABEL[n]).join(", ")} · ${o.i.length} ${o.i.length === 1 ? "school" : "scholen"}</small></button>`).join("")}</div></div>`;
+  }
+  function renderVertaalZoek() {
+    const ruw = $("#vertaalZoek").value.trim();
+    const q = norm(ruw).replace(/\s+/g, " ");
+    const uit = $("#vertaalUitslag");
+    if (!q) { vtTreffers = []; uit.innerHTML = ""; return; }
+    const exact = engIndex.get(q);
+    const w = q.split(" ");
+    vtTreffers = exact ? [exact] : q.length < 3 ? [] : engNamen.filter(([k]) => w.every((x) => k.includes(x)))
+      .sort((a, b) => b[0].startsWith(q) - a[0].startsWith(q) || a[0].length - b[0].length).map(([, x]) => x);
+    if (q.length < 3 && !exact) { uit.innerHTML = ""; return; }
+    if (!vtTreffers.length) {
+      uit.innerHTML = `<p class="vt-geen"><strong>${esc(ruw)}</strong> is geen bestaande Engelse studienaam in Nederland. We zoeken in de officiële lijst van DUO. Kies een naam uit de lijst die verschijnt als je typt.</p>`;
+      return;
+    }
+    const meer = vtTreffers.length - 4;
+    vtTreffers = vtTreffers.slice(0, 4);
+    uit.innerHTML = `<div class="vt-lijst">${vtTreffers.map(engKaart).join("")}</div>` +
+      (meer > 0 ? `<p class="vt-geen">En nog ${meer} ${meer === 1 ? "naam" : "namen"} met dit woord. Typ verder om te kiezen.</p>` : "");
+  }
+  $("#vertaalZoek").addEventListener("input", renderVertaalZoek);
+  $("#vertaalUitslag").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-vt]");
+    if (!b) return;
+    const [i, j] = b.dataset.vt.split(":").map(Number);
+    const o = vtTreffers[i].items[j];
+    openOpleiding(o, FAMILIES.find((f) => f.id === o.f));
   });
   // zelfde adressen als tools/build_begrippen.py
   const woordSlug = (t) => t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/&/g, " en ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");

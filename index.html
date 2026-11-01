@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://watstudeerje.nl/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Wat studeer je eigenlijk?","url":"https://watstudeerje.nl/","inLanguage":"nl","description":"Onafhankelijke hulp bij studiekeuze in gewone taal: ruim 1.100 mbo-, hbo- en wo-opleidingen uitgelegd, Engelse studienamen vertaald, een persoonlijk stappenplan en uitleg van begrippen als LOB, BSA en numerus fixus."}</script>
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=93">
+<link rel="stylesheet" href="ontwerp.css?v=94">
 </head>
 <body>
 
@@ -411,7 +411,13 @@
 
   <section id="vertaal">
     <h2>Vertaal die Engelse naam</h2>
-    <p class="sub">Studies hebben tegenwoordig flitsende namen. Klik op een kaartje en je ziet wat er echt achter zit.</p>
+    <p class="sub">Studies hebben tegenwoordig flitsende namen. Typ een Engelse studienaam en je ziet de Nederlandse naam en de opleiding erachter. Of klik op een kaartje.</p>
+    <div class="woord-zoek">
+      <label for="vertaalZoek" class="sr">Typ een Engelse studienaam</label>
+      <input id="vertaalZoek" type="search" list="vertaalNamen" placeholder="Bijvoorbeeld Business Administration" autocomplete="off">
+    </div>
+    <datalist id="vertaalNamen"></datalist>
+    <div id="vertaalUitslag" aria-live="polite"></div>
     <div id="vertaalLijst" class="flips"></div>
   </section>
 
@@ -561,13 +567,13 @@
   </div>
 </footer>
 
-<script src="data.js?v=93"></script>
-<script src="opleidingen.js?v=93"></script>
-<script src="uitleg.js?v=93"></script>
-<script src="mbo.js?v=93"></script>
-<script src="zorg-inservice.js?v=93"></script>
-<script src="locaties.js?v=93"></script>
-<script src="opendagen.js?v=93"></script>
-<script src="app.js?v=93"></script>
+<script src="data.js?v=94"></script>
+<script src="opleidingen.js?v=94"></script>
+<script src="uitleg.js?v=94"></script>
+<script src="mbo.js?v=94"></script>
+<script src="zorg-inservice.js?v=94"></script>
+<script src="locaties.js?v=94"></script>
+<script src="opendagen.js?v=94"></script>
+<script src="app.js?v=94"></script>
 </body>
 </html>

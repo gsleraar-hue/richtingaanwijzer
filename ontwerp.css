@@ -979,6 +979,17 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .woord-zoek{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:14px 0 16px}
 .woord-zoek input{flex:0 1 320px;font:inherit;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink)}
 .woord-zoek .chips{margin:0}
+#vertaal .woord-zoek input{flex-basis:380px}
+#vertaalUitslag{margin:0 0 22px}
+.vt-lijst{display:flex;flex-direction:column;gap:12px}
+.vt-kaart{display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:18px 22px}
+.vt-kaart small{text-transform:uppercase;letter-spacing:.16em;font-weight:700;font-size:.66rem;color:var(--muted);margin-top:6px}
+.vt-kaart small:first-child{margin-top:0}
+.vt-kaart>strong{font:700 1.2rem/1.25 "Segoe UI",system-ui,sans-serif}
+.vt-kaart .vt-nl{color:var(--accent)}
+.vt-kaart .vt-noot{color:var(--muted);font-size:.9rem}
+.vt-kaart .mini button small{text-transform:none;letter-spacing:0;font-weight:400;font-size:.85rem;margin:0}
+.vt-geen{color:var(--muted);margin:10px 0 0}
 .woorden{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
 .woord{padding:14px 18px}
 .woord strong{font-size:1.02rem}
