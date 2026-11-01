@@ -980,6 +980,8 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .woord-zoek input{flex:0 1 320px;font:inherit;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink)}
 .woord-zoek .chips{margin:0}
 #vertaal .woord-zoek input{flex-basis:380px}
+/* Zelfde als de andere zoekvelden: alleen het kruisje, geen lijstpijltje (suggesties komen bij het typen) */
+#vertaalZoek::-webkit-calendar-picker-indicator{display:none!important}
 #vertaalUitslag{margin:0 0 22px}
 .vt-lijst{display:flex;flex-direction:column;gap:12px}
 .vt-kaart{display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:18px 22px}
