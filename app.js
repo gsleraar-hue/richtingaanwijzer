@@ -771,6 +771,10 @@
       `<p class="vak-let"><strong>Let op:</strong> ${vt(v[3])}</p>` +
       `<p><button type="button" class="btn" data-fams="${esc(v[4])}">Bekijk die opleidingen</button></p></div>`;
     $("#vakPaneel").hidden = false;
+    // Minder bekende studies die bij het gekozen vak passen
+    $("#nieuwSub").textContent = `Minder bekende opleidingen die passen bij ${v[0]}.`;
+    $("#nieuwLijst").innerHTML = NIEUW.filter((n) => n[2].includes(v[0])).slice(0, 6)
+      .map((n) => `<div class="nw"><strong>${vt(n[0])}</strong><span>${vt(n[1])}</span></div>`).join("");
     bewaar("vak", i);
   }
   $("#vakkenLijst").addEventListener("click", (e) => { const b = e.target.closest("[data-vak]"); if (b) toonVak(Number(b.dataset.vak)); });
@@ -779,9 +783,6 @@
     if (b) openFamily(b.dataset.fams.split(",")[0].trim());
   });
   toonVak(lees("vak", 0));
-  NIEUW.forEach((n) => {
-    $("#nieuwLijst").appendChild(el("div", { class: "nw" }, `<strong>${vt(n[0])}</strong><span>${vt(n[1])}</span>`));
-  });
 
   /* ---------- Vertaler en woordenlijst ---------- */
   VERTAAL.forEach((v) => {

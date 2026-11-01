@@ -127,18 +127,45 @@ const VAKKEN = [
   ["Tekenen, CKV en kunst", "Zelf maken en vormgeven.", "Design, multimedia, architectuur, productontwerp en communicatie.", "Een goede opleiding vraagt ook onderzoek, samenwerken en presenteren.", "design, bouw, techniek", ["Grafisch ontwerper", "Architect of interieurontwerper", "Illustrator of striptekenaar", "Ontwerper van games of animaties", "Fotograaf of videomaker", "Kunstenaar of docent beeldende vorming"]],
   ["Informatica", "Zelf dingen bouwen en uitzoeken.", "Software, data, AI, security. Je kunt er veel mee.", "Op school kies je het vaak niet en de studie is veel breder dan programmeren.", "ict", ["Softwareontwikkelaar", "Specialist digitale beveiliging", "Data-analist", "Ontwikkelaar van games", "ICT-adviseur bij bedrijven", "Specialist in kunstmatige intelligentie"]]
 ];
-// Studies waar je op school nooit les in hebt gehad
+// Minder bekende studies, per schoolvak getoond
 const NIEUW = [
-  ["Criminologie", "Waarom mensen misdaden plegen en hoe je dat voorkomt."],
-  ["Forensisch onderzoek", "Sporen zoeken en onderzoeken op een plaats delict. Veel lab en praktijk."],
-  ["Archeologie", "Opgraven en uitzoeken hoe mensen vroeger leefden. Veel veldwerk."],
-  ["Logopedie", "Mensen helpen met praten, stem, slikken en taal."],
-  ["Mondzorgkunde", "Gebitten gezond houden en behandelen, zelfstandig naast de tandarts."],
-  ["Taalwetenschap", "Hoe taal werkt in je hoofd en waarom talen zo verschillen."],
-  ["Planologie", "Bepalen waar huizen, wegen en natuur komen."],
-  ["Bos- en natuurbeheer", "Natuurgebieden onderhouden en beschermen. Je bent veel buiten."],
-  ["Maritiem officier", "Varen op grote schepen, als stuurman of als werktuigkundige."],
-  ["Notarieel recht", "Huizenkoop, testamenten en erfenissen juridisch goed regelen."]
+  // [naam, uitleg, vakken uit VAKKEN waar de studie bij past]
+  ["Econometrie", "Economie met veel wiskunde: modellen bouwen om te voorspellen.", ["Wiskunde", "Economie"]],
+  ["Actuariële wetenschappen", "Uitrekenen hoeveel risico verzekeraars en pensioenfondsen lopen.", ["Wiskunde", "Economie"]],
+  ["Lucht- en ruimtevaarttechniek", "Vliegtuigen, raketten en satellieten ontwerpen.", ["Wiskunde", "Natuurkunde"]],
+  ["Maritiem officier", "Varen op grote schepen, als stuurman of als werktuigkundige.", ["Natuurkunde", "Wiskunde", "Aardrijkskunde"]],
+  ["Medische beeldvorming (MBRT)", "Scans maken in het ziekenhuis en patiënten bestralen.", ["Natuurkunde", "Biologie"]],
+  ["Aardwetenschappen", "Hoe de aarde werkt: gesteenten, vulkanen, bodem en klimaat.", ["Aardrijkskunde", "Natuurkunde", "Scheikunde"]],
+  ["Watermanagement", "Zorgen dat Nederland droge voeten en schoon water houdt.", ["Aardrijkskunde", "Natuurkunde", "Biologie"]],
+  ["Forensisch onderzoek", "Sporen zoeken en onderzoeken op een plaats delict. Veel lab en praktijk.", ["Scheikunde", "Biologie"]],
+  ["Conservering en restauratie", "Kunst en oude voorwerpen onderzoeken en herstellen.", ["Scheikunde", "Tekenen, CKV en kunst", "Geschiedenis"]],
+  ["Farmacie", "Hoe medicijnen werken en hoe je ze maakt. Je wordt apotheker.", ["Scheikunde", "Biologie"]],
+  ["Mondzorgkunde", "Gebitten gezond houden en behandelen, zelfstandig naast de tandarts.", ["Biologie", "Scheikunde"]],
+  ["Voeding en diëtetiek", "Mensen helpen gezonder te eten, ook bij ziekte.", ["Biologie", "Scheikunde"]],
+  ["Bio-informatica", "Met programmeren DNA en ziektes onderzoeken.", ["Biologie", "Informatica"]],
+  ["Huidtherapie", "Mensen met huidproblemen behandelen, zoals littekens en acne.", ["Biologie"]],
+  ["Logopedie", "Mensen helpen met praten, stem, slikken en taal.", ["Nederlands", "Biologie"]],
+  ["Ergotherapie", "Mensen helpen om dagelijkse dingen weer zelf te kunnen.", ["Biologie", "Maatschappijleer en wetenschappen"]],
+  ["Bos- en natuurbeheer", "Natuurgebieden onderhouden en beschermen. Je bent veel buiten.", ["Biologie", "Aardrijkskunde"]],
+  ["Notarieel recht", "Huizenkoop, testamenten en erfenissen juridisch goed regelen.", ["Nederlands", "Economie"]],
+  ["Fiscaal recht", "Alles over belastingen: regels uitzoeken en uitleggen.", ["Economie", "Nederlands"]],
+  ["Hotelschool", "Gasten ontvangen en een hotel of restaurant leiden.", ["Economie", "Engels en andere talen"]],
+  ["Toerisme", "Reizen en vrije tijd organiseren, overal ter wereld.", ["Aardrijkskunde", "Engels en andere talen", "Economie"]],
+  ["Taalwetenschap", "Hoe taal werkt in je hoofd en waarom talen zo verschillen.", ["Nederlands", "Engels en andere talen"]],
+  ["Tolk Nederlandse Gebarentaal", "Een taal leren met je handen en tolken voor doven.", ["Nederlands", "Engels en andere talen"]],
+  ["Japanse of Chinese studies", "Een verre taal leren, en de cultuur en geschiedenis erachter.", ["Engels en andere talen", "Geschiedenis"]],
+  ["Criminologie", "Waarom mensen misdaden plegen en hoe je dat voorkomt.", ["Maatschappijleer en wetenschappen", "Nederlands"]],
+  ["Filosofie", "Grote vragen stellen over wat waar, goed en eerlijk is.", ["Nederlands", "Maatschappijleer en wetenschappen", "Geschiedenis"]],
+  ["Archeologie", "Opgraven en uitzoeken hoe mensen vroeger leefden. Veel veldwerk.", ["Geschiedenis", "Aardrijkskunde"]],
+  ["Kunstgeschiedenis", "Kunst bekijken, uitleggen en de verhalen erachter ontdekken.", ["Geschiedenis", "Tekenen, CKV en kunst"]],
+  ["Religiewetenschappen", "Hoe geloof mensen en samenlevingen vormt, vroeger en nu.", ["Geschiedenis", "Maatschappijleer en wetenschappen"]],
+  ["Culturele antropologie", "Onderzoeken hoe mensen in andere culturen leven. Vaak veldwerk.", ["Maatschappijleer en wetenschappen", "Aardrijkskunde", "Engels en andere talen"]],
+  ["Planologie", "Bepalen waar huizen, wegen en natuur komen.", ["Aardrijkskunde", "Maatschappijleer en wetenschappen"]],
+  ["Creatieve therapie", "Mensen helpen via tekenen, muziek, drama of bewegen.", ["Tekenen, CKV en kunst", "Maatschappijleer en wetenschappen"]],
+  ["Industrieel productontwerpen", "Spullen ontwerpen die mooi zijn en goed werken.", ["Tekenen, CKV en kunst", "Natuurkunde"]],
+  ["Interactieontwerp (CMD)", "Apps en websites ontwerpen die mensen makkelijk kunnen gebruiken.", ["Tekenen, CKV en kunst", "Informatica"]],
+  ["Game development", "Games bedenken, ontwerpen en programmeren.", ["Informatica", "Tekenen, CKV en kunst"]],
+  ["Cybersecurity", "Systemen beveiligen en hackers een stap voor zijn.", ["Informatica", "Wiskunde"]]
 ];
 
 const STUDIES = [
