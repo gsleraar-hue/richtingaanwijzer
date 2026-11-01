@@ -20,28 +20,29 @@ NIV = {"mbo": "mbo", "hbo": "hbo", "wo": "wo (universiteit)", "ad": "associate d
 VORM = {"bol": "bol (vooral leren, met stages)", "bbl": "bbl (werken en één dag naar school)", "voltijd": "voltijd", "deeltijd": "deeltijd (naast je werk)", "duaal": "duaal (werk en studie afwisselen)", "inservice": "in dienst van een ziekenhuis (werken en leren, met salaris)"}
 DUUR = {"mbo": "1 tot 4 jaar, afhankelijk van het niveau", "hbo": "4 jaar", "wo": "3 jaar voor de bachelor, daarna vaak nog een master", "ad": "2 jaar"}
 
-# Eén foto per groep (Pexels): laat zien hoe het vak er in het echt uitziet. Tweede waarde is het focuspunt.
+# Eén foto per groep: laat zien hoe het vak er in het echt uitziet. Tweede waarde is het focuspunt.
+# Gemaakt met Magnific (AI) en bijgewerkt met tools/kleur_fotos.py, zodat alle foto's dezelfde look hebben.
 FOTO = {
-    "zorg": ("Studenten verpleegkunde oefenen samen op een oefenpop", "center 30%"),
-    "therapie": ("Een fysiotherapeut helpt een patiënt met oefeningen op de behandelbank", "center 55%"),
-    "sociaal": ("Een groep jongeren praat met elkaar in een lokaal", "center 35%"),
-    "onderwijs": ("Een juf geeft een leerling een high five in de klas", "center 40%"),
-    "gedrag": ("Een psycholoog in gesprek met twee jongeren", "center 40%"),
-    "talen": ("Drie studenten in de bibliotheek met boeken over Duits en Engels", "center 45%"),
-    "recht": ("Een houten rechtszaal met de tafel van de rechters", "center 40%"),
-    "communicatie": ("Een camera neemt een interview op", "center 35%"),
-    "economie": ("Studenten werken met grafieken en laptops aan tafel", "center 50%"),
-    "management": ("Een groep studenten overlegt over een plan aan een tafel", "center 35%"),
-    "marketing": ("Twee mensen bedenken een campagne met plakbriefjes op een bord", "center 30%"),
-    "horeca": ("Koksstudenten aan het werk in een leskeuken", "center 30%"),
-    "veilig": ("Twee Nederlandse agenten houden toezicht op een plein", "center 30%"),
-    "natuur": ("Studenten in een scheikundelab", "center 30%"),
-    "groen": ("Twee studenten planten in een kas", "center 45%"),
-    "ict": ("Studenten programmeren samen achter een computer", "center 35%"),
-    "techniek": ("Studenten bouwen met veiligheidsbril aan een robot", "center 40%"),
-    "bouw": ("Drie studenten werken aan een maquette van een gebouw", "center 40%"),
-    "design": ("Studenten ontwerpen samen achter een beeldscherm", "center 35%"),
-    "muziek": ("Jonge muzikanten bespreken een stuk in een oefenruimte", "center 45%"),
+    "zorg": ("Studenten verpleegkunde meten bij elkaar de bloeddruk in het praktijklokaal", "center 30%"),
+    "therapie": ("Studenten fysiotherapie oefenen op elkaar op de behandelbank", "center 35%"),
+    "sociaal": ("Een student sociaal werk praat met een jongen in een buurthuis", "center 45%"),
+    "onderwijs": ("Een pabostudent zit bij een groepje kinderen die hun vinger opsteken", "center 35%"),
+    "gedrag": ("Studenten psychologie discussiëren aan een tafel in een werkcollege", "center 45%"),
+    "talen": ("Twee studenten lezen en maken aantekeningen in een oude universiteitsbibliotheek", "center 40%"),
+    "recht": ("Een student rechten in toga pleit bij een oefenrechtbank", "center 25%"),
+    "communicatie": ("Studenten journalistiek interviewen een voorbijganger op straat", "center 25%"),
+    "economie": ("Studenten bespreken een grafiek op een laptop", "center 30%"),
+    "management": ("Studenten overleggen over een project aan tafels vol laptops en plakbriefjes", "center 50%"),
+    "marketing": ("Studenten bedenken een campagne bij een glazen wand vol plakbriefjes", "center 30%"),
+    "horeca": ("Koksstudenten richten een bord op terwijl de docent proeft", "center 30%"),
+    "veilig": ("Studenten van de politieacademie oefenen met een instructeur bij een politieauto", "center 30%"),
+    "natuur": ("Studenten in labjassen doen een experiment in het lab", "center 30%"),
+    "groen": ("Studenten bekijken tomatenplanten in een kas", "center 30%"),
+    "ict": ("Studenten programmeren samen achter twee beeldschermen", "center 40%"),
+    "techniek": ("Studenten bouwen met veiligheidsbril aan een elektrische raceauto", "center 25%"),
+    "bouw": ("Studenten bouwkunde maken een maquette van karton", "center 25%"),
+    "design": ("Designstudenten hangen schetsen op een moodboard in de studio", "center 25%"),
+    "muziek": ("Conservatoriumstudenten repeteren met gitaar, zang en piano", "center 45%"),
 }
 
 
@@ -52,7 +53,8 @@ def foto(fid, terug, klein=False):
     return f'<img src="{terug}img/groep/{"klein/" if klein else ""}{fid}.jpg" alt="{html.escape(alt)}" style="object-position:{pos}" loading="lazy">'
 
 
-CSS_EXTRA = """
+CSS_EXTRA = """/* Op de achtergrond: dunne padvinderlijntjes */
+body{background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='1200' fill='none' stroke='%23888' stroke-width='1' stroke-linecap='round'><g stroke-opacity='.16'><path d='M150 0C260 220 40 420 180 600S120 1000 150 1200'/><path d='M520 0C420 180 700 360 560 620S380 980 520 1200'/><path d='M880 0C1000 260 760 480 900 700S1040 1020 880 1200'/><path d='M180 600C320 560 420 680 560 620M560 620C700 640 780 760 900 700'/></g><g stroke-opacity='.12' stroke-dasharray='2 7'><path d='M0 300C300 260 700 380 1200 300'/><path d='M0 950C400 1010 800 880 1200 950'/></g><g fill='%23888' fill-opacity='.22' stroke='none'><circle cx='180' cy='600' r='3'/><circle cx='560' cy='620' r='3'/><circle cx='900' cy='700' r='3'/></g></svg>");background-size:1200px 1200px;background-repeat:repeat}
 .foto{margin:14px 0 4px}
 .foto img{display:block;width:100%;height:220px;object-fit:cover;border-radius:16px}
 @media (max-width:640px){.foto img{height:150px;border-radius:12px}}
