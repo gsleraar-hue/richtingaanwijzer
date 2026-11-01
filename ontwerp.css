@@ -744,8 +744,8 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .vak-paneel .btn{margin-top:16px}
 @media (max-width:760px){.vak-paneel{grid-template-columns:1fr;padding:18px}.vak-paneel .vakwerk{columns:1}}
 
-/* Levend pad in de Padvinder */
-.testgrid{grid-template-columns:minmax(0,1fr) 320px}
+/* Levend pad in de Padvinder (alleen breed: onder 900px één kolom) */
+@media (min-width:901px){.testgrid{grid-template-columns:minmax(0,1fr) 320px}}
 .levendpad{margin:0;position:sticky;top:90px;padding:12px 12px 14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
 .levendpad svg{display:block;width:100%;height:auto;overflow:visible}
 .levendpad figcaption{font-size:.85rem;color:var(--muted);text-align:center;margin-top:4px;min-height:2.6em}

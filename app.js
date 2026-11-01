@@ -145,8 +145,10 @@
     if (!v) return [];
     const uit = [{ w: v.split(/\s+/), straf: 0 }];
     const voeg = (t, straf = 2) => uit.push({ w: norm(t).split(/\s+/), straf });
-    (BEROEP_ZOEK[v] || []).forEach((t) => voeg(t));
-    v.split(/\s+/).forEach((w) => (BEROEP_ZOEK[w] || []).forEach((t) => voeg(v.replace(w, t))));
+    // Object.hasOwn: anders vindt "constructor" of "tostring" een ingebouwde functie
+    const beroep = (w) => (Object.hasOwn(BEROEP_ZOEK, w) ? BEROEP_ZOEK[w] : []);
+    beroep(v).forEach((t) => voeg(t));
+    v.split(/\s+/).forEach((w) => beroep(w).forEach((t) => voeg(v.replace(w, t))));
     const m = v.replace(/\s+/g, "").match(/^(.{3,}?)(leraar|lerares|docent|leerkracht)$/) || v.match(/^(?:leraar|lerares|docent|leerkracht) (.{3,})$/);
     if (m) { const vak = VAK_ALIAS[m[1]] || m[1]; voeg("leraar " + vak, 0); voeg("docent " + vak, 0); }
     return uit;
@@ -593,6 +595,7 @@
     });
     const picks = {};
     kind.forEach((x) => {
+      if (!KIND[Number(x)]) return;
       const g = KIND[Number(x)][0];
       picks[g] = (picks[g] || 0) + 1;
     });
@@ -1099,7 +1102,20 @@
   $("#odTips").innerHTML = OPENDAG_TIPS.map((t) => `<div class="odtip"><h4>${esc(t[0])}</h4><ul>${t[1].map((p) => `<li>${vt(p)}</li>`).join("")}</ul></div>`).join("");
 
   /* ---------- Mijn stappenplan ---------- */
-  function lees(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v === null ? d : v; } catch (e) { return d; } }
+  // Alleen een waarde van de verwachte soort; kapotte of oude opslag geeft de standaardwaarde
+  const soortVan = (v) => (Array.isArray(v) ? "array" : typeof v);
+  const tekstLijst = (x) => Array.isArray(x) && x.every((s) => typeof s === "string");
+  const antwoordVorm = (v) => soortVan(v.vals) === "object" && v.vals !== null && (v.kind == null || tekstLijst(v.kind));
+  // Padvinder: ook ids die (na een update van de site) niet meer bestaan, gelden als kapot
+  const VORM_CHECK = { padvinder: (v) => tekstLijst(v.top) && v.top.every((k) => Object.hasOwn(GEBIEDEN, k)) && tekstLijst(v.fams) && v.fams.every((f) => FAMILIES.some((x) => x.id === f)), antwoorden: antwoordVorm, uitslag_leerling: antwoordVorm, uitslag_ouder: antwoordVorm };
+  function lees(k, d) {
+    try {
+      const v = JSON.parse(localStorage.getItem(k));
+      if (v === null) return d;
+      const soort = d !== null ? soortVan(d) : k === "hbo_waarom" ? "number" : "object";
+      return soortVan(v) === soort && (!VORM_CHECK[k] || VORM_CHECK[k](v)) ? v : d;
+    } catch (e) { return d; }
+  }
   function bewaar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   let favorieten = lees("favorieten", []);
   let afgevinkt = lees("afgevinkt", {});
