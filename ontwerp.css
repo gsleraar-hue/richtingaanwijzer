@@ -1132,5 +1132,8 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .oudertegels .tegel[aria-pressed="true"]{background:#fff;border-color:#fff;color:#1b1b1f;transform:none}
 .oudertegels .tegel[aria-pressed="true"] span{opacity:.8}
 
+.gesprek-grid.twee{grid-template-columns:repeat(2,1fr)}
+@media (max-width:640px){.gesprek-grid.twee{grid-template-columns:1fr}}
+
 /* Op de achtergrond: gestippelde padvinderlijntjes */
 body{background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='1200' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-dasharray='0 9'><g stroke-opacity='.28'><path d='M150 0C260 220 40 420 180 600S120 1000 150 1200'/><path d='M520 0C420 180 700 360 560 620S380 980 520 1200'/><path d='M880 0C1000 260 760 480 900 700S1040 1020 880 1200'/><path d='M180 600C320 560 420 680 560 620M560 620C700 640 780 760 900 700'/><path d='M0 300C300 260 700 380 1200 300'/><path d='M0 950C400 1010 800 880 1200 950'/></g><g fill='%23888' fill-opacity='.3' stroke='none'><circle cx='180' cy='600' r='3.5'/><circle cx='560' cy='620' r='3.5'/><circle cx='900' cy='700' r='3.5'/></g></svg>");background-size:1200px 1200px;background-repeat:repeat}

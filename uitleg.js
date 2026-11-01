@@ -506,7 +506,8 @@ const GESPREK = [
 const GESPREK_LASTIG = [
   ["Als je kind het echt niet weet", "Dat is heel normaal, ook op 17. Kies dan voor iets breds, ga naar meeloopdagen, praat met de decaan of overweeg een tussenjaar met een duidelijk plan. Een verkeerde keuze is niet erg: overstappen kan."],
   ["Als jullie het oneens zijn", "Vraag eerst waaróm je kind iets wil, en zoek het daarna samen uit: bekijk de opleiding, ga naar een open dag, zoek iemand die het werk doet. Jouw zorg mag je noemen, maar het blijft de keuze van je kind."],
-  ["Als het over geld gaat", "Studeren kost geld: collegegeld, boeken en misschien een kamer. Via DUO, de dienst die studiefinanciering regelt, krijgt je kind een basisbeurs en/of kan het lenen. Kijk samen op duo.nl wat dat voor jullie betekent."]
+  ["Als het over geld gaat", "Studeren kost geld: collegegeld, boeken en misschien een kamer. Via DUO, de dienst die studiefinanciering regelt, krijgt je kind een basisbeurs en/of kan het lenen. Kijk samen op duo.nl wat dat voor jullie betekent."],
+  ["Als jullie er samen niet uitkomen", "Maak een afspraak om samen met de decaan te praten. Een derde aan tafel helpt soms: om het gesprek open te houden als je kind vastloopt, en ook als jullie meningen verschillen. De decaan kent de routes, kijkt zonder eigen belang mee en het kost niets."]
 ];
 
 // Open dag voorbereiden: [titel, punten]
