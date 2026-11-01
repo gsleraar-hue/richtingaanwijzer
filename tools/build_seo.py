@@ -20,7 +20,47 @@ NIV = {"mbo": "mbo", "hbo": "hbo", "wo": "wo (universiteit)", "ad": "associate d
 VORM = {"bol": "bol (vooral leren, met stages)", "bbl": "bbl (werken en één dag naar school)", "voltijd": "voltijd", "deeltijd": "deeltijd (naast je werk)", "duaal": "duaal (werk en studie afwisselen)", "inservice": "in dienst van een ziekenhuis (werken en leren, met salaris)"}
 DUUR = {"mbo": "1 tot 4 jaar, afhankelijk van het niveau", "hbo": "4 jaar", "wo": "3 jaar voor de bachelor, daarna vaak nog een master", "ad": "2 jaar"}
 
+# Eén foto per groep (Pexels): laat zien hoe het vak er in het echt uitziet. Tweede waarde is het focuspunt.
+FOTO = {
+    "zorg": ("Studenten verpleegkunde oefenen samen op een oefenpop", "center 30%"),
+    "therapie": ("Een fysiotherapeut helpt een patiënt met oefeningen op de behandelbank", "center 55%"),
+    "sociaal": ("Een groep jongeren praat met elkaar in een lokaal", "center 35%"),
+    "onderwijs": ("Een juf geeft een leerling een high five in de klas", "center 40%"),
+    "gedrag": ("Een psycholoog in gesprek met twee jongeren", "center 40%"),
+    "talen": ("Drie studenten in de bibliotheek met boeken over Duits en Engels", "center 45%"),
+    "recht": ("Een houten rechtszaal met de tafel van de rechters", "center 40%"),
+    "communicatie": ("Een camera neemt een interview op", "center 35%"),
+    "economie": ("Studenten werken met grafieken en laptops aan tafel", "center 50%"),
+    "management": ("Een groep studenten overlegt over een plan aan een tafel", "center 35%"),
+    "marketing": ("Twee mensen bedenken een campagne met plakbriefjes op een bord", "center 30%"),
+    "horeca": ("Koksstudenten aan het werk in een leskeuken", "center 30%"),
+    "veilig": ("Twee Nederlandse agenten houden toezicht op een plein", "center 30%"),
+    "natuur": ("Studenten in een scheikundelab", "center 30%"),
+    "groen": ("Twee studenten planten in een kas", "center 45%"),
+    "ict": ("Studenten programmeren samen achter een computer", "center 35%"),
+    "techniek": ("Studenten bouwen met veiligheidsbril aan een robot", "center 40%"),
+    "bouw": ("Drie studenten werken aan een maquette van een gebouw", "center 40%"),
+    "design": ("Studenten ontwerpen samen achter een beeldscherm", "center 35%"),
+    "muziek": ("Jonge muzikanten bespreken een stuk in een oefenruimte", "center 45%"),
+}
+
+
+def foto(fid, terug, klein=False):
+    if fid not in FOTO:
+        return ""
+    alt, pos = FOTO[fid]
+    return f'<img src="{terug}img/groep/{"klein/" if klein else ""}{fid}.jpg" alt="{html.escape(alt)}" style="object-position:{pos}" loading="lazy">'
+
+
 CSS_EXTRA = """
+.foto{margin:14px 0 4px}
+.foto img{display:block;width:100%;height:220px;object-fit:cover;border-radius:16px}
+@media (max-width:640px){.foto img{height:150px;border-radius:12px}}
+.lijst.fotos li{padding:0;overflow:hidden;display:grid;grid-template-columns:170px 1fr}
+.lijst.fotos img{display:block;width:100%;height:100%;min-height:110px;object-fit:cover}
+.lijst.fotos li>a{display:block}
+.lijst.fotos div{padding:12px 16px}
+@media (max-width:640px){.lijst.fotos li{grid-template-columns:110px 1fr}}
 .badges{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
 .badge{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
 .badge.niv{border-color:var(--accent);color:var(--accent)}
@@ -104,6 +144,7 @@ def main():
                        f"in de groep {html.escape(f['naam'])}. {f['uitleg']}")
         inhoud = (
             f'<p class="kruim"><a href="../../">Home</a> › <a href="../">Opleidingen</a> › <a href="../groep/{f["id"]}/">{html.escape(f["naam"])}</a> › {n}</p>'
+            f'<figure class="foto">{foto(f["id"], "../../")}</figure>'
             f'<div class="badges">{"".join(f"<span class='badge niv'>{NIV[x]}</span>" for x in o["l"])}<span class="badge">{html.escape(f["naam"])}</span></div>'
             f"<h1>Wat is {n}?</h1>{nl_regel}"
             f'<p class="lead">{inleiding}</p>'
@@ -157,6 +198,7 @@ def main():
         pad = f"opleidingen/groep/{f['id']}/"
         perniv = {nv: [x for x in items if nv in x["l"]] for nv in ["mbo", "hbo", "wo"]}
         inhoud = (f'<p class="kruim"><a href="../../../">Home</a> › <a href="../../">Opleidingen</a> › {html.escape(f["naam"])}</p>'
+                  f'<figure class="foto">{foto(f["id"], "../../../")}</figure>'
                   f'<span class="thema">{geb[f["gebied"]]["naam"]}</span><h1>Opleidingen in {html.escape(f["naam"])}</h1>'
                   f'<p class="lead">{f["uitleg"]} Hier staan alle {len(items)} opleidingen in deze groep, op mbo, hbo en universiteit.</p>'
                   + (f"<h2>Wat kun je ermee?</h2><ul>{''.join(f'<li>{k}</li>' for k in f['kunJe'])}</ul>" if f["kunJe"] else "")
@@ -173,8 +215,8 @@ def main():
     blok = ""
     for k, g in geb.items():
         fs = [f for f in d["families"] if f["gebied"] == k]
-        blok += f"<h2>{html.escape(g['naam'])}</h2><ul class=\"lijst\">" + "".join(
-            f'<li><a href="groep/{f["id"]}/">{html.escape(f["naam"])}</a> <span class="nlv">({len(per_fam.get(f["id"], []))})</span><p>{f["uitleg"]}</p></li>' for f in fs) + "</ul>"
+        blok += f"<h2>{html.escape(g['naam'])}</h2><ul class=\"lijst fotos\">" + "".join(
+            f'<li><a href="groep/{f["id"]}/" tabindex="-1" aria-hidden="true">{foto(f["id"], "../", True)}</a><div><a href="groep/{f["id"]}/">{html.escape(f["naam"])}</a> <span class="nlv">({len(per_fam.get(f["id"], []))})</span><p>{f["uitleg"]}</p></div></li>' for f in fs) + "</ul>"
     inhoud = ('<p class="kruim"><a href="../">Home</a> › Opleidingen</p>'
               f"<h1>Alle opleidingen in gewone taal</h1><p class=\"lead\">{len(opls)} mbo-, hbo- en wo-opleidingen in Nederland, in {len(d['families'])} groepen. Per opleiding lees je wat je er doet, wat je ermee kunt en wat je ervoor nodig hebt. Engelse namen vertalen we.</p>"
               + blok)

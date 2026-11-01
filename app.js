@@ -273,6 +273,16 @@
     $("#alleAantal").textContent = OPLEIDINGEN.length;
   }
 
+  // Foto's: één per groep, en een eigen foto voor uitgelichte studies die anders dezelfde groepsfoto zouden delen
+  const STUDIE_FOTO = {
+    verpleegkunde: "groep/zorg", fysio: "groep/therapie", sport: "studie/sport", ba: "groep/management", iba: "studie/iba", marketing: "groep/marketing", hrm: "studie/hrm",
+    informatica: "groep/ict", datascience: "studie/datascience", softdev: "studie/softdev", ct: "studie/ct", ido: "studie/ido",
+    cmd: "groep/design", mediamaker: "studie/mediamaker", mic: "groep/communicatie", creativebiz: "studie/creativebiz",
+    psychologie: "groep/gedrag", sw: "groep/sociaal", recht: "groep/recht", pabo: "groep/onderwijs", biomed: "studie/biomed", las: "groep/talen", biologie: "groep/groen",
+  };
+  const fotoPad = (p, klein) => (p ? `img/${p.replace("/", klein ? "/klein/" : "/")}.jpg` : "");
+  const fotoImg = (p, cls, klein) => (p ? `<img class="${cls}" src="${fotoPad(p, klein)}" alt="" loading="lazy">` : "");
+
   function openOpleiding(o, f) {
     huidigeOpl = [o, f];
     const X = FAM_EXTRA[f.id];
@@ -302,6 +312,7 @@
     }
     reis += `</div>`;
     $("#detailInhoud").innerHTML =
+      fotoImg("groep/" + f.id, "dfoto") +
       `<div class="badges">${o.l.map((n) => `<span class="badge ${n}">${NIV_LABEL[n]}</span>`).join("")}<span class="badge gebied">${esc(f.naam)}</span></div>` +
       `<h2 id="dTitel">${esc(o.n)}</h2>${naamRegels(o.n, o.e, "Internationale naam")}` +
       `<p><button type="button" class="btn ${isFav(o.n) ? "" : "ghost"} favknop" data-fav="${esc(o.n)}">${isFav(o.n) ? "✓ Op mijn lijst" : "+ Zet op mijn lijst"}</button> <a class="deel-link" href="opleidingen/${oplSlug.get(o.n)}/" target="_blank" rel="noopener">Vaste pagina om te delen ↗</a></p>` +
@@ -365,7 +376,7 @@
     const b = el(
       "button",
       { type: "button", class: "card" },
-      badges(s) +
+      fotoImg(STUDIE_FOTO[s.id], "cfoto", true) + badges(s) +
         `<h3>${esc(s.naam)}</h3>${naamRegels(s.naam, s.engels)}<p class="kort">${vt(s.kort)}</p><span class="more">Lees de uitleg →</span>`
     );
     b.addEventListener("click", () => openDetail(s.id));
@@ -376,7 +387,7 @@
     const s = STUDIES.find((x) => x.id === id);
     if (!s) return;
     $("#detailInhoud").innerHTML =
-      badges(s) +
+      fotoImg(STUDIE_FOTO[s.id], "dfoto") + badges(s) +
       `<h2 id="dTitel">${esc(s.naam)}</h2>${naamRegels(s.naam, s.engels)}` +
       `<h3>In gewone woorden</h3><p>${vt(s.kort)}</p>` +
       `<h3>Wat doe je er?</h3><p>${vt(s.doe)}</p>` +
@@ -1006,7 +1017,44 @@
     vertaal: ["#vertaal", "Business wát?", "Engelse studienamen vertaald"],
     woorden: ["#woorden", "Moeilijke woorden", "Van LOB tot propedeuse"],
   };
-  const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel" href="${h}"><strong>${t}</strong><span>${sub}</span></a>`; };
+  // Icoon per tegel (lijnstijl, 24x24) en soort: ontdekken, regelen of naslag
+  const ICOON = {
+    test: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+    weetal: '<path d="M12 3v18M5 7h14M5 7l-2.5 6a3 3 0 0 0 5 0zM19 7l-2.5 6a3 3 0 0 0 5 0z"/>',
+    samen: '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0M13.5 20a4 4 0 0 1 8 0"/>',
+    sterren: '<path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+    metro: '<circle cx="5" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6h6a4 4 0 0 1 0 8h-2a4 4 0 0 0 0 8"/><path d="M17 18h-6"/>',
+    droom: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/>',
+    te: '<path d="M12 21s-7-4.5-9-9.5A5 5 0 0 1 12 6a5 5 0 0 1 9 5.5c-2 5-9 9.5-9 9.5z"/>',
+    opleidingen: '<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/>',
+    opendagen: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    plan: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/>',
+    profiel: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    ouders: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+    route: '<path d="M4 20V4l6 3 6-3 4 2v14l-4-2-6 3-6-3"/><path d="M10 7v13M16 4v14"/>',
+    toelating: '<path d="M3 21h18M5 21V10l7-6 7 6v11"/><path d="M10 21v-6h4v6"/>',
+    leerwerk: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+    planb: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+    geld: '<circle cx="12" cy="12" r="9"/><path d="M15 8.5a3.5 3.5 0 1 0 0 7M7.5 11h5M7.5 13.5h5"/>',
+    opties: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+    eerlijk: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/>',
+    niveaus: '<path d="M4 20V14h4v6M10 20V9h4v11M16 20V4h4v16"/>',
+    vakken: '<path d="M4 19V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h13"/>',
+    vertaal: '<path d="M4 5h8M8 3v2M6 5c0 4 2.5 7 6 8M10 5c0 3-2.5 7-6 8M13 21l4-9 4 9M14.5 18h5"/>',
+    woorden: '<path d="M4 6h16M4 12h10M4 18h7"/><circle cx="17.5" cy="16.5" r="2.5"/><path d="m19.5 18.5 2 2"/>',
+  };
+  const SOORT = { plan: "regel", profiel: "regel", opendagen: "regel", route: "regel", toelating: "regel", geld: "regel", planb: "regel", leerwerk: "regel", opties: "regel", opleidingen: "naslag", niveaus: "naslag", vertaal: "naslag", woorden: "naslag", eerlijk: "naslag" };
+  const icoonHtml = (k) => (ICOON[k] ? `<span class="ticoon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICOON[k]}</svg></span>` : "");
+  // De starttegels staan los in index.html: zoek de sleutel op via de link
+  const tegelSleutel = (href) => Object.keys(TEGELS).find((k) => TEGELS[k][0] === href);
+  const versierTegel = (a) => {
+    const k = tegelSleutel(a.getAttribute("href"));
+    if (!k || a.querySelector(".ticoon")) return;
+    a.insertAdjacentHTML("afterbegin", icoonHtml(k));
+    if (SOORT[k]) a.classList.add("s-" + SOORT[k]);
+  };
+  document.querySelectorAll(".tegel").forEach(versierTegel);
+  const tegelHtml = (k) => { const [h, t, sub] = TEGELS[k]; return `<a class="tegel${SOORT[k] ? " s-" + SOORT[k] : ""}" href="${h}">${icoonHtml(k)}<strong>${t}</strong><span>${sub}</span></a>`; };
   const VERDER = {
     test: ["samen", "sterren", "droom", "plan"], weetal: ["opleidingen", "toelating", "samen", "plan"], droom: ["sterren", "te", "test", "vakken"], te: ["droom", "sterren", "test", "vakken"],
     opleidingen: ["sterren", "vertaal", "opendagen", "plan"], opendagen: ["eerlijk", "plan", "ouders", "geld"], plan: ["profiel", "planb", "metro", "geld"], profiel: ["plan", "opleidingen", "vakken", "metro"],

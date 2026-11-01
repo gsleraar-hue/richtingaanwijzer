@@ -77,6 +77,9 @@ main section>h2::before{counter-increment:stop;content:"Nr. " counter(stop,decim
 .card .eng{color:var(--muted);font-size:.9rem;margin:-2px 0 0;font-style:italic}
 .card .kort{margin:0}
 .card .more{margin-top:auto;color:var(--accent);font-weight:600;font-size:.95rem}
+.card{overflow:hidden}
+.card .cfoto{display:block;width:calc(100% + 48px);height:150px;margin:-24px -24px 6px;object-fit:cover;object-position:center 25%;transition:transform .3s}
+.card:hover .cfoto{transform:scale(1.03)}
 .badges{display:flex;gap:6px;flex-wrap:wrap}
 .badge{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;padding:2px 9px;border-radius:3px;border:1px solid currentColor;color:var(--muted)}
 .badge.mbo{color:var(--mbo)}.badge.hbo{color:var(--hbo)}.badge.wo{color:var(--wo)}
@@ -175,6 +178,8 @@ section.parents,section+section.parents{border-top:0}
 dialog{border-radius:12px;padding:0;max-width:680px;width:calc(100% - 24px);background:var(--card);color:var(--ink);max-height:90vh;box-shadow:0 30px 80px rgba(0,0,0,.35)}
 dialog::backdrop{background:rgba(10,16,32,.6)}
 #detailInhoud{padding:34px 32px 36px}
+#detailInhoud .dfoto{display:block;width:calc(100% + 64px);height:200px;margin:-34px -32px 22px;object-fit:cover;object-position:center 30%}
+@media (max-width:600px){#detailInhoud .dfoto{height:140px}}
 #detailInhoud h2{font-size:1.9rem;padding-right:40px}
 #detailInhoud h2::before{display:none}
 #detailInhoud h3{font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;font-size:.72rem;margin:24px 0 4px;color:var(--accent);text-transform:uppercase;letter-spacing:.18em}
@@ -669,6 +674,14 @@ details.meer ul{margin:0;padding-left:20px}
 .tegel:hover,.tegel:focus-visible{border-color:var(--accent);transform:translateY(-2px)}
 .tegel.t-rood{background:var(--accent);border-color:var(--accent);color:#fff}
 .tegel.t-rood span{opacity:.9}
+.tegel{--tk:var(--accent)}
+.tegel.s-regel{--tk:var(--wo)}
+.tegel.s-naslag{--tk:var(--mbo)}
+.ticoon{display:grid;place-items:center;width:38px;height:38px;margin-bottom:6px;border-radius:10px;color:var(--tk);background:color-mix(in srgb,var(--tk) 13%,transparent);transition:transform .2s}
+.tegel:hover .ticoon,.tegel:focus-visible .ticoon{transform:rotate(-6deg) scale(1.06)}
+.tegel.t-rood .ticoon{color:#fff;background:rgba(255,255,255,.2)}
+.tegel:not(.t-rood):hover,.tegel:not(.t-rood):focus-visible{border-color:var(--tk)}
+@media (prefers-reduced-motion:reduce){.ticoon,.card .cfoto{transition:none}}
 .droom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:14px}
 .droom{text-align:left;display:flex;flex-direction:column;gap:2px;padding:16px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;font:inherit}
 .droom small{font-size:.75rem;opacity:.65}
