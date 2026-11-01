@@ -6,6 +6,7 @@
 <script src="../data.js"></script>
 <script src="../opleidingen.js"></script>
 <script src="../mbo.js"></script>
+<script src="../zorg-inservice.js"></script>
 <script src="../uitleg.js"></script>
 <script>
 // Zelfde samenvoeging en vertaling als app.js, zodat de vaste pagina's precies zeggen wat de app zegt
@@ -15,6 +16,8 @@ OPLEIDINGEN_MBO.forEach((x) => {
   if (b) { b.l = [...new Set(b.l.concat("mbo"))]; b.i = [...new Set(b.i.concat(x.i))]; b.mn = x.mn; b.v = [...new Set(b.v.concat(x.v))]; }
   else OPLEIDINGEN.push(x);
 });
+OPLEIDINGEN.sort((p, q) => p.n.localeCompare(q.n, "nl"));
+OPLEIDINGEN.push(...OPLEIDINGEN_INSERVICE);
 OPLEIDINGEN.sort((p, q) => p.n.localeCompare(q.n, "nl"));
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const termRe = new RegExp("(?<![\\p{L}\\d'-])(" + TERMEN.map((t) => t[0]).sort((x, y) => y.length - x.length)
@@ -39,7 +42,7 @@ const out = {
       kunJe: X ? X.kunJe.map(vt) : [], profiel: X ? vt(X.profiel) : "", eigen: X ? X.eigen.map(vt) : [], selectie: SELECTIE[f.id] || "" };
   }),
   vooropleiding: VOOROPLEIDING,
-  opleidingen: OPLEIDINGEN.map((o) => ({ n: o.n, e: o.e || "", nl: termNl(o.n), f: o.f, l: o.l, i: o.i, p: o.p || [], v: o.v || [], mn: o.mn || [] })),
+  opleidingen: OPLEIDINGEN.map((o) => ({ n: o.n, e: o.e || "", nl: termNl(o.n), f: o.f, l: o.l, i: o.i, p: o.p || [], v: o.v || [], mn: o.mn || [], is: o.is ? { uitleg: vt(o.uitleg), kunJe: o.kunJe.map(vt), eisen: o.eisen, eigen: o.eigen.map(vt), duur: o.duur } : null })),
 };
 document.getElementById("data").textContent = "@@BEGIN@@" + JSON.stringify(out) + "@@EIND@@";
 </script>

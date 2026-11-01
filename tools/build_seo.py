@@ -17,7 +17,7 @@ import build_begrippen as bb
 SITE, BASE, NAAM = bb.SITE, bb.BASE, bb.NAAM
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 NIV = {"mbo": "mbo", "hbo": "hbo", "wo": "wo (universiteit)", "ad": "associate degree"}
-VORM = {"bol": "bol (vooral leren, met stages)", "bbl": "bbl (werken en één dag naar school)", "voltijd": "voltijd", "deeltijd": "deeltijd (naast je werk)", "duaal": "duaal (werk en studie afwisselen)"}
+VORM = {"bol": "bol (vooral leren, met stages)", "bbl": "bbl (werken en één dag naar school)", "voltijd": "voltijd", "deeltijd": "deeltijd (naast je werk)", "duaal": "duaal (werk en studie afwisselen)", "inservice": "in dienst van een ziekenhuis (werken en leren, met salaris)"}
 DUUR = {"mbo": "1 tot 4 jaar, afhankelijk van het niveau", "hbo": "4 jaar", "wo": "3 jaar voor de bachelor, daarna vaak nog een master", "ad": "2 jaar"}
 
 CSS_EXTRA = """
@@ -95,14 +95,24 @@ def main():
         nl_regel = f'<p class="eng">In het Nederlands: <strong>{html.escape(o["nl"])}</strong></p>' if o["nl"] else ""
         if o["e"] and o["e"].lower().replace(" ", "") != o["n"].lower().replace(" ", ""):
             nl_regel += f'<p class="eng">Internationale naam: {html.escape(o["e"])}</p>'
-        inleiding = (f"{n}{' (' + html.escape(o['nl']) + ')' if o['nl'] else ''} is een opleiding op {zin_niveaus(o)}{mbo_niv} "
-                     f"in de groep {html.escape(f['naam'])}. {f['uitleg']}")
+        Z = o.get("is")
+        if Z:
+            inleiding = (f"{n} is een opleiding van een ziekenhuis, op hbo-niveau. {Z['uitleg']} "
+                         "Je bent in dienst van het ziekenhuis, krijgt salaris en haalt een erkend diploma (CZO), geen bachelor.")
+        else:
+          inleiding = (f"{n}{' (' + html.escape(o['nl']) + ')' if o['nl'] else ''} is een opleiding op {zin_niveaus(o)}{mbo_niv} "
+                       f"in de groep {html.escape(f['naam'])}. {f['uitleg']}")
         inhoud = (
             f'<p class="kruim"><a href="../../">Home</a> › <a href="../">Opleidingen</a> › <a href="../groep/{f["id"]}/">{html.escape(f["naam"])}</a> › {n}</p>'
             f'<div class="badges">{"".join(f"<span class='badge niv'>{NIV[x]}</span>" for x in o["l"])}<span class="badge">{html.escape(f["naam"])}</span></div>'
             f"<h1>Wat is {n}?</h1>{nl_regel}"
             f'<p class="lead">{inleiding}</p>'
-            + (f"<h2>Wat kun je ermee?</h2><ul>{''.join(f'<li>{k}</li>' for k in f['kunJe'])}</ul>" if f["kunJe"] else "")
+            + (f"<h2>Wat kun je ermee?</h2><ul>{''.join(f'<li>{k}</li>' for k in Z['kunJe'])}</ul>"
+               f"<h2>Wat heb je ervoor nodig?</h2><ul><li><strong>Vooropleiding:</strong> {html.escape(Z['eisen'])}</li><li><strong>Het helpt als je:</strong> {', '.join(Z['eigen'])}</li></ul>"
+               f"<h2>Selectie of toelatingsexamen?</h2><p>Je solliciteert bij een ziekenhuis op een vacature voor {n.lower()} in opleiding. Er zijn per ziekenhuis maar een paar plekken, dus vaak volgt een gesprek en soms een meeloopdag. Je meldt je niet aan via Studielink.</p>"
+               f"<h2>Hoe lang duurt het?</h2><p>{html.escape(Z['duur'])}, in dienst van het ziekenhuis: je werkt en leert, met salaris.</p>"
+               if Z else
+            (f"<h2>Wat kun je ermee?</h2><ul>{''.join(f'<li>{k}</li>' for k in f['kunJe'])}</ul>" if f["kunJe"] else "")
             + "<h2>Wat heb je ervoor nodig?</h2><ul>"
             + "".join(f"<li><strong>Voor {NIV[x]}:</strong> {html.escape(d['vooropleiding'].get(x, ''))}</li>" for x in o["l"] if d["vooropleiding"].get(x))
             + (f"<li>{f['profiel']}</li>" if f["profiel"] else "")
@@ -111,10 +121,12 @@ def main():
             + f"<h2>Selectie of toelatingsexamen?</h2><p>{html.escape(f['selectie']) + ' Kijk bij de opleiding zelf wat er precies gevraagd wordt.' if f['selectie'] else 'Meestal niet. Heb je de juiste vooropleiding en meld je je op tijd aan, dan mag je in principe beginnen.'}</p>"
             + f"<h2>Hoe lang duurt het?</h2><p>{' · '.join(f'{NIV[x]}: {DUUR[x]}' for x in o['l'])}"
             + (f". Je kunt het volgen als {lijst(VORM.get(v, v) for v in vormen)}." if vormen else ".") + "</p>"
+            )
             + ("<p>Bij bol ga je vooral naar school en loop je stage. Bij bbl werk je bij een leerbedrijf en ga je één dag per week naar school; je verdient dan al salaris. Het diploma is hetzelfde. <a href='../../begrippen/bol-en-bbl/'>Meer over bol en bbl</a></p>" if {"bol", "bbl"} & set(vormen) else "")
-            + (f"<h2>Waar kun je {n} studeren?</h2><p>Bij {len(scholen)} {'school' if len(scholen) == 1 else 'scholen'}"
+            + (f"<h2>Waar kun je {n} studeren?</h2><p>Bij {len(scholen)} {'ziekenhuizen' if Z else 'school' if len(scholen) == 1 else 'scholen'}"
                + (f", onder andere in {html.escape(lijst(plaatsen[:12]))}" if plaatsen else "") + ":</p>"
-               f"<ul class=\"scholen\">{''.join(f'<li>{html.escape(x)}</li>' for x in scholen[:40])}</ul>" if scholen else "")
+               f"<ul class=\"scholen\">{''.join(f'<li>{html.escape(x)}</li>' for x in scholen[:40])}</ul>"
+               + ("<p>Veel meer ziekenhuizen leiden op. Kijk ook bij het ziekenhuis bij jou in de buurt.</p>" if Z else "") if scholen else "")
             + (f'<h2>Verwante opleidingen</h2><ul class="rel">{"".join(f"<li><a href='../{slugs[x["n"]]}/'>{html.escape(x["n"])}</a></li>" for x in verwant)}</ul>' if verwant else "")
             + f'<div class="cta"><p><strong>Past {n} bij jou?</strong> In de app zie je hoe ver elke school van je huis is, wanneer de open dagen zijn en wat je Plan B is. Je kunt hem ook op je lijst zetten.</p>'
             f'<a class="knop" href="../../#/opl?n={quote(o["n"])}">Bekijk in de app</a><a class="knop licht" href="../../#/test">Doe de Padvinder</a></div>'
