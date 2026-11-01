@@ -129,16 +129,16 @@ const VAKKEN = [
 ];
 // Studies waar je op school nooit les in hebt gehad
 const NIEUW = [
-  ["Psychologie", "Waarom mensen denken en doen wat ze doen. Veel statistiek."],
-  ["Rechten", "Regels, rechtspraak en redeneren. Veel lezen."],
-  ["Bedrijfskunde en management", "Hoe organisaties werken, mensen en geld. Je kreeg dit nooit op school."],
-  ["Communicatie", "Boodschappen bedenken en verspreiden, onderzoek naar publiek."],
-  ["Sociaal werk", "Mensen helpen met problemen. Veel praktijk en gesprekken."],
-  ["Bestuurskunde en politicologie", "Hoe besluiten genomen worden en wie ze uitvoert."],
-  ["Pedagogiek", "Hoe kinderen en jongeren zich ontwikkelen en wat ze nodig hebben."],
-  ["Marketing", "Waarom mensen kopen en hoe je ze bereikt."],
-  ["Verpleegkunde en paramedisch", "Zorg verlenen en behandelen. Je start praktijkgericht."],
-  ["Data science en AI", "Slimme systemen en data. Meer dan alleen wiskunde of informatica."]
+  ["Criminologie", "Waarom mensen misdaden plegen en hoe je dat voorkomt."],
+  ["Forensisch onderzoek", "Sporen zoeken en onderzoeken op een plaats delict. Veel lab en praktijk."],
+  ["Archeologie", "Opgraven en uitzoeken hoe mensen vroeger leefden. Veel veldwerk."],
+  ["Logopedie", "Mensen helpen met praten, stem, slikken en taal."],
+  ["Mondzorgkunde", "Gebitten gezond houden en behandelen, zelfstandig naast de tandarts."],
+  ["Taalwetenschap", "Hoe taal werkt in je hoofd en waarom talen zo verschillen."],
+  ["Planologie", "Bepalen waar huizen, wegen en natuur komen."],
+  ["Bos- en natuurbeheer", "Natuurgebieden onderhouden en beschermen. Je bent veel buiten."],
+  ["Maritiem officier", "Varen op grote schepen, als stuurman of als werktuigkundige."],
+  ["Notarieel recht", "Huizenkoop, testamenten en erfenissen juridisch goed regelen."]
 ];
 
 const STUDIES = [
