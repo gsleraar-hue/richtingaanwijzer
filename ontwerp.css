@@ -201,6 +201,14 @@ dialog::backdrop{background:rgba(10,16,32,.6)}
 .kaartwrap .reg.top1 .ring,.kaartwrap .reg.top2 .ring{stroke:#f4f1ea;stroke-opacity:.5}
 .kaartwrap .reg.top1 .ico,.kaartwrap .reg.top2 .ico{stroke:#f4f1ea}
 .kaartwrap .reg.top1 .bnr circle,.kaartwrap .reg.top2 .bnr circle{fill:#e8337a}
+.kaartwrap .reg .tel{font:700 13px "Segoe UI",system-ui,sans-serif;fill:#14213d;text-anchor:middle;paint-order:stroke;stroke:#f5f0ee;stroke-width:5px;stroke-linejoin:round;pointer-events:none}
+.kaartwrap .reg,.kaartlijst button{transition:opacity .25s}
+.kaartwrap.zoekend .reg:not(.gevonden),.kaartwrap.zoekend .kaartlijst button:not(.gevonden){opacity:.35}
+.kaartwrap.zoekend .reg.gevonden .disc{fill:var(--c);stroke:var(--c)}
+.kaartwrap.zoekend .reg.gevonden .ico{stroke:#f4f1ea}
+.kaartwrap.zoekend .reg.gevonden .ring{stroke:#f4f1ea;stroke-opacity:.5}
+.kaartwrap.zoekend .road{opacity:.5}
+.kaartlijst em.tel{font-style:normal;font-weight:700;font-size:.92rem;color:var(--ink);margin-top:4px}
 .kaartwrap .roadedge{fill:none;stroke:#14213d;stroke-width:11;stroke-opacity:.5;stroke-linecap:round}
 .kaartwrap .road{fill:none;stroke:#fbfcff;stroke-width:8;stroke-linecap:round}
 .kaartwrap .roadmid{display:none}

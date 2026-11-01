@@ -225,9 +225,11 @@
           return { f, items: goed, top: goed.length ? score.get(goed[0]) : 0 };
         }).sort((a, b) => b.top - a.top)
       : perFam;
+    const perGebied = varianten.length ? {} : null;
     rangorde.forEach(({ f, items }) => {
       if (!items.length) return;
       total += items.length;
+      if (perGebied) perGebied[f.gebied] = (perGebied[f.gebied] || 0) + items.length;
       const d = el("details", { class: "fam", id: "fam-" + f.id });
       d.dataset.fam = f.id;
       if (open.has(f.id) || words.length || state.gebied) d.open = true;
@@ -260,6 +262,7 @@
     if (state.niveau) addChip("Route: " + state.niveau, () => (state.niveau = ""));
     if (state.vorm) addChip("Leervorm: " + VORM_KORT[state.vorm], () => (state.vorm = ""));
     if (state.zoek) addChip("Zoekterm: " + state.zoek, () => { state.zoek = ""; $("#zoek").value = ""; });
+    if ($("#kaartKaart").firstChild) zoekOpKaart($("#kaartKaart"), perGebied);
     $("#alleLeeg").hidden = total > 0;
     $("#alleAantal").textContent = OPLEIDINGEN.length;
   }
@@ -852,7 +855,7 @@
       `<circle class="disc" cx="${cx}" cy="${cy}" r="58"/><circle class="ring" cx="${cx}" cy="${cy}" r="52"/>` +
       `<g class="ico" transform="translate(${cx - 36} ${cy - 36}) scale(1.125)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</g>` +
       `<g class="bnr"><circle cx="${cx - 46}" cy="${cy - 46}" r="13"/><text x="${cx - 46}" y="${cy - 41}">${n}</text></g>` +
-      `<text class="nm" x="${cx}" y="${cy - 74}">${esc(GEBIEDEN[k].naam)}</text></g>`;
+      `<text class="nm" x="${cx}" y="${cy - 74}">${esc(GEBIEDEN[k].naam)}</text><text class="tel" x="${cx}" y="${cy + 82}"></text></g>`;
   }
   function tree(x, y, i) {
     const r = 11 + (i % 3) * 3;
@@ -880,7 +883,19 @@
       `<g class="hier" transform="translate(${START[0]} ${START[1]})"><rect x="-70" y="-16" width="140" height="32" rx="4" fill="#14213d"/><text y="5" text-anchor="middle" fill="#f4f1ea">HOOFDINGANG</text></g>` +
       `<g transform="translate(850 52)"><circle r="24" fill="none" stroke="#14213d" stroke-width="1.2"/><path d="M0 -20L5 -4L20 0L5 4L0 20L-5 4L-20 0L-5 -4Z" fill="#14213d"/><path d="M0 -20L5 -4L-5 -4Z" fill="#d62828"/><text y="-31" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="13" fill="#14213d">N</text></g>` +
       `</svg>` +
-      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" style="--c:${COL[k]}" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${vt(GEBIEDEN[k].uitleg.split(". ")[0])}.</span></button>`).join("")}</div>`;
+      `<div class="kaartlijst">${Object.keys(REG).map((k) => `<button type="button" style="--c:${COL[k]}" data-gebied="${k}">${icon(k, 40)}<small>Faculteit ${REG[k][2]}</small><strong>${esc(GEBIEDEN[k].naam)}</strong><span>${vt(GEBIEDEN[k].uitleg.split(". ")[0])}.</span><em class="tel" hidden></em></button>`).join("")}</div>`;
+  }
+  // Zoekresultaten op de campus: faculteiten met treffers lichten op, de rest wordt stil
+  function zoekOpKaart(root, tel) {
+    const actief = tel !== null;
+    root.classList.toggle("zoekend", actief);
+    root.querySelectorAll("[data-gebied]").forEach((g) => {
+      const n = actief ? tel[g.dataset.gebied] || 0 : 0;
+      g.classList.toggle("gevonden", n > 0);
+      const t = g.querySelector(".tel");
+      t.textContent = n ? n + (n === 1 ? " opleiding" : " opleidingen") : "";
+      if (t.tagName === "EM") t.hidden = !n;
+    });
   }
   function highlightMap(root, top) {
     root.querySelectorAll("[data-gebied]").forEach((g) => g.classList.remove("top1", "top2"));
@@ -893,8 +908,7 @@
   }
   function openRegion(k) {
     state.gebied = k;
-    state.zoek = "";
-    $("#zoek").value = "";
+    // Tijdens het zoeken blijft de zoekterm staan: dan zie je de treffers van die faculteit
     renderChips();
     renderList();
     // Soepel naar de lijst, zodat je ziet dat je vanaf de kaart naar beneden gaat
