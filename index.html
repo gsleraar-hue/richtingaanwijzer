@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://watstudeerje.nl/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Wat studeer je eigenlijk?","url":"https://watstudeerje.nl/","inLanguage":"nl","description":"Onafhankelijke hulp bij studiekeuze in gewone taal: ruim 1.100 mbo-, hbo- en wo-opleidingen uitgelegd, Engelse studienamen vertaald, een persoonlijk stappenplan en uitleg van begrippen als LOB, BSA en numerus fixus."}</script>
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=74">
+<link rel="stylesheet" href="ontwerp.css?v=75">
 </head>
 <body>
 
@@ -202,7 +202,7 @@
   <section id="profiel">
     <h2>Mijn profiel</h2>
     <p class="sub">Vul in waar je nu staat. Dan zie je bij elke opleiding of je profiel en vakken passen, en klopt je stappenplan beter.</p>
-    <p class="anoniem"><strong>Anoniem en alleen op dit apparaat.</strong> Je naam is niet nodig en er is geen account. Wat je kiest, blijft in deze browser staan en gaat niet naar internet.</p>
+    <p class="anoniem"><strong>Anoniem en alleen op dit apparaat.</strong> Je naam is niet nodig en er is geen account. Wat je kiest, blijft in deze browser staan en gaat niet naar internet.<br><strong>Tip:</strong> werk daarom op je schoollaptop, zodat alles wat met school te maken heeft bij elkaar staat.</p>
     <div id="profielForm" class="profiel-form"></div>
     <div id="profielSamen" class="profiel-samen" aria-live="polite"></div>
     <div id="profielLijst" class="profiel-samen"></div>
@@ -376,13 +376,12 @@
 
   <section id="gids">
     <figure class="banner"><img src="img/px-gang-lachen.jpg" alt="Lachende studenten lopen door een gang" loading="lazy"></figure>
-    <h2>Studies in gewone taal</h2>
-    <p class="sub">Klik op een studie voor de volledige uitleg.</p>
+    <h2>Uitgelicht: <span id="selectieAantal">23</span> veelgekozen studies</h2>
+    <p class="sub">Een selectie, uitgebreid uitgelegd in gewone taal. Klik op een studie voor de volledige uitleg. Je studie er niet bij? <a href="#alle">Alle opleidingen staan verderop →</a></p>
 
     <div class="filters" role="group" aria-label="Filters">
       <div class="chips" id="niveauChips" aria-label="Route (mbo, hbo of wo)"></div>
       <div class="chips" id="gebiedChips" aria-label="Interessegebied"></div>
-      <div class="chips" id="vormChips" aria-label="Hoe wil je leren?"></div>
     </div>
 
     <p id="aantal" class="count" aria-live="polite"></p>
@@ -399,6 +398,9 @@
   <section id="alle">
     <h2>Alle opleidingen, gegroepeerd</h2>
     <p class="sub">Alle <span id="alleAantal">500+</span> erkende mbo-opleidingen, hbo- en wo-bachelors en associate degrees <span class="nlv">(tweejarige hbo-opleidingen)</span> in Nederland, gesorteerd op soortgelijke opleidingen. Zo zie je dat “Business Administration” <span class="nlv">(bedrijfskunde)</span>, “Bedrijfskunde” en “Management” <span class="nlv">(leidinggeven en organiseren)</span> vaak hetzelfde werkveld zijn. Het zoekveld bovenaan en de filters (mbo, hbo, wo) werken hier ook.</p>
+    <div class="filters" role="group" aria-label="Leervorm">
+      <div class="chips" id="vormChips" aria-label="Hoe wil je leren?"></div>
+    </div>
     <div id="actief" class="actief"></div>
     <div id="families"></div>
     <p id="alleLeeg" class="empty" hidden>Niets gevonden in de volledige lijst.</p>
@@ -519,12 +521,12 @@
   </div>
 </footer>
 
-<script src="data.js?v=74"></script>
-<script src="opleidingen.js?v=74"></script>
-<script src="uitleg.js?v=74"></script>
-<script src="mbo.js?v=74"></script>
-<script src="locaties.js?v=74"></script>
-<script src="opendagen.js?v=74"></script>
-<script src="app.js?v=74"></script>
+<script src="data.js?v=75"></script>
+<script src="opleidingen.js?v=75"></script>
+<script src="uitleg.js?v=75"></script>
+<script src="mbo.js?v=75"></script>
+<script src="locaties.js?v=75"></script>
+<script src="opendagen.js?v=75"></script>
+<script src="app.js?v=75"></script>
 </body>
 </html>

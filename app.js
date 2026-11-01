@@ -183,7 +183,9 @@
     list.innerHTML = "";
     res.forEach((s) => list.appendChild(card(s)));
     $("#leeg").hidden = res.length > 0;
-    $("#aantal").textContent = res.length + (res.length === 1 ? " studie" : " studies");
+    $("#selectieAantal").textContent = STUDIES.length;
+    // Teller alleen bij zoeken of filteren; anders lijkt de selectie een onvolledig zoekresultaat
+    $("#aantal").textContent = q || state.niveau || state.gebied ? res.length + (res.length === 1 ? " studie" : " studies") + " uit de selectie" : "";
     renderFamilies();
   }
 
