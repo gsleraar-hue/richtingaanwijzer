@@ -715,7 +715,7 @@
         ? ["Laat je kind de Padvinder ook zelf doen en vergelijk de uitslagen.", "Stel vragen in plaats van adviezen te geven. “Wat spreekt je hieraan aan?” werkt beter dan “Dit past bij jou”.", "Plan samen een meeloopdag of open dag."]
         : ["Laat iemand die je goed kent (ouder, mentor, oom of tante) de Padvinder ook over jou invullen. Bekijk samen waar het verschilt.", "Kies twee of drie opleidingen en zoek een open dag of meeloopdag op.", "Je hoeft nu niets te beslissen. Dit is een eerste richting."]
       ).map((t) => `<li>${vt(t)}</li>`).join("") + `</ul></details>`;
-    h += `<p class="count" style="margin-top:14px">De Padvinder is een gespreksstarter op basis van interesses, kwaliteiten en waarden, geen wetenschappelijke test.</p>`;
+    h += `<p class="count" style="margin-top:14px">De Padvinder is geen goedgekeurde of wetenschappelijk getoetste test, maar een hulpmiddel voor persoonlijk inzicht op basis van interesses, kwaliteiten en waarden. Bespreek je uitslag met iemand die je goed kent, of met je mentor of decaan.</p>`;
 
     bewaar("padvinder", { top, fams, toel, datum: new Date().toISOString().slice(0, 10) });
     padvinder = lees("padvinder", null);
