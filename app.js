@@ -773,7 +773,9 @@
     $("#vakPaneel").hidden = false;
     // Minder bekende studies die bij het gekozen vak passen
     $("#nieuwSub").textContent = `Minder bekende opleidingen die passen bij ${v[0]}.`;
-    $("#nieuwLijst").innerHTML = NIEUW.filter((n) => n[2].includes(v[0])).slice(0, 6)
+    // Studies waarbij dit vak als eerste staat komen bovenaan
+    $("#nieuwLijst").innerHTML = NIEUW.filter((n) => n[2].includes(v[0]))
+      .sort((a, b) => a[2].indexOf(v[0]) - b[2].indexOf(v[0])).slice(0, 6)
       .map((n) => `<div class="nw"><strong>${vt(n[0])}</strong><span>${vt(n[1])}</span></div>`).join("");
     bewaar("vak", i);
   }
