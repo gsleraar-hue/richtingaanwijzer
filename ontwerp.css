@@ -768,8 +768,6 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 @media (prefers-reduced-motion:reduce){.lp-kop,.lp-kop .lp-ring,.lp-vork{transition:none;animation:none}.lp-vork{stroke-dashoffset:0}}
 
 /* Sterrenkaart */
-.tegel.t-donker{background:linear-gradient(135deg,#1b1b1f,#4a141e);border-color:#1b1b1f;color:#fff}
-.tegel.t-donker span{opacity:.85}
 .sterkaart,.metrokaart{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;margin-top:16px;align-items:start}
 .st-veld{position:relative;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 45%,#2c1519 0%,#151518 58%,#0d0d0f 100%);height:min(72vh,660px)}
 .ster-svg{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
