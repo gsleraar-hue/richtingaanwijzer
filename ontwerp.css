@@ -8,6 +8,7 @@
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.7 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 .sr{position:absolute;left:-9999px}
@@ -1060,3 +1061,31 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
   body.print-profiel .topbar,body.print-profiel .hero,body.print-profiel main>section:not(#profiel),body.print-profiel footer,body.print-profiel .actions,body.print-profiel .profiel-form,body.print-profiel .favweg{display:none!important}
   body.print-profiel #profiel{display:block!important}
 }
+
+/* Leren en werken: per niveau, en bol/bbl op het mbo */
+.lw-niveaus{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:8px}
+.lw-niveau{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--c,var(--accent));border-radius:var(--r);padding:20px 22px}
+.lw-niveau.mbo{--c:var(--mbo)}.lw-niveau.hbo{--c:var(--hbo)}.lw-niveau.wo{--c:var(--wo)}
+.lw-niveau h3{margin:0;font-size:1.6rem;color:var(--c)}
+.lw-naam{font-weight:700;margin:2px 0 10px}
+.lw-niveau p{margin:0 0 10px}
+.lw-let{background:var(--tint);border-radius:8px;padding:8px 12px;font-size:.95rem}
+.lw-knoppen{display:flex;flex-wrap:wrap;gap:6px 16px}
+.lw-twee{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.lw-kaart{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.lw-kaart h3{margin:0 0 8px}
+.lw-kaart ul{padding-left:18px;margin:0 0 14px}
+.lw-kaart li{margin-bottom:6px}
+.lw-check{margin-top:24px;background:var(--tint);border-radius:var(--r);padding:18px 22px}
+.lw-check h3{margin:0 0 10px}.lw-check h3 small{font-weight:400;color:var(--muted)}
+.lw-stellingen{display:flex;flex-wrap:wrap;gap:8px}
+.lw-zin{font:inherit;font-size:.95rem;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+.lw-zin[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.lw-uitslag{margin:14px 0 0}
+.lw-klaar{margin-top:28px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--r);padding:20px 24px}
+.lw-klaar h3{margin:0 0 8px}.lw-klaar h4{margin:18px 0 6px}
+.lw-klaar ul{padding-left:18px;margin:0}.lw-klaar li{margin-bottom:8px}
+.lw-stappen{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:10px;counter-reset:lwstap}
+.lw-stappen li{counter-increment:lwstap;position:relative;padding:10px 14px 10px 50px;background:var(--tint);border-radius:8px}
+.lw-stappen li::before{content:counter(lwstap);position:absolute;left:14px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--paper);font-weight:700;display:grid;place-items:center;font-size:.85rem}
+.lw-waarom{margin:16px 0 0;color:var(--muted)}

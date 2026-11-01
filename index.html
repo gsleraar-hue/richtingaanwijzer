@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://watstudeerje.nl/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Wat studeer je eigenlijk?","url":"https://watstudeerje.nl/","inLanguage":"nl","description":"Onafhankelijke hulp bij studiekeuze in gewone taal: ruim 1.100 mbo-, hbo- en wo-opleidingen uitgelegd, Engelse studienamen vertaald, een persoonlijk stappenplan en uitleg van begrippen als LOB, BSA en numerus fixus."}</script>
 <script>try{var t=localStorage.getItem("thema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="ontwerp.css?v=75">
+<link rel="stylesheet" href="ontwerp.css?v=81">
 </head>
 <body>
 
@@ -202,7 +202,7 @@
   <section id="profiel">
     <h2>Mijn profiel</h2>
     <p class="sub">Vul in waar je nu staat. Dan zie je bij elke opleiding of je profiel en vakken passen, en klopt je stappenplan beter.</p>
-    <p class="anoniem"><strong>Anoniem en alleen op dit apparaat.</strong> Je naam is niet nodig en er is geen account. Wat je kiest, blijft in deze browser staan en gaat niet naar internet.<br><strong>Tip:</strong> werk daarom op je schoollaptop, zodat alles wat met school te maken heeft bij elkaar staat.</p>
+    <p class="anoniem"><strong>Anoniem en alleen op dit apparaat.</strong> Je naam is niet nodig en er is geen account. Wat je kiest, blijft in deze browser staan en gaat niet naar internet. <strong>Tip:</strong> werk daarom op je schoollaptop, zodat alles wat met school te maken heeft bij elkaar staat.</p>
     <div id="profielForm" class="profiel-form"></div>
     <div id="profielSamen" class="profiel-samen" aria-live="polite"></div>
     <div id="profielLijst" class="profiel-samen"></div>
@@ -312,7 +312,31 @@
   </section>
 
   <section id="leerwerk">
-    <h2>Vooral leren, of vooral werken?</h2>
+    <h2>Leren én werken: op elk niveau</h2>
+    <p class="sub">Je hoeft niet te kiezen tussen een diploma halen en geld verdienen. Op het mbo, het hbo en de universiteit kun je werken en leren combineren. Het heet alleen overal anders, en het is niet overal even makkelijk.</p>
+    <div class="lw-niveaus">
+      <article class="lw-niveau mbo">
+        <h3>mbo</h3><p class="lw-naam">Bbl: werken en één dag naar school</p>
+        <p>Je werkt 3 à 4 dagen bij een leerbedrijf en krijgt salaris. Je haalt hetzelfde diploma als bij bol. Kan bij heel veel mbo-opleidingen.</p>
+        <p class="lw-let"><strong>Je hebt nodig:</strong> een leerbaan bij een erkend leerbedrijf.</p>
+        <button type="button" class="linkbtn" data-vorm="bbl">Bekijk bbl-opleidingen →</button>
+      </article>
+      <article class="lw-niveau hbo">
+        <h3>hbo en Ad</h3><p class="lw-naam">Duaal of deeltijd</p>
+        <p><strong>Duaal:</strong> je hebt een baan die bij je studie past, en werk en studie wisselen elkaar af. Je verdient salaris. Meestal krijg je ook studiefinanciering, net als bij voltijd.</p>
+        <p><strong>Deeltijd:</strong> je studeert naast je baan, vaak 's avonds of één dag per week. Je werk hoeft niet bij je studie te passen. Studiefinanciering krijg je niet, maar je kunt bij DUO wel geld lenen voor je collegegeld (het levenlanglerenkrediet).</p>
+        <p class="lw-let">Een <strong>Associate degree</strong> (Ad, 2 jaar hbo) kun je vaak duaal of in deeltijd doen.</p>
+        <p class="lw-knoppen"><button type="button" class="linkbtn" data-vorm="werk" data-niveau="hbo">Hbo-opleidingen →</button> <button type="button" class="linkbtn" data-vorm="werk" data-niveau="ad">Ad-opleidingen →</button></p>
+      </article>
+      <article class="lw-niveau wo">
+        <h3>universiteit</h3><p class="lw-naam">Minder vaak, maar het kan</p>
+        <p>De meeste universitaire opleidingen zijn voltijd. Een deel van de universiteiten heeft een <strong>deeltijdvariant</strong>, bijvoorbeeld bij rechten, bedrijfskunde, informatica of een taal. <strong>Duaal</strong> is op de universiteit zeldzaam.</p>
+        <p>De <strong>Open Universiteit</strong> is helemaal gemaakt om naast je werk te studeren: online en in je eigen tempo. Voor een bachelor heb je daar geen diploma nodig, alleen een leeftijd van 18 jaar of ouder.</p>
+        <p class="lw-let"><strong>Ook een route:</strong> na je bachelor eerst gaan werken, en later een master in deeltijd doen.</p>
+        <a class="linkbtn" href="https://www.ou.nl" target="_blank" rel="noopener">Naar de Open Universiteit →</a>
+      </article>
+    </div>
+    <h3 class="part" style="margin-top:28px">Op het mbo: bol of bbl?</h3>
     <p class="sub">Op het mbo kies je niet alleen een opleiding, maar ook hoe je hem volgt. Veel opleidingen kun je op twee manieren doen, en je krijgt hetzelfde diploma.</p>
     <div class="lw-twee">
       <div class="lw-kaart">
@@ -340,7 +364,23 @@
       <div class="lw-stellingen" id="lwStellingen"></div>
       <p class="lw-uitslag" id="lwUitslag" aria-live="polite">Klik een paar zinnen aan.</p>
     </div>
-    <p class="lw-hbo">Op het hbo kan werken en leren ook: in <strong>deeltijd</strong> studeer je naast je baan, bij <strong>duaal</strong> wissel je werk en school af. <button type="button" class="linkbtn" data-vorm="werk">Bekijk deze hbo-opleidingen</button></p>
+    <div class="lw-klaar" id="klaarmetleren">
+      <h3>Eigenlijk ben ik wel klaar met leren</h3>
+      <p>Dat gevoel is heel normaal, zeker na jaren in de schoolbanken. Maar meteen helemaal stoppen mag niet altijd. Zo zit het:</p>
+      <ol class="lw-stappen">
+        <li><strong>Tot je 16e: leerplicht.</strong> Je moet naar school tot en met het einde van het schooljaar waarin je 16 wordt.</li>
+        <li><strong>Van 16 tot 18: kwalificatieplicht.</strong> Je blijft leren tot je 18 bent, óf tot je een <strong>startkwalificatie</strong> hebt: een diploma havo, vwo of mbo niveau 2 of hoger. Een vmbo-diploma telt nog niet. Alleen werken mag in die tijd niet, ook niet tussen twee opleidingen in.</li>
+        <li><strong>Vanaf 18: je mag stoppen.</strong> Heb je nog geen startkwalificatie? Dan kan het Doorstroompunt (vroeger RMC) in je regio je tot je 23e helpen om alsnog een diploma te halen, of school en werk te combineren.</li>
+      </ol>
+      <h4>Wat kan ik dan wél doen?</h4>
+      <ul>
+        <li><strong>Bbl:</strong> vooral werken en één dag naar school. Dat telt voor de kwalificatieplicht, en je verdient meteen geld. <button type="button" class="linkbtn" data-vorm="bbl">Bekijk bbl-opleidingen →</button></li>
+        <li><strong>Een korte mbo-opleiding:</strong> niveau 2 duurt 1 à 2 jaar en is al een startkwalificatie. Geen vmbo-diploma? Dan begin je met Entree (ongeveer 1 jaar).</li>
+        <li><strong>Praat erover</strong> met je mentor, je decaan of de leerplichtambtenaar van je gemeente. Die zijn er niet alleen om te controleren: ze zoeken ook samen met jou naar iets wat wél past.</li>
+        <li><strong>Later verder leren kan altijd:</strong> via bbl, deeltijd, een Associate degree of de Open Universiteit.</li>
+      </ul>
+      <p class="lw-waarom"><strong>Waarom die startkwalificatie?</strong> Met een diploma heb je meer kans op vast werk en een beter loon, en kun je later makkelijker verder leren. <a href="https://www.rijksoverheid.nl/onderwerpen/leerplicht/vraag-en-antwoord/waarom-moet-ik-een-startkwalificatie-hebben" target="_blank" rel="noopener">Lees meer bij de Rijksoverheid →</a></p>
+    </div>
   </section>
 
   <section id="vakken">
@@ -521,12 +561,12 @@
   </div>
 </footer>
 
-<script src="data.js?v=75"></script>
-<script src="opleidingen.js?v=75"></script>
-<script src="uitleg.js?v=75"></script>
-<script src="mbo.js?v=75"></script>
-<script src="locaties.js?v=75"></script>
-<script src="opendagen.js?v=75"></script>
-<script src="app.js?v=75"></script>
+<script src="data.js?v=81"></script>
+<script src="opleidingen.js?v=81"></script>
+<script src="uitleg.js?v=81"></script>
+<script src="mbo.js?v=81"></script>
+<script src="locaties.js?v=81"></script>
+<script src="opendagen.js?v=81"></script>
+<script src="app.js?v=81"></script>
 </body>
 </html>

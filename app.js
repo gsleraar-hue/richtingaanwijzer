@@ -190,7 +190,7 @@
   }
 
   /* ---------- Alle opleidingen (DUO/RIO), gegroepeerd ---------- */
-  const VORM_KORT = { bol: "Vooral leren (bol)", bbl: "Werken en leren (bbl)", werk: "Hbo naast je werk" };
+  const VORM_KORT = { bol: "Vooral leren (bol)", bbl: "Werken en leren (bbl)", werk: "Naast je werk (deeltijd, duaal)" };
   const VORM_LANG = { bol: "bol (vooral leren, met stages)", bbl: "bbl (werken en één dag naar school)", voltijd: "voltijd", deeltijd: "deeltijd (naast je werk)", duaal: "duaal (werk en studie afwisselen)" };
   const NIV_LABEL = { mbo: "mbo", hbo: "hbo", wo: "wo", ad: "associate degree" };
   const EC_JAAR = { mbo: "1 tot 4 jaar, afhankelijk van het niveau", hbo: "4 jaar", wo: "3 jaar", ad: "2 jaar" };
@@ -311,7 +311,7 @@
       `<h3>Hoe kom je daar?</h3><ol class="stapjes"><li>Zorg voor de juiste vooropleiding en het juiste profiel.</li><li>Ga naar een open dag of meeloopdag.</li><li>Meld je aan via Studielink: uiterlijk 1 mei${SELECTIE[f.id] ? ", bij selectie of loting vaak al vóór 15 januari" : ""}.</li><li>Doe de studiekeuzecheck.</li><li>Regel je geld bij DUO, en eventueel een kamer.</li></ol><p><a href="#route">Bekijk het hele stappenplan →</a></p>` +
       `<h3>Wie zitten hier? <small>(verzonnen voorbeelden)</small></h3>${personaHtml(f.gebied)}` +
       `<h3>Hoe lang?</h3><p>${o.l.map((n) => `${NIV_LABEL[n]}${n === "mbo" && o.mn && o.mn.length ? " niveau " + o.mn.join(", ") : ""}: ${EC_JAAR[n]}`).join(" · ")}</p>` +
-      ((o.v || []).length ? `<h3>Hoe kun je hem volgen?</h3><p>${o.v.map((v) => VORM_LANG[v] || v).join(", ")}.${o.v.some((v) => v === "bol" || v === "bbl") ? ` <a href="#leerwerk">Bol of bbl: wat past bij jou? →</a>` : ""}</p>` : "") +
+      ((o.v || []).length ? `<h3>Hoe kun je hem volgen?</h3><p>${o.v.map((v) => VORM_LANG[v] || v).join(", ")}.${o.v.some((v) => v === "bol" || v === "bbl") ? ` <a href="#leerwerk">Bol of bbl: wat past bij jou? →</a>` : o.v.some((v) => v === "deeltijd" || v === "duaal") ? ` <a href="#leerwerk">Werken en leren: hoe zit dat? →</a>` : ""}</p>` : "") +
       `<h3>Hoe studeer je?</h3><p>${o.v.map((v) => VORM[v] || v).join(", ") || "onbekend"}</p>` +
       `<h3>Waar kan het? (${o.i.length} ${o.i.length === 1 ? "school" : "scholen"})</h3>${reis}<ul class="scholen">${insts.map((i) => schoolRegel(i, o.n, per[i])).join("")}</ul>` +
       (o.i.length > insts.length ? `<p style="color:var(--muted)">en ${o.i.length - insts.length} andere</p>` : "") +
@@ -733,7 +733,7 @@
       box.hidden = true;
       $(".testgrid").hidden = false;
       toStep(0);
-      window.scrollTo({ top: 0, behavior: "instant" });
+      scrollNaar(0);
     });
     $("#opnieuw").addEventListener("click", () => {
       bewaar("antwoorden", null);
@@ -742,7 +742,7 @@
       buildQuiz();
       box.hidden = true;
       $(".testgrid").hidden = false;
-      window.scrollTo({ top: 0, behavior: "instant" });
+      scrollNaar(0);
     });
     $(".testgrid").hidden = true;
     box.classList.remove("verschijnt");
@@ -750,7 +750,7 @@
     box.classList.add("verschijnt");
     box.focus({ preventScroll: true });
     // Naar het begin van de uitslag, niet naar de top van de pagina
-    window.scrollTo({ top: Math.max(0, box.getBoundingClientRect().top + window.scrollY - onderKop()), behavior: "instant" });
+    scrollNaar(box.getBoundingClientRect().top + window.scrollY - onderKop());
   }
 
   /* ---------- Schoolvak -> studie ---------- */
@@ -894,7 +894,8 @@
     $("#zoek").value = "";
     renderChips();
     renderList();
-    go("opleidingen", "alle");
+    // Soepel naar de lijst, zodat je ziet dat je vanaf de kaart naar beneden gaat
+    go("opleidingen", "alle", true);
   }
 
   /* ---------- Schermen: steeds één onderwerp tegelijk ---------- */
@@ -911,9 +912,9 @@
     plan: ["#/plan", "Mijn stappenplan", "Van nu tot je eerste studiedag"],
     profiel: ["#/profiel", "Mijn profiel", "Je klas, profiel en vakken, anoniem"],
     ouders: ["#/ouders", "Voor ouders", "Zo voer je het gesprek"],
-    route: ["#route", "Hoe kom je daar?", "Aanmelden, toelating, inschrijven"],
-    toelating: ["#toelating", "Toelating", "Loting, selectie, portfolio"],
-    leerwerk: ["#leerwerk", "Leren of werken?", "Bol of bbl: wat past bij jou?"],
+    route: ["#route", "Hoe kom ik daar?", "Aanmelden, toelating, inschrijven"],
+    toelating: ["#toelating", "Word ik toegelaten?", "Loting, selectie, portfolio"],
+    leerwerk: ["#leerwerk", "Leren én werken?", "Bbl, duaal of deeltijd: op elk niveau"],
     planb: ["#planb", "Plan B", "Wat als je niet wordt aangenomen?"],
     geld: ["#geld", "Wie betaalt wat?", "Collegegeld, DUO, een kamer"],
     opties: ["#opties", "Buitenland, tussenjaar, Defensie of politie?", "En later nog switchen"],
@@ -930,17 +931,20 @@
     uitleg: ["metro", "plan", "test", "ouders"], ouders: ["samen", "metro", "plan", "test"], samen: ["ouders", "plan", "sterren", "opendagen"],
     sterren: ["test", "droom", "metro", "opleidingen"], metro: ["planb", "plan", "toelating", "sterren"],
   };
-  const UITLEG = ["route", "toelating", "planb", "geld", "opties", "eerlijk", "niveaus", "leerwerk", "vakken", "vertaal", "woorden"];
+  // In de volgorde van een studiekeuze: eerst oriënteren, dan kritisch kijken, dan aanmelden en regelen; de woordenlijst als naslag achteraan
+  const UITLEG = ["niveaus", "leerwerk", "vakken", "vertaal", "eerlijk", "route", "toelating", "planb", "geld", "opties", "woorden"];
   $("#uitlegTegels").innerHTML = UITLEG.map(tegelHtml).join("");
   const VIEWS = { weetal: ["weetal"], samen: ["samen"], start: ["ontdek"], droom: ["droom"], te: ["te"], sterren: ["sterren"], metro: ["metro"], test: ["test"], opleidingen: ["gids", "kaart", "alle"], opendagen: ["opendagen"], plan: ["plan"], profiel: ["profiel"], uitleg: ["uitlegmenu", "route", "toelating", "planb", "leerwerk", "geld", "opties", "eerlijk", "niveaus", "vakken", "vertaal", "woorden"], ouders: ["ouders"] };
   let view = "";
-  function go(v, target) {
+  function go(v, target, zacht = false) {
     if (!VIEWS[v]) v = "start";
     // Uitleg: één onderwerp tegelijk, met de onderwerpen als tegels erboven
     const los = v === "uitleg" && UITLEG.includes(target);
     document.querySelectorAll("main > section").forEach((s) => (s.hidden = !VIEWS[v].includes(s.id) || (v === "uitleg" && UITLEG.includes(s.id) && s.id !== target)));
     $("#uitlegmenu").classList.toggle("compact", los);
     document.querySelectorAll("#uitlegTegels .tegel").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + target ? "page" : "false"));
+    // Binnen hetzelfde scherm soepel scrollen; een nieuw scherm begint meteen bovenaan
+    if (v === view) zacht = true;
     if (v !== view) {
       view = v;
       $("#verder").hidden = !VERDER[v];
@@ -953,7 +957,12 @@
     const adres = los ? "#" + target : "#/" + v;
     if (location.hash !== adres) history.replaceState(null, "", adres);
     const t = target && document.getElementById(v === "uitleg" ? "uitlegmenu" : target);
-    window.scrollTo({ top: t ? t.getBoundingClientRect().top + window.scrollY - onderKop() : 0, behavior: "instant" });
+    scrollNaar(t ? t.getBoundingClientRect().top + window.scrollY - onderKop() : 0, zacht);
+  }
+  // Soepel waar het kan, direct als iemand liever geen beweging ziet
+  function scrollNaar(top, zacht = true) {
+    const soepel = zacht && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: Math.max(0, top), behavior: soepel ? "smooth" : "instant" });
   }
   // Ruimte onder de vaste menubalk, die op desktop twee regels hoog is
   function onderKop() { return ($(".topbar")?.offsetHeight || 64) + 20; }
@@ -1122,6 +1131,8 @@
   let favorieten = lees("favorieten", []);
   let afgevinkt = lees("afgevinkt", {});
   let padvinder = lees("padvinder", null);
+  // Bewaarde Padvinder-uitslag ook na herladen op de campus laten zien
+  if (padvinder) highlightMap($("#kaartKaart"), padvinder.top);
   const isFav = (n) => favorieten.includes(n);
   const KLASSEN = [["", "Kies…", 0], ["vmbo3", "Vmbo 3", 1], ["vmbo4", "Vmbo 4", 0], ["havo4", "Havo 4", 1], ["havo5", "Havo 5", 0], ["vwo4", "Vwo 4", 2], ["vwo5", "Vwo 5", 1], ["vwo6", "Vwo 6", 0], ["mbo4", "Mbo 4, laatste jaar", 0], ["anders", "Iets anders of een tussenjaar", 0]];
   const nu = new Date();
@@ -1556,7 +1567,7 @@
   $("#toonMeeloop").addEventListener("click", () => {
     const b = $('#odChips [data-s="meeloop"]');
     if (b.getAttribute("aria-pressed") !== "true") b.click();
-    $("#odAantal").scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollNaar($("#odAantal").getBoundingClientRect().top + window.scrollY - onderKop());
   });
 
   /* ---------- Leren of werken: korte check ---------- */
@@ -1567,6 +1578,7 @@
     ["Ik wil eerst rustig het vak leren voordat ik ga werken.", "bol"],
     ["Ik wil via stages verschillende bedrijven leren kennen.", "bol"],
     ["Ik weet nog niet precies welk beroep ik wil.", "bol"],
+    ["Eigenlijk ben ik wel klaar met school.", "klaar"],
   ];
   $("#lwStellingen").innerHTML = LW.map((x, i) => `<button type="button" class="lw-zin" data-lw="${i}" aria-pressed="false">${esc(x[0])}</button>`).join("");
   $("#lwStellingen").addEventListener("click", (e) => {
@@ -1574,11 +1586,17 @@
     if (!k) return;
     k.setAttribute("aria-pressed", String(k.getAttribute("aria-pressed") !== "true"));
     const aan = [...document.querySelectorAll("#lwStellingen [aria-pressed=true]")].map((x) => LW[Number(x.dataset.lw)][1]);
-    const bbl = aan.filter((x) => x === "bbl").length, bol = aan.length - bbl;
-    $("#lwUitslag").innerHTML = !aan.length ? "Klik een paar zinnen aan."
-      : bbl > bol ? `<strong>Bbl lijkt goed bij je te passen:</strong> vooral werken, en daarnaast leren. <button type="button" class="linkbtn" data-vorm="bbl">Bekijk bbl-opleidingen →</button>`
-      : bol > bbl ? `<strong>Bol lijkt goed bij je te passen:</strong> vooral leren, met stages. <button type="button" class="linkbtn" data-vorm="bol">Bekijk bol-opleidingen →</button>`
-      : "<strong>Allebei kan.</strong> Vraag op een open dag hoe een week eruitziet bij bol en bij bbl.";
+    // "Klaar met school" telt als werken-en-leren, met een verwijzing naar de uitleg over de kwalificatieplicht
+    const klaar = aan.includes("klaar");
+    const bbl = aan.filter((x) => x !== "bol").length, bol = aan.length - bbl;
+    const klaarTekst = klaar ? ` <button type="button" class="linkbtn" data-klaar>Ik ben klaar met school: wat mag en kan ik? →</button>` : "";
+    $("#lwUitslag").innerHTML = (!aan.length ? "Klik een paar zinnen aan."
+      : bbl > bol ? `<strong>Werken en leren lijkt goed bij je te passen.</strong> Op het mbo heet dat bbl, op het hbo duaal of deeltijd, en op de universiteit kijk je naar deeltijd of de Open Universiteit. <button type="button" class="linkbtn" data-vorm="bbl">Bbl-opleidingen →</button> <button type="button" class="linkbtn" data-vorm="werk" data-niveau="hbo">Hbo naast je werk →</button>`
+      : bol > bbl ? `<strong>Vooral leren lijkt goed bij je te passen:</strong> bol op het mbo, voltijd op het hbo en de universiteit. Met stages zie je toch al veel van het werk. <button type="button" class="linkbtn" data-vorm="bol">Bol-opleidingen →</button>`
+      : "<strong>Allebei kan.</strong> Vraag op een open dag hoe een week eruitziet als je vooral leert, en als je werkt en leert.") + klaarTekst;
+  });
+  $("#lwUitslag").addEventListener("click", (e) => {
+    if (e.target.closest("[data-klaar]")) scrollNaar($("#klaarmetleren").getBoundingClientRect().top + window.scrollY - onderKop());
   });
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-vorm]");
@@ -1586,7 +1604,7 @@
     state.zoek = "";
     $("#zoek").value = "";
     state.gebied = "";
-    state.niveau = b.dataset.vorm === "werk" ? "hbo" : "mbo";
+    state.niveau = b.dataset.niveau || (b.dataset.vorm === "werk" ? "hbo" : "mbo");
     state.vorm = b.dataset.vorm;
     renderChips();
     renderList();
