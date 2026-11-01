@@ -2169,6 +2169,34 @@
     try { localStorage.setItem("thema", root.dataset.theme); } catch (e) {}
   });
 
+  /* ---------- Tegelgrids zonder eenzame laatste rij ---------- */
+  // Valt de laatste rij korter uit, dan eerst één kolom minder als dat precies uitkomt;
+  // anders delen de tegels op de laatste rij de volle breedte (via een fijner raster).
+  const GRIDS = ".tegels,.cards,.nieuw,.opl,.gesprek-grid,.odtips-grid,.droom-grid,.personas,.flips,.woorden,.vakken,.bewaard-lijst";
+  function balanceer() {
+    document.querySelectorAll(GRIDS).forEach((g) => {
+      const kids = [...g.children];
+      g.style.gridTemplateColumns = "";
+      kids.forEach((k) => (k.style.gridColumn = ""));
+      if (!g.getClientRects().length) return;
+      const zicht = kids.filter((k) => k.getClientRects().length);
+      const n = zicht.length;
+      let c = getComputedStyle(g).gridTemplateColumns.split(" ").length;
+      if (n < 2 || c < 2) return;
+      if (n < c) { g.style.gridTemplateColumns = `repeat(${n},minmax(0,1fr))`; return; }
+      if (n % c && c > 2 && n % (c - 1) === 0) { g.style.gridTemplateColumns = `repeat(${c - 1},minmax(0,1fr))`; return; }
+      const m = n % c;
+      if (!m) return;
+      g.style.gridTemplateColumns = `repeat(${c * m},minmax(0,1fr))`;
+      zicht.forEach((k, i) => (k.style.gridColumn = `span ${i >= n - m ? c : m}`));
+    });
+  }
+  let balansGepland = false;
+  const planBalans = () => { if (!balansGepland) { balansGepland = true; setTimeout(() => { balansGepland = false; balanceer(); }, 30); } };
+  new MutationObserver(planBalans).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden", "open"] });
+  let balansBreedte = 0;
+  new ResizeObserver(() => { if (innerWidth !== balansBreedte) { balansBreedte = innerWidth; planBalans(); } }).observe(document.body);
+
   /* ---------- Init ---------- */
   const nc = $("#niveauChips");
   NIVEAUS.forEach((n) => chip(nc, n, "niveau", n));

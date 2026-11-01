@@ -694,10 +694,11 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 
 /* Uitleg als tegels, verder-balk, springen in de Padvinder */
 /* Compact: knoppen zo breed als hun tekst, zodat lange titels de rij niet oprekken */
-.verder{max-width:1180px;margin:0 auto;padding:28px 24px 40px;border-top:1px solid var(--line)}
+/* Zelfde kolom als main.wrap (1040px min 2x24px), zodat kop, tegels en lijn gelijk lopen met de secties erboven */
+.verder{margin:0 max(24px,calc((100% - 992px)/2));padding:28px 0 40px;border-top:1px solid var(--line)}
 .verder h2{font-size:1.1rem;margin:0}
 .verder .tegels{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
-@media (max-width:520px){.verder{padding:22px 16px 32px}}
+@media (max-width:520px){.verder{padding:22px 0 32px}}
 .sdots{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
 .sdots button{width:14px;height:14px;padding:0;border-radius:50%;border:1.5px solid var(--line);background:transparent;cursor:pointer}
 .sdots button.klaar{background:var(--accent);border-color:var(--accent);opacity:.55}
