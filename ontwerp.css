@@ -294,7 +294,6 @@ h1{max-width:560px}
 .fotoband img:nth-child(2n){margin-top:28px}
 .parents-art{margin:0;top:50%;bottom:auto;transform:translateY(-50%);width:min(320px,30vw)}
 .parents-art img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:24px;border:6px solid rgba(255,255,255,.12)}
-.credits{font-size:.8rem;opacity:.8}
 @media (max-width:900px){
   .hero-art{position:relative;top:auto;right:auto;width:min(420px,88%);margin:34px auto 30px}
   .hero{padding-bottom:60px}
