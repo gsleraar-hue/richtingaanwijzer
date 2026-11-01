@@ -1089,3 +1089,7 @@ ul.banen li{display:flex;justify-content:space-between;gap:10px;align-items:base
 .lw-stappen li{counter-increment:lwstap;position:relative;padding:10px 14px 10px 50px;background:var(--tint);border-radius:8px}
 .lw-stappen li::before{content:counter(lwstap);position:absolute;left:14px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--paper);font-weight:700;display:grid;place-items:center;font-size:.85rem}
 .lw-waarom{margin:16px 0 0;color:var(--muted)}
+/* Starttegels: vaste rijen van vier, zodat elke rij één onderwerp blijft */
+.tegels.starttegels{grid-template-columns:repeat(4,1fr)}
+@media (max-width:900px){.tegels.starttegels{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.tegels.starttegels{grid-template-columns:1fr}}
